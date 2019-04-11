@@ -1,4 +1,4 @@
-context("nodeSub")
+context("nodeSub_sim_normal")
 
 test_that("sim_normal", {
   phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
