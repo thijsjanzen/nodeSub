@@ -2,21 +2,50 @@ language: r
 cache: packages
 
 addons:
- apt:
-  update: true
-  sources:
-   - sourceline: 'ppa:opencpu/imagemagick'
-  packages:
-   - libmagick++-dev
-
-
+  apt:
+    update: true
+    sources:
+      - sourceline: 'ppa:opencpu/imagemagick'
+    packages:
+      - libmagick++-dev
+      - librsvg2-dev
+      - libwebp-dev
+      - libpoppler-cpp-dev
+      - libtesseract-dev
+      - libleptonica-dev
+      - tesseract-ocr-eng
+      - r-cran-rgdal
+      - libfftw3-dev
+      - cargo
+      
 r_github_packages:
-#  - jimhester/lintr
-  - r-lib/covr
-#  - MangoTheCat/goodpractice
+  - ropensci/beastier
+  - ropensci/mauricer
+  - ropensci/babette
+  - jimhester/lintr
+  - jimhester/covr
+  - MangoTheCat/goodpractice
+  
+  
+before_install:
+  - echo $TRAVIS_OS_NAME
+  # No need to brew install mpfr on macOS
+  # Error: mpfr 4.0.1 is already installed
+  # To upgrade to 4.0.2, run `brew upgrade mpfr`
+  # if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install mpfr; fi
+  # Do install mpfr on Linux
+  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then sudo apt install -qq libmpfr-dev; fi
+
+before_script:
+  - # Java
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then R CMD javareconf; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then R --quiet -e 'install.packages("rJava", type="source", repos="http://cran.us.r-project.org")'; fi
+  # Should build with and without BEAST2 installed
+  - Rscript -e "beastier::install_beast2()"
+  - Rscript -e 'mauricer::install_beast2_pkg("NS")'
+
 
 after_success:
-#  - Rscript -e 'lintr::lint_package()'
-#  - travis_wait Rscript -e 'library(goodpractice); gp()'
-#  - travis_wait 60 Rscript codecov.R;
-travis_wait 20 Rscript -e "covr::codecov()";
+  - Rscript -e 'lintr::lint_package()'
+  - Rscript -e 'library(covr); codecov()'
+  - Rscript -e 'library(goodpractice); gp()'
