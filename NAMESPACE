@@ -2,7 +2,6 @@
 
 useDynLib(nodeSub, .registration=TRUE)
 
-export(getP_thijs)
 export(sim_dual_independent)
 export(sim_dual_parent)
 export(sim_dual_subs_linked)
