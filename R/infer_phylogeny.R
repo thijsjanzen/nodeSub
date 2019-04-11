@@ -11,7 +11,7 @@ infer_phylogeny <- function(alignment,
                             chain_length)  {
 
   temp_file_name = "temp.fasta"
-  phangorn::write.phyDat(alignment, file = temp_file_name)
+  phangorn::write.phyDat(alignment, file = temp_file_name, format = "fasta")
 
   posterior <- babette::bbt_run_from_model(
     temp_file_name,
@@ -41,7 +41,7 @@ infer_phylogeny <- function(alignment,
   remaining <- floor(burnin * length(found_trees))
   found_trees <- found_trees[remaining:length(found_trees)]
 
-  consensus_tree <- ape::consensus(found_trees)
+  consensus_tree <-  phangorn::maxCladeCred(found_trees)
 
   output <- list("all_trees" = found_trees,
                  "mcc_tree" = consensus_tree)
