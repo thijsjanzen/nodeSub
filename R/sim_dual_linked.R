@@ -1,3 +1,4 @@
+
 #' @keywords internal
 make_transition_matrix <- function(mu) {
   output <- matrix(NA, nrow = 4, ncol = 10)

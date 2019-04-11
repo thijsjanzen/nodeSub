@@ -8,3 +8,4 @@ test.trees
 src/getP.o
 src/nodeSub.so
 src/RcppExports.o
+src/getP.o
