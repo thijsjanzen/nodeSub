@@ -90,7 +90,8 @@ phyDat.DNA <- function (data, return.index = TRUE)
   data
 }
 
-#' @keywords internal
+
+#' @rawNamespace useDynLib(nodeSub)
 getP <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
   res <- getPM_rcpp(eig, branch_length, rate)
   return(res)

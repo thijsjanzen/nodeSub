@@ -6,13 +6,12 @@ test_that("sim_normal", {
   seq_phangorn <- phangorn::simSeq(phy, rate = 0.01, l = 10000)
   dist_phangorn <- phangorn::dist.ml(seq_phangorn)
 
-  seq_nodeSub <- nodeSub::sim_normal(phy, rate = 0.01, l = 10000)
-  dist_nodeSub <- phangorn::dist.ml(seq_phangorn)
+  seq_nodeSub <- sim_normal(phy, rate = 0.01, l = 10000)
+  dist_nodeSub <- phangorn::dist.ml(seq_nodeSub)
 
-  testthat::expect_equal(dist_phangorn[1], dist_nodeSub[1], tolerance = 0.05)
-  testthat::expect_equal(dist_phangorn[2], dist_nodeSub[2], tolerance = 0.05)
-  testthat::expect_equal(dist_phangorn[3], dist_nodeSub[3], tolerance = 0.05)
-
+  testthat::expect_equal(dist_phangorn[1], dist_nodeSub[1], tolerance = 0.01)
+  testthat::expect_equal(dist_phangorn[2], dist_nodeSub[2], tolerance = 0.01)
+  testthat::expect_equal(dist_phangorn[3], dist_nodeSub[3], tolerance = 0.01)
 })
 
 
