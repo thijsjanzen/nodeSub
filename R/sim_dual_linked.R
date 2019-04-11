@@ -102,7 +102,10 @@ sim_dual_linked <- function(phy,
                                  rootseq = NULL) {
   levels <- c("a", "c", "g", "t")
   lbf <- length(levels)
-  if (is.null(bf)) bf <- rep(1 / lbf, lbf) # default is c(0.25, 0.25, 0.25, 0.25)
+
+  # default is c(0.25, 0.25, 0.25, 0.25)
+  if (is.null(bf)) bf <- rep(1 / lbf, lbf)
+
   if (is.null(Q)) Q <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
 
   # only extract the 6 important rates.
@@ -126,14 +129,17 @@ sim_dual_linked <- function(phy,
   res[, root] <- rootseq
 
   parents <- sort(unique(as.integer(edge[,1])))
-  testit::assert(parents[1] == root) # the first parent should be the root, otherwise the algorithm doesn't work
+
+  # the first parent should be the root, otherwise the algorithm doesn't work
+  testit::assert(parents[1] == root)
+
   testit::assert(mu >= 0) # if mu < 0, the model is undefined
   node_transition_matrix <-  make_transition_matrix(mu)
 
   for(focal_parent in parents) {
     # given parent alignment
     # generate two children aligments
-    offspring = edge[which(parent == focal_parent), 2]
+    offspring <- edge[which(parent == focal_parent), 2]
     # first we do substitutions due to the node model:
     result <- get_mutated_sequences(res[,focal_parent], node_transition_matrix)
 

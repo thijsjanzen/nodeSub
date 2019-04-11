@@ -65,7 +65,9 @@ phyDat.DNA <- function (data, return.index = TRUE)
   data <- stats::na.omit(data)
   rn <- as.numeric(rownames(data))
 
-  if(!is.null(attr(data, "na.action"))) warning("Found unknown characters. Deleted sites with with unknown states.")
+  if(!is.null(attr(data, "na.action"))) {
+    warning("Found unknown characters. Deleted sites with with unknown states.")
+  }
 
   aaa <- match(index, attr(data, "na.action"))
   index <- index[is.na(aaa)]

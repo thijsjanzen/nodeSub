@@ -22,7 +22,10 @@ sim_dual_parent <- function(phy,
 
   levels <- c("a", "c", "g", "t")
   lbf <- length(levels)
-  if (is.null(bf)) bf <- rep(1 / lbf, lbf) # default is c(0.25, 0.25, 0.25, 0.25)
+
+  # default is c(0.25, 0.25, 0.25, 0.25)
+  if (is.null(bf)) bf <- rep(1 / lbf, lbf)
+
   if (is.null(Q1)) Q1 <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
   if (is.null(Q2)) Q2 <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
 
@@ -66,7 +69,7 @@ sim_dual_parent <- function(phy,
     }
 
     # now we generate the two offspring sequences.
-    all_offspring = edge[edge[,1] == parent, 2]
+    all_offspring <- edge[edge[,1] == parent, 2]
     for(offspring in all_offspring) {
       # we now have to find the branch length
       local_index <- get_index(edge, parent, offspring)

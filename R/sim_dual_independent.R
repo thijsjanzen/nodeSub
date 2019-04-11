@@ -22,7 +22,10 @@ sim_dual_independent <- function(phy,
 
   levels <- c("a", "c", "g", "t")
   lbf <- length(levels)
-  if (is.null(bf)) bf <- rep(1 / lbf, lbf) # default is c(0.25, 0.25, 0.25, 0.25)
+
+  # default is c(0.25, 0.25, 0.25, 0.25)
+  if (is.null(bf)) bf <- rep(1 / lbf, lbf)
+
   if (is.null(Q1)) Q1 <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
   if (is.null(Q2)) Q2 <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
 
@@ -71,7 +74,8 @@ sim_dual_independent <- function(phy,
     after_mut_seq <- before_mut_seq
     for (j in 1:m) {
       ind <- before_mut_seq == levels[j]
-      after_mut_seq[ind] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
+      after_mut_seq[ind] <- sample(levels, sum(ind), replace = TRUE,
+                                   prob = P[, j])
     }
     res[, to] <- after_mut_seq
   }
@@ -80,6 +84,7 @@ sim_dual_independent <- function(phy,
   label <- c(phy$tip.label, as.character( (k + 1):nNodes))
   colnames(res) <- label
   res <- res[, phy$tip.label, drop = FALSE]
-  alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE), return.index = TRUE)
+  alignment_phydat <- phyDat.DNA( as.data.frame( res, stringsAsFactors = FALSE),
+                                  return.index = TRUE)
   return(alignment_phydat)
 }
