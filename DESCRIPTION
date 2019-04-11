@@ -14,4 +14,6 @@ LinkingTo:
 Imports: Rcpp,
          phangorn, 
          testit, 
-         stringr
+         stringr,
+         testthat,
+         MASS
