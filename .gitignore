@@ -5,3 +5,6 @@ nodeSub.Rproj
 .Ruserdata
 test.log
 test.trees
+src/getP.o
+src/nodeSub.so
+src/RcppExports.o

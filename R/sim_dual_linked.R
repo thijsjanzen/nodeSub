@@ -6,9 +6,9 @@ make_transition_matrix <- function(mu) {
   two_sub <- (mu^2)
   no_sub <- (1 - mu)^2
 
-  order_events <- c("AA", "TT","CC","GG","AC","AT","AG","TC","TG","CG")
+  order_events <- c("aa", "tt","cc","gg","ac","at","ag","tc","tg","cg")
 
-  bases <- c("A","T","C","G")
+  bases <- c("a","t","c","g")
   for(j in 1:4) {
     focal <- bases[j]
     to_add <- c()
@@ -164,7 +164,6 @@ sim_dual_linked <- function(phy,
   label <- c(phy$tip.label, as.character( (k + 1):nNodes))
   colnames(res) <- label
   res <- res[, phy$tip.label, drop = FALSE]
-  alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE),
-                                 return.index = TRUE)
+  alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
   return(alignment_phydat)
 }

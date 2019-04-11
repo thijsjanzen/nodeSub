@@ -10,13 +10,14 @@ infer_phylogeny <- function(alignment,
                             burnin,
                             chain_length)  {
 
-  temp_file_name = "temp.fasta"
+  temp_file_name <- "temp.fasta"
   phangorn::write.phyDat(alignment, file = temp_file_name, format = "fasta")
 
   posterior <- babette::bbt_run_from_model(
     temp_file_name,
     inference_model = beautier::create_inference_model(
-      mcmc = beautier::create_mcmc(chain_length = chain_length, store_every = 5000)
+      mcmc = beautier::create_mcmc(chain_length = chain_length,
+                                   store_every = 5000)
     ),
     beast2_options = beastier::create_beast2_options(
       overwrite = TRUE,

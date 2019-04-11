@@ -18,7 +18,7 @@ fast.table <- function (data)
 }
 
 #' @keywords internal
-phyDat.DNA <- function (data, return.index = TRUE)
+phyDat.DNA <- function (data)
 {
   if (is.matrix(data))
     nam <- row.names(data)
@@ -82,8 +82,7 @@ phyDat.DNA <- function (data, return.index = TRUE)
   attr(data, "weight") <- weight
   attr(data, "nr") <- p
   attr(data, "nc") <- 4
-  if (return.index)
-    attr(data, "index") <- index
+  attr(data, "index") <- index
   attr(data, "levels") <- c("a", "c", "g", "t")
   attr(data, "allLevels") <- ac
   attr(data, "type") <- "DNA"
