@@ -99,20 +99,3 @@ getP <- function(el, eig = phangorn::edQt(), g = 1.0) {
   attr(res, "dim") <- c(length(g), length(el))
   res
 }
-
-#' testing function for calculation of matrix
-#' @param el branch length
-#' @param eig list with eigenvectors/values
-#' @param g rate
-#' @export
-getP_thijs <- function(el, eig = phangorn::edQt(), g = 1.0) {
-  # this function is found in phangorn, phylo.R
-  n <- length(eig$values)
-
-  res <- getPM_rcpp(eig, el, g)
-  attr(res, "dim") <- c(length(g), length(el))
-  res
-}
-
-
-
