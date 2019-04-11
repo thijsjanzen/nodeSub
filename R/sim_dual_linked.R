@@ -93,7 +93,7 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
 #' @param rootseq sequence at the root, simulated by default
 #' @return phyDat object
 #' @export
-sim_dual_subs_linked <- function(phy,
+sim_dual_linked <- function(phy,
                                  Q = NULL,
                                  rate = 1,
                                  mu = 1e-9,
@@ -140,7 +140,7 @@ sim_dual_subs_linked <- function(phy,
     indices <- which(parent == focal_parent)
     for(i in 1:2) {
       branch_length <- phy$edge.length[indices[i]]
-      P <- getP(branch_length, eigQ, rate)[[1]]
+      P <- getP(branch_length, eigQ, rate)
 
       # avoid numerical problems for larger P and small t
       if (any(P < 0)) P[P < 0] <- 0

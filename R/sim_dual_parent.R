@@ -54,7 +54,7 @@ sim_dual_parent <- function(phy,
 
   for(parent in parents) {
     # we first mutate the parent sequence to reflect mutations at the node
-    P <- getP(node_time, eigQ2, rate2)[[1]]
+    P <- getP(node_time, eigQ2, rate2)
     if (any(P < 0)) P[P < 0] <- 0
     for (j in 1:m) {
       # from the parent select the locations of base levels[j]
@@ -72,7 +72,7 @@ sim_dual_parent <- function(phy,
       local_index <- get_index(edge, parent, offspring)
       branch_length <- tl[local_index]
 
-      P <- getP(branch_length, eigQ1, rate1)[[1]]
+      P <- getP(branch_length, eigQ1, rate1)
       # avoid numerical problems for larger P and small t
       if (any(P < 0)) P[P < 0] <- 0
 

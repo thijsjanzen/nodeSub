@@ -17,7 +17,7 @@ test_that("sim_dual_parent", {
 test_that("sim_dual_linked", {
   phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
 
-  sequences <- sim_dual_parent(phy)
+  sequences <- sim_dual_linked(phy)
   testthat::expect_true(class(sequences) == "phyDat")
 })
 
