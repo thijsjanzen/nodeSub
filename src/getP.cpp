@@ -11,7 +11,7 @@
 // [[Rcpp::export]]
 Rcpp::NumericMatrix getPM_rcpp(Rcpp::List eig,
                                double branch_length,
-                               double rate) {
+                               double rate)
 {
   Rcpp::NumericVector eva   = Rcpp::as<Rcpp::NumericVector>(eig["values"]);
   Rcpp::NumericVector ev    = Rcpp::as<Rcpp::NumericMatrix>(eig["vectors"]);
