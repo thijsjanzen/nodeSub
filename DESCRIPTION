@@ -22,4 +22,5 @@ Imports: Rcpp,
          beastier,
          babette,
          tracerer,
-         ape
+         ape,
+         nLTT
