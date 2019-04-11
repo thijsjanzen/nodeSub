@@ -107,6 +107,5 @@ getP_thijs <- function(el, eig = phangorn::edQt(), g = 1.0) {
   n <- length(eig$values)
 
   res <- getPM_rcpp(eig, el, g)
-  attr(res, "dim") <- c(length(g), length(el))
-  res
+  return(res)
 }
