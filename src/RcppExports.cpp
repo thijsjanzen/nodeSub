@@ -6,15 +6,15 @@
 using namespace Rcpp;
 
 // getPM_rcpp
-Rcpp::NumericMatrix getPM_rcpp(Rcpp::List eig, int el, double w);
-RcppExport SEXP _nodeSub_getPM_rcpp(SEXP eigSEXP, SEXP elSEXP, SEXP wSEXP) {
+Rcpp::NumericMatrix getPM_rcpp(Rcpp::List eig, double branch_length, double rate);
+RcppExport SEXP _nodeSub_getPM_rcpp(SEXP eigSEXP, SEXP branch_lengthSEXP, SEXP rateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type eig(eigSEXP);
-    Rcpp::traits::input_parameter< int >::type el(elSEXP);
-    Rcpp::traits::input_parameter< double >::type w(wSEXP);
-    rcpp_result_gen = Rcpp::wrap(getPM_rcpp(eig, el, w));
+    Rcpp::traits::input_parameter< double >::type branch_length(branch_lengthSEXP);
+    Rcpp::traits::input_parameter< double >::type rate(rateSEXP);
+    rcpp_result_gen = Rcpp::wrap(getPM_rcpp(eig, branch_length, rate));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -94,18 +94,3 @@ sim_dual_parent <- function(phy,
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE), return.index = TRUE)
   return(alignment_phydat)
 }
-
-
-#' testing function for calculation of matrix
-#' @param el branch length
-#' @param eig list with eigenvectors/values
-#' @param g rate
-#' @return P matrix
-#' @export
-getP_thijs <- function(el, eig = phangorn::edQt(), g = 1.0) {
-  # this function is found in phangorn, phylo.R
-  n <- length(eig$values)
-
-  res <- getPM_rcpp(eig, el, g)
-  return(res)
-}

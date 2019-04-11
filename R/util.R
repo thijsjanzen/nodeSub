@@ -91,11 +91,7 @@ phyDat.DNA <- function (data, return.index = TRUE)
 }
 
 #' @keywords internal
-getP <- function(el, eig = phangorn::edQt(), g = 1.0) {
-  # this function is found in phangorn, phylo.R
-  n <- length(eig$values)
-#  res <- .Call("getPM", eig, as.integer(n), as.double(el), as.double(g))
-  res <- getPM_rcpp(eig, el, g)
-  attr(res, "dim") <- c(length(g), length(el))
-  res
+getP <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
+  res <- getPM_rcpp(eig, branch_length, rate)
+  return(res)
 }
