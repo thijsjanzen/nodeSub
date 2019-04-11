@@ -1,13 +1,21 @@
 language: r
 cache: packages
 
+ addons:
+       apt:
+         update: true
+         sources:
+           - sourceline: 'ppa:opencpu/imagemagick'
+         packages:
+           - libmagick++-dev
+
 r_github_packages:
 #  - jimhester/lintr
-#  - r-lib/covr
+  - r-lib/covr
 #  - MangoTheCat/goodpractice
 
 after_success:
 #  - Rscript -e 'lintr::lint_package()'
 #  - travis_wait Rscript -e 'library(goodpractice); gp()'
 #  - travis_wait 60 Rscript codecov.R;
-#travis_wait 20 Rscript -e "covr::codecov()";
+travis_wait 20 Rscript -e "covr::codecov()";
