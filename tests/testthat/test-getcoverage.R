@@ -7,7 +7,7 @@ test_that("sim_dual_independent", {
   testthat::expect_true(class(sequences) == "phyDat")
 
   Q_JC <- matrix(1, nrow = 4, ncol = 4)
-  sequences <- sim_dual_independent(phy, Q = Q_JC)
+  sequences <- sim_dual_independent(phy, Q1 = Q_JC, Q2 = Q_JC)
   testthat::expect_true(class(sequences) == "phyDat")
 })
 
@@ -18,7 +18,7 @@ test_that("sim_dual_parent", {
   testthat::expect_true(class(sequences) == "phyDat")
 
   Q_JC <- matrix(1, nrow = 4, ncol = 4)
-  sequences <- sim_dual_parent(phy, Q = Q_JC)
+  sequences <- sim_dual_parent(phy, Q1 = Q_JC, Q2 = Q_JC)
   testthat::expect_true(class(sequences) == "phyDat")
 
 })
