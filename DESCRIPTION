@@ -16,4 +16,5 @@ Imports: Rcpp,
          testit, 
          stringr,
          testthat,
-         MASS
+         MASS,
+         phytools
