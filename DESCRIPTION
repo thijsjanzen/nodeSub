@@ -17,4 +17,9 @@ Imports: Rcpp,
          stringr,
          testthat,
          MASS,
-         phytools
+         phytools,
+         beautier,
+         beastier,
+         babette,
+         tracerer,
+         ape

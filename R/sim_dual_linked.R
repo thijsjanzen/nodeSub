@@ -8,12 +8,11 @@ make_transition_matrix <- function(mu) {
 
   order_events <- c("AA", "TT","CC","GG","AC","AT","AG","TC","TG","CG")
 
-  #for(focal in c("A","C","T","G") {
   bases <- c("A","T","C","G")
   for(j in 1:4) {
     focal <- bases[j]
     to_add <- c()
-    for(i in 1:length(order_events)) {
+    for(i in seq_along(order_events)) {
       focal_target <- order_events[i]
       matching_bases <- stringr::str_count(focal_target, focal)
       if(matching_bases == 2) {
@@ -75,7 +74,7 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
   child1_seq <- parent_seq
   child2_seq <- parent_seq
 
-  for(i in 1:length(parent_seq)) {
+  for(i in seq_along(parent_seq)) {
     bases <- draw_bases(parent_seq[i], trans_matrix)
     child1_seq[i] <- bases[[1]]
     child2_seq[i] <- bases[[2]]
@@ -154,7 +153,8 @@ sim_dual_linked <- function(phy,
       after_mut_seq <- c()
       for (j in 1:m) {
         ind <- before_mut_seq == levels[j]
-        after_mut_seq[ind] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
+        after_mut_seq[ind] <- sample(levels, sum(ind), replace = TRUE,
+                                     prob = P[, j])
       }
       res[, offspring[i] ] <- after_mut_seq
     }
@@ -164,6 +164,7 @@ sim_dual_linked <- function(phy,
   label <- c(phy$tip.label, as.character( (k + 1):nNodes))
   colnames(res) <- label
   res <- res[, phy$tip.label, drop = FALSE]
-  alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE), return.index = TRUE)
+  alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE),
+                                 return.index = TRUE)
   return(alignment_phydat)
 }
