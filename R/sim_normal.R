@@ -62,7 +62,7 @@ sim_normal <- function(x,
   for (i in seq_along(tl)) {
     from <- parent[i]
     to <- child[i]
-    P <- getP(tl[i], eig, rate)
+    P <- get_p_matrix(tl[i], eig, rate)
     # avoid numerical problems for larger P and small t
     if (any(P < 0)) P[P < 0] <- 0
     for (j in 1:m) {

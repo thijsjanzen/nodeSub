@@ -87,7 +87,7 @@ phyDat.DNA <- function(data) {
 
 
 #' @rawNamespace useDynLib(nodeSub)
-getP <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
-  res <- getPM_rcpp(eig, branch_length, rate)
+get_p_matrix <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
+  res <- get_p_m_rcpp(eig, branch_length, rate)
   return(res)
 }

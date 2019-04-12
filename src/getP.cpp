@@ -9,7 +9,7 @@
 #include <cmath>
 
 // [[Rcpp::export]]
-Rcpp::NumericMatrix getPM_rcpp(Rcpp::List eig,
+Rcpp::NumericMatrix get_p_m_rcpp(Rcpp::List eig,
                                double branch_length,
                                double rate)
 {
@@ -18,7 +18,13 @@ Rcpp::NumericMatrix getPM_rcpp(Rcpp::List eig,
   Rcpp::NumericVector evei  = Rcpp::as<Rcpp::NumericMatrix>(eig["inv"]);
   Rcpp::NumericMatrix P(4, 4);
   if(branch_length == 0 || rate == 0) {
-      return P;
+      for(int i = 0; i < 4; ++i) {
+        for(int j = 0; j < 4; ++j) {
+          if(i != j) P(i,j) = 0;
+          if(i == j) P(i,j) = 1;
+        }
+      }
+      return(P);
   }
 
   Rcpp::NumericVector tmp(4);

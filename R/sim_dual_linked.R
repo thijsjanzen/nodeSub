@@ -150,7 +150,7 @@ sim_dual_linked <- function(phy,
     indices <- which(parent == focal_parent)
     for (i in 1:2) {
       branch_length <- phy$edge.length[indices[i]]
-      P <- getP(branch_length, eigQ, rate)
+      P <- get_p_matrix(branch_length, eigQ, rate)
 
       # avoid numerical problems for larger P and small t
       if (any(P < 0)) P[P < 0] <- 0
