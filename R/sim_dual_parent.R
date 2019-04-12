@@ -53,9 +53,9 @@ sim_dual_parent <- function(phy,
   tl <- phy$edge.length
 
   # all parental nodes are:
-  parents <- unique(edge[,1])
+  parents <- unique(edge[, 1])
 
-  for(parent in parents) {
+  for (parent in parents) {
     # we first mutate the parent sequence to reflect mutations at the node
     P <- getP(node_time, eigQ2, rate2)
     if (any(P < 0)) P[P < 0] <- 0
@@ -69,8 +69,8 @@ sim_dual_parent <- function(phy,
     }
 
     # now we generate the two offspring sequences.
-    all_offspring <- edge[edge[,1] == parent, 2]
-    for(offspring in all_offspring) {
+    all_offspring <- edge[edge[, 1] == parent, 2]
+    for (offspring in all_offspring) {
       # we now have to find the branch length
       local_index <- get_index(edge, parent, offspring)
       branch_length <- tl[local_index]
@@ -91,7 +91,7 @@ sim_dual_parent <- function(phy,
   }
 
   k <- length(phy$tip.label)
-  label <- c(phy$tip.label, as.character( (k + 1):nNodes))
+  label <- c(phy$tip.label, as.character((k + 1):nNodes))
   colnames(res) <- label
   res <- res[, phy$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))

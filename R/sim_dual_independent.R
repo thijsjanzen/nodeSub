@@ -81,7 +81,7 @@ sim_dual_independent <- function(phy,
   }
 
   k <- length(phy$tip.label)
-  label <- c(phy$tip.label, as.character( (k + 1):nNodes))
+  label <- c(phy$tip.label, as.character((k + 1):nNodes))
   colnames(res) <- label
   res <- res[, phy$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA( as.data.frame(res, stringsAsFactors = FALSE))

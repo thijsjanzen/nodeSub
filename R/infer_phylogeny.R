@@ -34,7 +34,7 @@ infer_phylogeny <- function(alignment,
   )
 
   esses <- tracerer::calc_esses(beast_log, sample_interval = 5000)
-  if(min(esses) < 200) {
+  if (min(esses) < 200) {
     cat("WARNING! MCMC chain not converged!\n")
   }
 

@@ -1,31 +1,29 @@
 #' @keywords internal
-fast.table <- function (data)
-{
-  if(!is.data.frame(data))
+fast.table <- function(data) {
+  if (!is.data.frame(data))
     data <- as.data.frame(data, stringsAsFactors = FALSE)
   da <- do.call("paste", c(data, sep = "\r"))
   ind <- !duplicated(da)
   levels <- da[ind]
-  cat <- factor(da,levels = levels)
+  cat <- factor(da, levels = levels)
   nl <- length(levels(cat))
   bin <- (as.integer(cat) - 1)
   pd <- nl
   bin <- bin[!is.na(bin)]
   if (length(bin)) bin <- bin + 1
   y <- tabulate(bin, pd)
-  result <- list(index = bin, weights = y, data = data[ind,])
+  result <- list(index = bin, weights = y, data = data[ind, ])
   result
 }
 
 #' @keywords internal
-phyDat.DNA <- function (data)
-{
+phyDat.DNA <- function(data) {
   if (is.matrix(data))
     nam <- row.names(data)
   else nam <- names(data)
-  if (inherits(data,"DNAbin"))
+  if (inherits(data, "DNAbin"))
     data <- as.character(data)
-  if(inherits(data, "character")) data <- as.matrix(data)
+  if (inherits(data, "character")) data <- as.matrix(data)
   if (is.matrix(data))
     data <- as.data.frame(t(data), stringsAsFactors = FALSE)
   else data <- as.data.frame(data, stringsAsFactors = FALSE)
@@ -41,14 +39,13 @@ phyDat.DNA <- function (data)
                18, 4, dimnames = list(NULL, c("a", "c", "g", "t")))
 
   compress <- TRUE
-  if(length(data[[1]])==1) compress <- FALSE
-  if(compress){
+  if (length(data[[1]]) == 1) compress <- FALSE
+  if (compress){
     ddd <- fast.table(data)
     data <- ddd$data
     weight <- ddd$weight
     index <- ddd$index
-  }
-  else{
+  } else{
     p <- length(data[[1]])
     weight <- rep(1, p)
     index <- 1:p
@@ -57,15 +54,12 @@ phyDat.DNA <- function (data)
   att <- attributes(data)
 
   data <- lapply(data, match, ac)
-  #  data <- match(unlist(data), ac)
-  #  attr(data, "dim") <- d
-  #  data <- as.data.frame(data, stringsAsFactors=FALSE)
   attributes(data) <- att
   row.names(data) <- as.character(1:p)
   data <- stats::na.omit(data)
   rn <- as.numeric(rownames(data))
 
-  if(!is.null(attr(data, "na.action"))) {
+  if (!is.null(attr(data, "na.action"))) {
     warning("Found unknown characters. Deleted sites with with unknown states.")
   }
 

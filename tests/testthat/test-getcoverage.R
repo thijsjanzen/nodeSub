@@ -34,8 +34,3 @@ test_that("sim_dual_linked", {
   sequences <- sim_dual_linked(phy, Q = Q_JC)
   testthat::expect_true(class(sequences) == "phyDat")
 })
-
-
-
-
-

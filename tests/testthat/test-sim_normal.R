@@ -6,12 +6,12 @@ test_that("sim_normal", {
   seq_phangorn <- phangorn::simSeq(x = phy, l = 10000, rate = 0.01)
   dist_phangorn <- phangorn::dist.ml(seq_phangorn)
 
-  seq_nodeSub <- sim_normal(x = phy, l = 10000,  rate = 0.01)
-  dist_nodeSub <- phangorn::dist.ml(seq_nodeSub)
+  seq_node_sub <- sim_normal(x = phy, l = 10000,  rate = 0.01)
+  dist_node_sub <- phangorn::dist.ml(seq_node_sub)
 
-  testthat::expect_equal(dist_phangorn[1], dist_nodeSub[1], tolerance = 0.05)
-  testthat::expect_equal(dist_phangorn[2], dist_nodeSub[2], tolerance = 0.05)
-  testthat::expect_equal(dist_phangorn[3], dist_nodeSub[3], tolerance = 0.05)
+  testthat::expect_equal(dist_phangorn[1], dist_node_sub[1], tolerance = 0.05)
+  testthat::expect_equal(dist_phangorn[2], dist_node_sub[2], tolerance = 0.05)
+  testthat::expect_equal(dist_phangorn[3], dist_node_sub[3], tolerance = 0.05)
 })
 
 test_that("JC", {
@@ -22,13 +22,10 @@ test_that("JC", {
   seq_phangorn <- phangorn::simSeq(x = phy, Q = Q_JC, l = 10000, rate = 0.01)
   dist_phangorn <- phangorn::dist.ml(seq_phangorn)
 
-  seq_nodeSub <- sim_normal(x = phy, Q = Q_JC, l = 10000,  rate = 0.01)
-  dist_nodeSub <- phangorn::dist.ml(seq_nodeSub)
+  seq_node_sub <- sim_normal(x = phy, Q = Q_JC, l = 10000, rate = 0.01)
+  dist_node_sub <- phangorn::dist.ml(seq_node_sub)
 
-  testthat::expect_equal(dist_phangorn[1], dist_nodeSub[1], tolerance = 0.05)
-  testthat::expect_equal(dist_phangorn[2], dist_nodeSub[2], tolerance = 0.05)
-  testthat::expect_equal(dist_phangorn[3], dist_nodeSub[3], tolerance = 0.05)
+  testthat::expect_equal(dist_phangorn[1], dist_node_sub[1], tolerance = 0.05)
+  testthat::expect_equal(dist_phangorn[2], dist_node_sub[2], tolerance = 0.05)
+  testthat::expect_equal(dist_phangorn[3], dist_node_sub[3], tolerance = 0.05)
 })
-
-
-
