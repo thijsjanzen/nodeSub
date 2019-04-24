@@ -28,11 +28,12 @@ draw_bases <- function(focal_base, trans_matrix) {
 }
 
 #' @keywords internal
-make_transition_matrix <- function(mu) {
+make_transition_matrix <- function(mut_single,
+                                   mut_double) {
   output <- matrix(NA, nrow = 4, ncol = 10)
 
-  one_sub <- mu * (1 - mu)
-  two_sub <- (mu^2)
+  one_sub <- mut_single
+  two_sub <- mut_double
   no_sub <- NA
 
   order_events <- c("aa", "tt", "cc", "gg",
@@ -65,7 +66,7 @@ make_transition_matrix <- function(mu) {
     }
     output[j, ] <- to_add
   }
-  if(mu != 0) output <- output / mu
+
   for(i in 1:4) {
     output[i, i] <-  - sum(output[i,], na.rm = T)
   }
@@ -95,7 +96,8 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
 #' @param phy tree for which to simulate sequences
 #' @param Q substitution matrix along the branches, default = JC
 #' @param rate mutation rate , default = 1
-#' @param node_mut_rate mutation rate on the node, default = 1e-9
+#' @param node_mut_rate_single mutation rate on the node, default = 1e-9
+#' @param node_mut_rate_double mutation rate on the node, default = 1e-9
 #' @param l number of base pairs to simulate
 #' @param bf base frequencies, default = c(0.25, 0.25, 0.25, 0.25)
 #' @param rootseq sequence at the root, simulated by default
@@ -105,7 +107,8 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
 sim_dual_linked <- function(phy,
                             Q = NULL,
                             rate = 1,
-                            node_mut_rate = 1e-9,
+                            node_mut_rate_single = 1e-9,
+                            node_mut_rate_double = 1e-9,
                             l = 1000,
                             bf = NULL,
                             rootseq = NULL,
@@ -142,9 +145,11 @@ sim_dual_linked <- function(phy,
   # the first parent should be the root, otherwise the algorithm doesn't work
   testit::assert(parents[1] == root)
 
-  testit::assert(node_mut_rate >= 0) # if mu < 0, the model is undefined
+  testit::assert(node_mut_rate_single >= 0) # if mu < 0, the model is undefined
+  testit::assert(node_mut_rate_double >= 0) # if mu < 0, the model is undefined
 
-  node_transition_matrix <- make_transition_matrix(node_mut_rate)
+  node_transition_matrix <- make_transition_matrix(node_mut_rate_single,
+                                                   node_mut_rate_double)
   eigen_obj <- eigen(node_transition_matrix, FALSE)
   eigen_obj$inv <- solve.default(eigen_obj$vec)
 
@@ -155,7 +160,7 @@ sim_dual_linked <- function(phy,
     # first we do substitutions due to the node model:
     p_matrix <- get_p_matrix(node_time,
                              eig = eigen_obj,
-                             rate = node_mut_rate)
+                             rate = rate)
 
     result <- get_mutated_sequences(res[, focal_parent],
                                       p_matrix)

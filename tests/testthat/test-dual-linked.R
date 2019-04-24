@@ -18,7 +18,6 @@ test_that("zeros", {
 
   sequences <- sim_dual_linked(phy,
                                rate = 0,
-                               node_mut_rate = 0,
                                node_time = 0)
   testthat::expect_true(class(sequences) == "phyDat")
 
