@@ -1,47 +1,3 @@
-
-#' @keywords internal
-make_transition_matrix <- function(mu) {
-  output <- matrix(NA, nrow = 4, ncol = 10)
-
-  one_sub <- mu * (1 - mu)
-  two_sub <- (mu^2)
-  no_sub <- (1 - mu)^2
-
-  order_events <- c("aa", "tt", "cc", "gg",
-                    "ac", "at", "ag",
-                    "tc", "tg",
-                    "cg")
-
-  bases <- c("a", "t", "c", "g")
-  for (j in 1:4) {
-    focal <- bases[j]
-    to_add <- c()
-    for (i in seq_along(order_events)) {
-      focal_target <- order_events[i]
-      matching_bases <- stringr::str_count(focal_target, focal)
-      if (matching_bases == 2) {
-        to_add[i] <- no_sub
-      }
-      if (matching_bases == 1) {
-        to_add[i] <- one_sub
-      }
-      if (matching_bases == 0) {
-        a <- substr(focal_target, 1, 1)
-        b <- substr(focal_target, 2, 2)
-        if (a != b) {
-          to_add[i] <- two_sub
-        } else {
-          to_add[i] <- 0
-        }
-      }
-    }
-    to_add <- to_add / sum(to_add)
-    output[j, ] <- to_add
-  }
-
-  return(output)
-}
-
 #' @keywords internal
 get_index <- function(local_matrix, parent, offspring) {
   candidate_indices <- which(local_matrix[, 1] == parent)
@@ -71,6 +27,54 @@ draw_bases <- function(focal_base, trans_matrix) {
   return(output_table[output_bases, ])
 }
 
+#' @keywords internal
+make_transition_matrix <- function(mu) {
+  output <- matrix(NA, nrow = 4, ncol = 10)
+
+  one_sub <- mu * (1 - mu)
+  two_sub <- (mu^2)
+  no_sub <- NA
+
+  order_events <- c("aa", "tt", "cc", "gg",
+                    "ac", "at", "ag",
+                    "tc", "tg",
+                    "cg")
+
+  bases <- c("a", "t", "c", "g")
+  for (j in 1:4) {
+    focal <- bases[j]
+    to_add <- c()
+    for (i in seq_along(order_events)) {
+      focal_target <- order_events[i]
+      matching_bases <- stringr::str_count(focal_target, focal)
+      if (matching_bases == 2) {
+        to_add[i] <- no_sub
+      }
+      if (matching_bases == 1) {
+        to_add[i] <- one_sub
+      }
+      if (matching_bases == 0) {
+        a <- substr(focal_target, 1, 1)
+        b <- substr(focal_target, 2, 2)
+        if (a != b) {
+          to_add[i] <- two_sub
+        } else {
+          to_add[i] <- 0
+        }
+      }
+    }
+    output[j, ] <- to_add
+  }
+  if(mu != 0) output <- output / mu
+  for(i in 1:4) {
+    output[i, i] <-  - sum(output[i,], na.rm = T)
+  }
+  for(j in 1:6) {
+    output <- rbind(output, rep(0, length(output[1,])))
+  }
+
+  return(output)
+}
 
 #' @keywords internal
 get_mutated_sequences <- function(parent_seq, trans_matrix) {
@@ -86,6 +90,7 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
   return(list(child1_seq, child2_seq))
 }
 
+
 #' simulate a sequence assuming conditional substitutions on the node
 #' @param phy tree for which to simulate sequences
 #' @param Q substitution matrix along the branches, default = JC
@@ -97,18 +102,18 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
 #' @return phyDat object
 #' @export
 sim_dual_linked <- function(phy,
-                                 Q = NULL,
-                                 rate = 1,
-                                 mu = 1e-9,
-                                 l = 1000,
-                                 bf = NULL,
-                                 rootseq = NULL) {
+                            Q = NULL,
+                            rate = 1,
+                            node_mut_rate = 1e-9,
+                            l = 1000,
+                            bf = NULL,
+                            rootseq = NULL,
+                            node_time = 0.01) {
   levels <- c("a", "c", "g", "t")
   lbf <- length(levels)
 
   # default is c(0.25, 0.25, 0.25, 0.25)
   if (is.null(bf)) bf <- rep(1 / lbf, lbf)
-
   if (is.null(Q)) Q <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
 
   # only extract the 6 important rates.
@@ -136,16 +141,23 @@ sim_dual_linked <- function(phy,
   # the first parent should be the root, otherwise the algorithm doesn't work
   testit::assert(parents[1] == root)
 
-  testit::assert(mu >= 0) # if mu < 0, the model is undefined
-  node_transition_matrix <-  make_transition_matrix(mu)
+  testit::assert(node_mut_rate >= 0) # if mu < 0, the model is undefined
+
+  node_transition_matrix <- make_transition_matrix(node_mut_rate)
+  eigen_obj <- eigen(node_transition_matrix, FALSE)
+  eigen_obj$inv <- solve.default(eigen_obj$vec)
 
   for (focal_parent in parents) {
     # given parent alignment
     # generate two children aligments
     offspring <- edge[which(parent == focal_parent), 2]
     # first we do substitutions due to the node model:
+    p_matrix <- get_p_matrix(node_time,
+                             eig = eigen_obj,
+                             rate = node_mut_rate)
+
     result <- get_mutated_sequences(res[, focal_parent],
-                                    node_transition_matrix)
+                                      p_matrix)
 
     indices <- which(parent == focal_parent)
     for (i in 1:2) {

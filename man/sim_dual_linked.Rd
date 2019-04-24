@@ -4,8 +4,8 @@
 \alias{sim_dual_linked}
 \title{simulate a sequence assuming conditional substitutions on the node}
 \usage{
-sim_dual_linked(phy, Q = NULL, rate = 1, mu = 1e-09, l = 1000,
-  bf = NULL, rootseq = NULL)
+sim_dual_linked(phy, Q = NULL, rate = 1, node_mut_rate = 1e-09,
+  l = 1000, bf = NULL, rootseq = NULL, node_time)
 }
 \arguments{
 \item{phy}{tree for which to simulate sequences}
@@ -14,13 +14,13 @@ sim_dual_linked(phy, Q = NULL, rate = 1, mu = 1e-09, l = 1000,
 
 \item{rate}{mutation rate , default = 1}
 
-\item{mu}{mutation rate on the node, default = 1e-9}
-
 \item{l}{number of base pairs to simulate}
 
 \item{bf}{base frequencies, default = c(0.25, 0.25, 0.25, 0.25)}
 
 \item{rootseq}{sequence at the root, simulated by default}
+
+\item{mu}{mutation rate on the node, default = 1e-9}
 }
 \value{
 phyDat object

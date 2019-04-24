@@ -16,7 +16,10 @@ test_that("sim_dual_linked", {
 test_that("zeros", {
   phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
 
-  sequences <- sim_dual_linked(phy, rate = 0, mu = 0)
+  sequences <- sim_dual_linked(phy,
+                               rate = 0,
+                               node_mut_rate = 0,
+                               node_time = 0)
   testthat::expect_true(class(sequences) == "phyDat")
 
   dist_node_sub <- phangorn::dist.ml(sequences)
