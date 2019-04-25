@@ -15,3 +15,7 @@ src/getP.o
 *.log
 *.trees
 *.o
+*.o
+*.fasta
+*.pdf
+*.o
