@@ -7,10 +7,9 @@ test_that("infer_phylogeny", {
 
   all_trees <- infer_phylogeny(seq_node_sub,
                                treatment_name = "test",
-                               burnin = 0.5,
+                               burnin = 0.1,
                                chain_length = 1e6)
   mcc_tree <- all_trees$mcc_tree
-
 
   testthat::expect_lt(nLTT::nltt_diff(mcc_tree, phy), 0.01)
   testthat::expect_equal(phangorn::RF.dist(mcc_tree, phy), 0)
