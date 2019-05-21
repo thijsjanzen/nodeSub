@@ -21,7 +21,7 @@ create_equal_alignment <- function(input_tree,
   output_alignment <- c()
 
   find_ll <- function(params) {
-    vy <- sim_regular(input_tree, params)
+    vy <- alt_model(input_tree, params)
     obs_dist <- calc_dist(vy)
     fit <- sum(abs(sort(obs_dist) - sort(emp_dist)))
 
@@ -32,7 +32,7 @@ create_equal_alignment <- function(input_tree,
     return(fit)
   }
 
-  vv1 <- stats::optimize(f = find_ll, interval = c(0, max_rate))
+  stats::optimize(f = find_ll, interval = c(0, max_rate))
 
   best_fit <- which.min(local_env$fit)
   output_alignment <- local_env$output_alignment[[best_fit]]

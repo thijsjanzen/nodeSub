@@ -20,10 +20,10 @@ calc_dist <- function(alignment) {
 
 #' find a matching substitution rate
 #' @param phy tree for which to simulate sequences
-#' @param sim_nodesub function to simulate an alignment under a node substitution model
+#' @param alignment alignment of alternative model
 #' @param sim_regular function to simulate an alignment under a normal model, taking two arguments: phy and rate
-#' @param num_sim_nodesub how many alignments to compare with should be generated?
-#' @param num_sim_regular how many alignments to compare with a single nodesub alignment should be generated?
+#' @param replicates number of replicate runs for which to estimate
+#' @param max_rate maximum rate to be considered in optimization
 #' @return rate
 #' @export
 find_normal_branching_rate <- function(phy,

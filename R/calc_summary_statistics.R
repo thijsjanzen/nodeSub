@@ -32,6 +32,7 @@ calc_all_stats <- function(focal_tree) {
 #' calculate summary statistics compared with a reference tree
 #' @param trees a phyloList object containing multiple trees
 #' @param true_tree a phylo object containing the reference tree
+#' @param verbose verbose output if true (e.g. progressbars)
 #' @return list with two tibbles 1) containing the summary statistics of all trees and 2) containing the difference with the true tree
 #' @export
 calc_sum_stats <- function(trees,
@@ -45,7 +46,7 @@ calc_sum_stats <- function(trees,
 
   all_sum_stats <- matrix(NA, nrow = length(trees), ncol = 4)
   all_differences <- matrix(NA, nrow = length(trees), ncol = 5)
-  pb <- txtProgressBar(max = length(trees), style = 3)
+  pb <- utils::txtProgressBar(max = length(trees), style = 3)
   for(i in 1:length(sum_stats_trees)) {
     # this for loop could be optimized later.
     to_add <- sum_stats_trees[[i]]
@@ -57,7 +58,7 @@ calc_sum_stats <- function(trees,
 
     all_differences[i, ] <- local_diff
     all_sum_stats[i, ] <- to_add
-    if(verbose) setTxtProgressBar(pb, i)
+    if(verbose) utils::setTxtProgressBar(pb, i)
   }
   colnames(all_sum_stats) <- c("beta","gamma","tree_height","mean_branch_length")
   colnames(all_differences) <- c("beta","gamma","tree_height","mean_branch_length", "nLTT")

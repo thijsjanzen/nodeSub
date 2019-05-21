@@ -10,13 +10,13 @@ find_normal_branching_rate(phy, alignment, sim_regular, replicates = 1,
 \arguments{
 \item{phy}{tree for which to simulate sequences}
 
+\item{alignment}{alignment of alternative model}
+
 \item{sim_regular}{function to simulate an alignment under a normal model, taking two arguments: phy and rate}
 
-\item{sim_nodesub}{function to simulate an alignment under a node substitution model}
+\item{replicates}{number of replicate runs for which to estimate}
 
-\item{num_sim_nodesub}{how many alignments to compare with should be generated?}
-
-\item{num_sim_regular}{how many alignments to compare with a single nodesub alignment should be generated?}
+\item{max_rate}{maximum rate to be considered in optimization}
 }
 \value{
 rate

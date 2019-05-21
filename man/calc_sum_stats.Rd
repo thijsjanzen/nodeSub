@@ -10,6 +10,8 @@ calc_sum_stats(trees, true_tree, verbose = FALSE)
 \item{trees}{a phyloList object containing multiple trees}
 
 \item{true_tree}{a phylo object containing the reference tree}
+
+\item{verbose}{verbose output if true (e.g. progressbars)}
 }
 \value{
 list with two tibbles 1) containing the summary statistics of all trees and 2) containing the difference with the true tree

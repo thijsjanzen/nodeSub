@@ -25,4 +25,6 @@ Imports: Rcpp,
          ape,
          nLTT,
          TESS,
-         apTreeshape
+         apTreeshape,
+         tibble,
+         pbapply
