@@ -85,5 +85,10 @@ sim_dual_independent <- function(phy,
   colnames(res) <- label
   res <- res[, phy$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA( as.data.frame(res, stringsAsFactors = FALSE))
+
+  #output = list("alignment" = alignment_phydat,
+  #              "root_seq" = rootseq,
+  #              "raw" = res)
+  #return(output)
   return(alignment_phydat)
 }

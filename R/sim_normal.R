@@ -74,5 +74,11 @@ sim_normal <- function(x,
   label <- c(x$tip.label, as.character((k + 1):nNodes))
   colnames(res) <- label
   res <- res[, x$tip.label, drop = FALSE]
-  return(phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE)))
+  alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
+
+  #output = list("alignment" = alignment_phydat,
+  #              "root_seq" = rootseq,
+  #              "raw" = res)
+  #return(output)
+  return(alignment_phydat)
 }
