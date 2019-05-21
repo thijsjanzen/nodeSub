@@ -1,6 +1,10 @@
 language: r
 cache: packages
 
+os: 
+  - osx
+  - linux
+
 addons:
   apt:
     update: true
@@ -25,6 +29,7 @@ r_github_packages:
   - jimhester/lintr
   - jimhester/covr
   - MangoTheCat/goodpractice
+  - richelbilderbeek/nLTT
   
   
 before_install:
