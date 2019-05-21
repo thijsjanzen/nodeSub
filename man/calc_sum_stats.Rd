@@ -4,7 +4,7 @@
 \alias{calc_sum_stats}
 \title{calculate summary statistics compared with a reference tree}
 \usage{
-calc_sum_stats(trees, true_tree)
+calc_sum_stats(trees, true_tree, verbose = FALSE)
 }
 \arguments{
 \item{trees}{a phyloList object containing multiple trees}

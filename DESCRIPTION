@@ -23,4 +23,6 @@ Imports: Rcpp,
          babette,
          tracerer,
          ape,
-         nLTT
+         nLTT,
+         TESS,
+         apTreeshape
