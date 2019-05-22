@@ -32,9 +32,9 @@ create_equal_alignment <- function(input_tree,
       factor <- num_emp_subs / avg_sub
      # if(num_emp_subs < avg_sub) change <- 0.95
       adjusted_rate <- adjusted_rate * factor
-      cnt <- 1
+      cnt <- 0
     }
-    cat(cnt, adjusted_rate, proposed_subs, num_emp_subs, "\n")
+    cat(cnt, adjusted_rate, proposed_subs, num_emp_subs, factor,"\n")
     cnt <- cnt + 1
   }
   return(list("alignment" = proposed_alignment,
