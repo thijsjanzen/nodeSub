@@ -52,7 +52,7 @@ calc_sum_stats <- function(trees,
     to_add <- sum_stats_trees[[i]]
     local_diff <- abs(to_add - sum_stats_true_tree)
     local_nltt <- nLTT::nltt_diff_exact(true_tree, trees[[i]])
-  #  local_rf <- phangorn::RF.dist(true_tree, trees[[i]])
+    #local_rf <- phangorn::RF.dist(true_tree, trees[[i]])
    # local_diff <- c(local_diff, local_nltt, local_rf)
     local_diff <- c(local_diff, local_nltt)
 
