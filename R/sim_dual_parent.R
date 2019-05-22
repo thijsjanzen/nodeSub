@@ -96,8 +96,9 @@ sim_dual_parent <- function(phy,
   res <- res[, phy$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
-  #output = list("alignment" = alignment_phydat,
-  #              "root_seq" = rootseq,
+  output = list("alignment" = alignment_phydat,
+                "root_seq" = rootseq)
+  return(output)
   #              "raw" = res)
-  return(alignment_phydat)
+  #return(alignment_phydat)
 }

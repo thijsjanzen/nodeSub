@@ -5,7 +5,7 @@ test_that("infer_phylogeny", {
 
   seq_node_sub <- sim_normal(x = phy, l = 10000,  rate = 0.1)
 
-  all_trees <- infer_phylogeny(seq_node_sub,
+  all_trees <- infer_phylogeny(seq_node_sub$alignment,
                                treatment_name = "test",
                                burnin = 0.1,
                                chain_length = 1e6)

@@ -38,7 +38,6 @@ sim_normal <- function(x,
 
   lbf <- length(levels)
 
-
   if (is.null(bf)) bf <- rep(1 / lbf, lbf)
   if (is.null(Q)) {
     Q <- rep(1, lbf * (lbf - 1) / 2)
@@ -76,9 +75,9 @@ sim_normal <- function(x,
   res <- res[, x$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
-  #output = list("alignment" = alignment_phydat,
-  #              "root_seq" = rootseq,
+  output = list("alignment" = alignment_phydat,
+                "root_seq" = rootseq)
   #              "raw" = res)
-  #return(output)
-  return(alignment_phydat)
+ return(output)
+ # return(alignment_phydat)
 }

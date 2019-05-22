@@ -2,42 +2,25 @@
 #' @param input_tree phylogeny for which to generate alignment
 #' @param focal_alignment alignment to match information content with
 #' @param alt_model alternative substitution model
-#' @param max_rate maximum rate for inference
+#' @param root_sequence root sequence
 #' @return list with alignment and inferred rate
 #' @export
 create_equal_alignment <- function(input_tree,
                                    focal_alignment,
-                                   alt_model,
-                                   max_rate = 1) {
+                                   root_sequence,
+                                   alt_model) {
 
-  emp_dist <- calc_dist(focal_alignment)
+  num_emp_subs <- sum(calc_dist(focal_alignment, root_sequence))
 
-  local_env <- new.env()
-  local_env$output_alignment  <- list()
-  local_env$cnt <- 0
-  local_env$fit <- c()
-  local_env$rate <- c()
+  t_mrca <- calc_tree_height(input_tree)
+  adjusted_rate <- num_emp_subs / (length(root_sequence) * t_mrca)
 
-  output_alignment <- c()
-
-  find_ll <- function(params) {
-    vy <- alt_model(input_tree, params)
-    obs_dist <- calc_dist(vy)
-    fit <- sum(abs(sort(obs_dist) - sort(emp_dist)))
-
-    local_env$cnt <- local_env$cnt + 1
-    local_env$output_alignment[[ local_env$cnt ]] <- vy
-    local_env$fit[  local_env$cnt ] <- fit
-    local_env$rate[ local_env$cnt ] <- params[[1]]
-    return(fit)
+  proposed_alignment <- alt_model(input_tree, adjusted_rate, root_sequence)$alignment
+  proposed_subs <- sum(calc_dist(proposed_alignment, root_sequence))
+  while(proposed_subs != num_emp_subs) {
+    proposed_alignment <- alt_model(input_tree, adjusted_rate, root_sequence)$alignment
+    proposed_subs <- sum(calc_dist(proposed_alignment, root_sequence))
   }
-
-  stats::optimize(f = find_ll, interval = c(0, max_rate))
-
-  best_fit <- which.min(local_env$fit)
-  output_alignment <- local_env$output_alignment[[best_fit]]
-  best_rate <- local_env$rate[best_fit]
-
-  return(list("alignment" = output_alignment,
-              "rate" = best_rate))
+  return(list("alignment" = proposed_alignment,
+              "rate" = adjusted_rate))
 }

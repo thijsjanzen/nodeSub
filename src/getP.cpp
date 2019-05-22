@@ -20,7 +20,7 @@ Rcpp::NumericMatrix get_p_m_rcpp(Rcpp::List eig,
   int dim_size = local.ncol();
 
   Rcpp::NumericMatrix P(dim_size, dim_size);
-  if(branch_length == 0 || rate == 0) {
+  if(branch_length == 0 || rate <= 0) {
       for(int i = 0; i < dim_size; ++i) {
         for(int j = 0; j < dim_size; ++j) {
           if(i != j) P(i,j) = 0;

@@ -7,7 +7,7 @@ test_that("sim_normal", {
   dist_phangorn <- phangorn::dist.ml(seq_phangorn)
 
   seq_node_sub <- sim_normal(x = phy, l = 10000,  rate = 0.01)
-  dist_node_sub <- phangorn::dist.ml(seq_node_sub)
+  dist_node_sub <- phangorn::dist.ml(seq_node_sub$alignment)
 
   testthat::expect_equal(dist_phangorn[1], dist_node_sub[1], tolerance = 0.05)
   testthat::expect_equal(dist_phangorn[2], dist_node_sub[2], tolerance = 0.05)
@@ -23,7 +23,7 @@ test_that("JC", {
   dist_phangorn <- phangorn::dist.ml(seq_phangorn)
 
   seq_node_sub <- sim_normal(x = phy, Q = Q_JC, l = 10000, rate = 0.01)
-  dist_node_sub <- phangorn::dist.ml(seq_node_sub)
+  dist_node_sub <- phangorn::dist.ml(seq_node_sub$alignment)
 
   testthat::expect_equal(dist_phangorn[1], dist_node_sub[1], tolerance = 0.05)
   testthat::expect_equal(dist_phangorn[2], dist_node_sub[2], tolerance = 0.05)
@@ -38,7 +38,7 @@ test_that("zero", {
   dist_phangorn <- phangorn::dist.ml(seq_phangorn)
 
   seq_node_sub <- sim_normal(x = phy, l = 10000, rate = 0.0)
-  dist_node_sub <- phangorn::dist.ml(seq_node_sub)
+  dist_node_sub <- phangorn::dist.ml(seq_node_sub$alignment)
 
   testthat::expect_equal(dist_phangorn[1], dist_node_sub[1], tolerance = 0.05)
   testthat::expect_equal(dist_phangorn[2], dist_node_sub[2], tolerance = 0.05)
@@ -50,5 +50,3 @@ test_that("zero", {
   testthat::expect_equal(min(dist_node_sub), max(dist_node_sub))
   testthat::expect_equal(min(dist_node_sub), 0)
 })
-
-
