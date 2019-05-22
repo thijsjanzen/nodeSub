@@ -26,7 +26,7 @@ create_equal_alignment <- function(input_tree,
     proposed_subs <- sum(calc_dist(proposed_alignment, root_sequence))
     rolling_avg[cnt] <- proposed_subs
    # cat(
-
+    factor <- 1
     if(cnt >= 10) {
       avg_sub <- mean(rolling_avg, na.rm=T)
       factor <- num_emp_subs / avg_sub
