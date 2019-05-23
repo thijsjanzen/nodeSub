@@ -10,7 +10,9 @@ infer_phylogeny <- function(alignment,
                             treatment_name,
                             burnin,
                             chain_length,
-                            working_dir)  {
+                            working_dir = NULL)  {
+
+  if(is.null(working_dir)) working_dir <- getwd()
 
   temp_file_name <- "temp.fasta"
   phangorn::write.phyDat(alignment, file = temp_file_name, format = "fasta")
