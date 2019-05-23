@@ -22,7 +22,9 @@ create_equal_alignment <- function(input_tree,
   rolling_avg <- rep(NA, 9)
   cnt <- 1
   while(proposed_subs != num_emp_subs) {
-    proposed_alignment <- alt_model(input_tree, adjusted_rate, root_sequence)$alignment
+    proposed_alignment <- alt_model(phy = input_tree,
+                                    rate = adjusted_rate,
+                                    rootseq = root_sequence)$alignment
     proposed_subs <- sum(calc_dist(proposed_alignment, root_sequence))
     rolling_avg[cnt] <- proposed_subs
    # cat(

@@ -46,7 +46,7 @@ calc_sum_stats <- function(trees,
 
   all_sum_stats <- matrix(NA, nrow = length(trees), ncol = 4)
   all_differences <- matrix(NA, nrow = length(trees), ncol = 5)
-  pb <- utils::txtProgressBar(max = length(trees), style = 3)
+  if(verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)
   for(i in 1:length(sum_stats_trees)) {
     # this for loop could be optimized later.
     to_add <- sum_stats_trees[[i]]

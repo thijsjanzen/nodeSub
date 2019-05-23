@@ -4,7 +4,7 @@
 \alias{calc_dist}
 \title{function to calculate the number of substitutions along a tree}
 \usage{
-calc_dist(alignment_phydat, root_sequence)
+calc_dist(alignment_phydat, root_sequence = NULL)
 }
 \arguments{
 \item{alignment_phydat}{alignment object}

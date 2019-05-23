@@ -3,7 +3,13 @@
 #' @param root_sequence root sequence
 #' @export
 calc_dist <- function(alignment_phydat,
-                      root_sequence) {
+                      root_sequence = NULL) {
+
+  if(is.null(root_sequence)) {
+    stop("can not calculate distance from root sequence without root sequence")
+  }
+
+  testit::assert(class(alignment_phydat) == "phyDat")
 
   alignment_rawer <- phangorn::phyDat2alignment(alignment_phydat)
 

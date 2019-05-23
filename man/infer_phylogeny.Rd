@@ -5,7 +5,7 @@
 \title{infer the time calibrated phylogeny associated with the}
 \usage{
 infer_phylogeny(alignment, treatment_name, burnin, chain_length,
-  working_dir)
+  working_dir = NULL)
 }
 \arguments{
 \item{alignment}{Phydat object containing the focal alignment}
