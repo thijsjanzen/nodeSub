@@ -4,7 +4,8 @@
 \alias{infer_phylogeny}
 \title{infer the time calibrated phylogeny associated with the}
 \usage{
-infer_phylogeny(alignment, treatment_name, burnin, chain_length)
+infer_phylogeny(alignment, treatment_name, burnin, chain_length,
+  working_dir)
 }
 \arguments{
 \item{alignment}{Phydat object containing the focal alignment}
@@ -14,6 +15,8 @@ infer_phylogeny(alignment, treatment_name, burnin, chain_length)
 \item{burnin}{burnin of posterior distribution}
 
 \item{chain_length}{length of the MCMC chain}
+
+\item{working_dir}{beast2 working dir}
 }
 \value{
 list with all trees, and the consensus tree

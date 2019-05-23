@@ -3,12 +3,14 @@
 #' @param treatment_name string to be appended to BEAST files
 #' @param burnin burnin of posterior distribution
 #' @param chain_length length of the MCMC chain
+#' @param working_dir beast2 working dir
 #' @return list with all trees, and the consensus tree
 #' @export
 infer_phylogeny <- function(alignment,
                             treatment_name,
                             burnin,
-                            chain_length)  {
+                            chain_length,
+                            working_dir)  {
 
   temp_file_name <- "temp.fasta"
   phangorn::write.phyDat(alignment, file = temp_file_name, format = "fasta")
@@ -21,6 +23,7 @@ infer_phylogeny <- function(alignment,
     ),
     beast2_options = beastier::create_beast2_options(
       overwrite = TRUE,
+      beast2_working_dir = working_dir,
       output_trees_filenames = paste0(treatment_name, ".trees"),
       output_log_filename = paste0(treatment_name, ".log")
     )
