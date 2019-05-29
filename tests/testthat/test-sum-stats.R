@@ -8,8 +8,7 @@ test_that("calc_sum_stats", {
 
   all_trees <- infer_phylogeny(seq_node_sub$alignment,
                                treatment_name = "test",
-                               burnin = 0.1,
-                               chain_length = 1e4)
+                               burnin = 0.1)
 
   stats <- nodeSub::calc_sum_stats(all_trees$all_trees,
                                    phy, verbose = FALSE)

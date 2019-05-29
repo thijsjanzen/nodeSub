@@ -7,8 +7,7 @@ test_that("infer_phylogeny", {
 
   all_trees <- infer_phylogeny(seq_node_sub$alignment,
                                treatment_name = "test",
-                               burnin = 0.1,
-                               chain_length = 1e6)
+                               burnin = 0.1)
   mcc_tree <- all_trees$mcc_tree
 
   testthat::expect_lt(nLTT::nltt_diff(mcc_tree, phy), 0.01)
