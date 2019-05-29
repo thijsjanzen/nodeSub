@@ -27,10 +27,7 @@ infer_phylogeny <- function(alignment,
 
   posterior <- babette::bbt_run_from_model(
     temp_file_name,
-    inference_model = beautier::create_inference_model(
-      mcmc = beautier::create_mcmc(chain_length = chain_length,
-                                   store_every = 5000)
-    ),
+    inference_model,
     beast2_options = beastier::create_beast2_options(
       overwrite = TRUE,
       beast2_working_dir = working_dir,
