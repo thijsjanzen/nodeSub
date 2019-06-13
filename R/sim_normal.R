@@ -69,10 +69,12 @@ sim_normal <- function(x,
       res[ind, to] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
     }
   }
+  phy_no_extinct <- geiger::drop.extinct(x)
+
   k <- length(x$tip.label)
   label <- c(x$tip.label, as.character((k + 1):nNodes))
   colnames(res) <- label
-  res <- res[, x$tip.label, drop = FALSE]
+  res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
   output = list("alignment" = alignment_phydat,
