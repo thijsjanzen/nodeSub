@@ -1,7 +1,7 @@
 Package: nodeSub
 Type: Package
 Title: Simulate Sequences
-Version: 0.1.0
+Version: 0.2.0
 Author: Thijs Janzen
 Maintainer: Thijs Janzen <thijsjanzen@gmail.com>
 Description: Simulate DNA sequences under different models.
@@ -27,4 +27,5 @@ Imports: Rcpp,
          TESS,
          apTreeshape,
          tibble,
-         pbapply
+         pbapply,
+         geiger
