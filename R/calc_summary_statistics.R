@@ -41,27 +41,27 @@ calc_sum_stats <- function(trees,
 
   sum_stats_true_tree <- calc_all_stats(true_tree)
   sum_stats_trees <- list()
-  if(!verbose) sum_stats_trees <- lapply(trees,calc_all_stats)
-  if(verbose) sum_stats_trees <-  pbapply::pblapply(trees,calc_all_stats)
+  if (!verbose) sum_stats_trees <- lapply(trees, calc_all_stats)
+  if (verbose) sum_stats_trees <-  pbapply::pblapply(trees, calc_all_stats)
 
   all_sum_stats <- matrix(NA, nrow = length(trees), ncol = 4)
   all_differences <- matrix(NA, nrow = length(trees), ncol = 5)
-  if(verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)
-  for(i in 1:length(sum_stats_trees)) {
+  if (verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)
+  for (i in 1:length(sum_stats_trees)) {
     # this for loop could be optimized later.
     to_add <- sum_stats_trees[[i]]
     local_diff <- abs(to_add - sum_stats_true_tree)
     local_nltt <- nLTT::nltt_diff_exact(true_tree, trees[[i]])
-    #local_rf <- phangorn::RF.dist(true_tree, trees[[i]])
-   # local_diff <- c(local_diff, local_nltt, local_rf)
     local_diff <- c(local_diff, local_nltt)
 
     all_differences[i, ] <- local_diff
     all_sum_stats[i, ] <- to_add
-    if(verbose) utils::setTxtProgressBar(pb, i)
+    if (verbose) utils::setTxtProgressBar(pb, i)
   }
-  colnames(all_sum_stats) <- c("beta","gamma","tree_height","mean_branch_length")
-  colnames(all_differences) <- c("beta","gamma","tree_height","mean_branch_length", "nLTT")
+  colnames(all_sum_stats) <- c("beta", "gamma", "tree_height",
+                               "mean_branch_length")
+  colnames(all_differences) <- c("beta", "gamma", "tree_height",
+                                 "mean_branch_length", "nLTT")
 
   all_sum_stats <- tibble::as_tibble(all_sum_stats)
   all_differences <- tibble::as_tibble(all_differences)

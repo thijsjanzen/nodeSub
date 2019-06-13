@@ -2,6 +2,7 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 get_p_m_rcpp <- function(eig, branch_length, rate) {
-    .Call('_nodeSub_get_p_m_rcpp', PACKAGE = 'nodeSub', eig, branch_length, rate)
+    .Call('_nodeSub_get_p_m_rcpp', PACKAGE = 'nodeSub', eig,
+          branch_length, rate)
 }
 

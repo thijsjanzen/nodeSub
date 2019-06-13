@@ -8,17 +8,17 @@
 #' @export
 infer_phylogeny <- function(alignment,
                             treatment_name,
-                            inference_model = beautier::create_inference_model(
-                              site_model = beautier::create_jc69_site_model(),
-                              clock_model = beautier::create_strict_clock_model(),
-                              tree_prior = beautier::create_yule_tree_prior(),
-                              mcmc = beautier::create_mcmc(chain_length = 1e6,
-                                                           store_every = 5000)
-                            ),
+                        inference_model = beautier::create_inference_model(
+                          site_model = beautier::create_jc69_site_model(),
+                          clock_model = beautier::create_strict_clock_model(),
+                          tree_prior = beautier::create_yule_tree_prior(),
+                          mcmc = beautier::create_mcmc(chain_length = 1e6,
+                                                       store_every = 5000)
+                        ),
                             burnin,
                             working_dir = NULL)  {
 
-  if(is.null(working_dir)) working_dir <- getwd()
+  if (is.null(working_dir)) working_dir <- getwd()
 
   temp_file_name <- "temp.fasta"
   phangorn::write.phyDat(alignment, file = temp_file_name, format = "fasta")

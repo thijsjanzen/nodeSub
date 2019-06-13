@@ -1,7 +1,7 @@
 #' @keywords internal
 get_index <- function(local_matrix, parent, offspring) {
   candidate_indices <- which(local_matrix[, 1] == parent)
-  for(i in candidate_indices) {
+  for (i in candidate_indices) {
     if (local_matrix[i, 2] == offspring) return(i)
   }
   return(-1)
@@ -11,15 +11,15 @@ get_index <- function(local_matrix, parent, offspring) {
 draw_bases <- function(focal_base, trans_matrix) {
   bases <- c("a", "t", "c", "g")
   output_table <- matrix(nrow = 10, ncol = 2)
-  output_table[1,] <- c("a", "a")
-  output_table[2,] <- c("t", "t")
-  output_table[3,] <- c("c", "c")
-  output_table[4,] <- c("g", "g")
-  output_table[5,] <- c("a", "c")
-  output_table[6,] <- c("a", "t")
-  output_table[7,] <- c("a", "g")
-  output_table[8,] <- c("t", "c")
-  output_table[9,] <- c("t", "g")
+  output_table[1, ] <- c("a", "a")
+  output_table[2, ] <- c("t", "t")
+  output_table[3, ] <- c("c", "c")
+  output_table[4, ] <- c("g", "g")
+  output_table[5, ] <- c("a", "c")
+  output_table[6, ] <- c("a", "t")
+  output_table[7, ] <- c("a", "g")
+  output_table[8, ] <- c("t", "c")
+  output_table[9, ] <- c("t", "g")
   output_table[10, ] <- c("c", "g")
 
   focus <- which(focal_base == bases)
@@ -67,11 +67,11 @@ make_transition_matrix <- function(mut_single,
     output[j, ] <- to_add
   }
 
-  for(i in 1:4) {
-    output[i, i] <-  - sum(output[i,], na.rm = T)
+  for (i in 1:4) {
+    output[i, i] <-  - sum(output[i, ], na.rm = T)
   }
-  for(j in 1:6) {
-    output <- rbind(output, rep(0, length(output[1,])))
+  for (j in 1:6) {
+    output <- rbind(output, rep(0, length(output[1, ])))
   }
 
   return(output)
@@ -186,13 +186,11 @@ sim_dual_linked <- function(phy,
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   k <- length(phy$tip.label)
-  label <- c(phy$tip.label, as.character((k + 1):nNodes))
+  label <- c(phy$tip.label, as.character( (k + 1):nNodes))
   colnames(res) <- label
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
-  output = list("alignment" = alignment_phydat,
+  output <- list("alignment" = alignment_phydat,
                 "root_seq" = rootseq)
-  #              "raw" = res)
   return(output)
-  #return(alignment_phydat)
 }
