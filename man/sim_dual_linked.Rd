@@ -24,8 +24,6 @@ sim_dual_linked(phy, Q = NULL, rate = 0.1,
 \item{rootseq}{sequence at the root, simulated by default}
 
 \item{node_time}{time spent at the node}
-
-\item{node_mut_rate_single}{mutation rate on the node, default = 1e-9}
 }
 \value{
 phyDat object

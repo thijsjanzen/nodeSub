@@ -101,6 +101,10 @@ get_p_matrix <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
 #' this function calculates the p matrix within R
 #' this is slower than the C++ implementation
 #' but provides a way to debug
+#' @param eig eigen object
+#' @param branch_length branch length
+#' @param rate substitution rate
+#' @return p matrix
 #' @export
 slow_matrix <- function(eig, branch_length, rate) {
 

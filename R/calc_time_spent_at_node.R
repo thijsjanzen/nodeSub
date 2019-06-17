@@ -2,8 +2,8 @@
 #' in the nodes
 #' @description calculates the required node time
 #' @param phy phylogenetic tree
-#' @param birth_rate the birth rate to generate the phylogenetic tree
-#' @param death_Rate the death rate to generate the phylogenetic tree
+#' @param lambda the birth rate to generate the phylogenetic tree
+#' @param mu the death rate to generate the phylogenetic tree
 #' @param is_birth_death if false, a yule tree is
 #' @param model the used node substitution model
 #' @details if no birth or death rates are provided, birth and death rates are

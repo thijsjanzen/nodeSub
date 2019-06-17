@@ -96,7 +96,6 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
 #' @param phy tree for which to simulate sequences
 #' @param Q substitution matrix along the branches, default = JC
 #' @param rate mutation rate , default = 1
-#' @param node_mut_rate_single mutation rate on the node, default = 1e-9
 #' @param node_mut_rate_double mutation rate on the node, default = 1e-9
 #' @param l number of base pairs to simulate
 #' @param bf base frequencies, default = c(0.25, 0.25, 0.25, 0.25)

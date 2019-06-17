@@ -8,6 +8,16 @@ but provides a way to debug}
 \usage{
 slow_matrix(eig, branch_length, rate)
 }
+\arguments{
+\item{eig}{eigen object}
+
+\item{branch_length}{branch length}
+
+\item{rate}{substitution rate}
+}
+\value{
+p matrix
+}
 \description{
 this function calculates the p matrix within R
 this is slower than the C++ implementation

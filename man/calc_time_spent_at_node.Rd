@@ -11,13 +11,13 @@ calc_time_spent_at_node(phy, node_time = NULL, lambda = NULL,
 \arguments{
 \item{phy}{phylogenetic tree}
 
+\item{lambda}{the birth rate to generate the phylogenetic tree}
+
+\item{mu}{the death rate to generate the phylogenetic tree}
+
 \item{is_birth_death}{if false, a yule tree is}
 
 \item{model}{the used node substitution model}
-
-\item{birth_rate}{the birth rate to generate the phylogenetic tree}
-
-\item{death_Rate}{the death rate to generate the phylogenetic tree}
 }
 \value{
 expected fraction of time spent on the nodes
