@@ -11,6 +11,8 @@ calc_time_spent_at_node(phy, node_time = NULL, lambda = NULL,
 \arguments{
 \item{phy}{phylogenetic tree}
 
+\item{node_time}{amount of time spent at the node}
+
 \item{lambda}{the birth rate to generate the phylogenetic tree}
 
 \item{mu}{the death rate to generate the phylogenetic tree}
