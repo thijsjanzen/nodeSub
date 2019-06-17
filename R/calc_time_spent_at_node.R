@@ -2,6 +2,7 @@
 #' in the nodes
 #' @description calculates the required node time
 #' @param phy phylogenetic tree
+#' @param node_time amount of time spent at the node
 #' @param lambda the birth rate to generate the phylogenetic tree
 #' @param mu the death rate to generate the phylogenetic tree
 #' @param is_birth_death if false, a yule tree is
