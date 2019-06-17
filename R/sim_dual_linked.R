@@ -10,21 +10,22 @@ get_index <- function(local_matrix, parent, offspring) {
 #' @keywords internal
 draw_bases <- function(focal_base, trans_matrix) {
   bases <- c("a", "t", "c", "g")
-  output_table <- matrix(nrow = 10, ncol = 2)
-  output_table[1, ] <- c("a", "a")
-  output_table[2, ] <- c("t", "t")
-  output_table[3, ] <- c("c", "c")
-  output_table[4, ] <- c("g", "g")
-  output_table[5, ] <- c("a", "c")
-  output_table[6, ] <- c("a", "t")
-  output_table[7, ] <- c("a", "g")
-  output_table[8, ] <- c("t", "c")
-  output_table[9, ] <- c("t", "g")
-  output_table[10, ] <- c("c", "g")
 
   focus <- which(focal_base == bases)
-  output_bases <- sample(1:10, 1, prob = trans_matrix[focus, ], replace = T)
-  return(output_table[output_bases, ])
+  picked_index <- sample(1:10, 1, prob = trans_matrix[focus, ], replace = T)
+
+  output <- switch(picked_index,
+         c("a","a"),
+         c("t","t"),
+         c("c","c"),
+         c("g","g"),
+         c("a", "c"),
+         c("a", "t"),
+         c("a", "g"),
+         c("t", "c"),
+         c("t", "g"),
+         c("c", "g"))
+  return(output)
 }
 
 #' @keywords internal
@@ -80,14 +81,11 @@ make_transition_matrix <- function(mut_double) {
 #' @keywords internal
 get_mutated_sequences <- function(parent_seq, trans_matrix) {
 
-  child1_seq <- parent_seq
-  child2_seq <- parent_seq
+  vx <- sapply(parent_seq, draw_bases, trans_matrix)
 
-  for (i in seq_along(parent_seq)) {
-    bases <- draw_bases(parent_seq[i], trans_matrix)
-    child1_seq[i] <- bases[[1]]
-    child2_seq[i] <- bases[[2]]
-  }
+  child1_seq <- vx[1,]
+  child2_seq <- vx[2,]
+
   return(list(child1_seq, child2_seq))
 }
 
