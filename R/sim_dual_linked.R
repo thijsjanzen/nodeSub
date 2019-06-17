@@ -25,6 +25,9 @@ draw_bases <- function(focal_base, trans_matrix) {
          c("t", "c"),
          c("t", "g"),
          c("c", "g"))
+
+  if(runif(1, 0, 1) < 0.5) return(rev(output))
+
   return(output)
 }
 
