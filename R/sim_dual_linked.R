@@ -68,6 +68,10 @@ make_transition_matrix <- function(mut_double) {
     output[j, ] <- to_add
   }
 
+  for(i in 1:4) {
+    output[i, ] <- output[i, ] / sum(output[i, ], na.rm = T)
+  }
+
   for (i in 1:4) {
     output[i, i] <-  - sum(output[i, ], na.rm = T)
   }
