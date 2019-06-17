@@ -58,6 +58,9 @@ sim_normal <- function(x,
   root <- as.integer(parent[!match(parent, child, 0)][1])
   res[, root] <- rootseq
   tl <- x$edge.length
+
+  total_branch_subs <- 0
+
   for (i in seq_along(tl)) {
     from <- parent[i]
     to <- child[i]
@@ -68,6 +71,9 @@ sim_normal <- function(x,
       ind <- res[, from] == levels[j]
       res[ind, to] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
     }
+
+    branch_subs <- sum(res[,from] != res[,to])
+    total_branch_subs <- total_branch_subs + branch_subs
   }
   phy_no_extinct <- geiger::drop.extinct(x)
 
@@ -78,6 +84,8 @@ sim_normal <- function(x,
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
   output <- list("alignment" = alignment_phydat,
-                "root_seq" = rootseq)
+                "root_seq" = rootseq,
+                "total_branch_substitutions" = total_branch_subs,
+                "total_node_substitutions" = 0)
  return(output)
 }

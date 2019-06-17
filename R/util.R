@@ -85,10 +85,56 @@ phyDat.DNA <- function(data) {
   data
 }
 
-
+#' calculate p matrix
 #' @rawNamespace useDynLib(nodeSub)
-#' @keywords internal
+#' @description calculates the p matrix
+#' @param branch_length branch length
+#' @param eig eigen object
+#' @param rate rate
+#' @return p matrix
 get_p_matrix <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
-  res <- get_p_m_rcpp(eig, branch_length, rate)
+  #res <- get_p_m_rcpp(eig, branch_length, rate)
+  res <- slow_matrix(eig, branch_length, rate)
   return(res)
+}
+
+#' this function calculates the p matrix within R
+#' this is slower than the C++ implementation
+#' but provides a way to debug
+#' @export
+slow_matrix <- function(eig, branch_length, rate) {
+
+  eva <- eig$values
+  ev <- eig$vectors
+  evei <- eig$inv
+
+  dim_size <- ncol(evei)
+
+  P <- matrix(NA, nrow = dim_size, ncol = dim_size)
+
+  if(branch_length == 0 || rate <= 0) {
+    for(i in 1:dim_size) {
+      for(j in 1:dim_size) {
+        if(i != j) P[i,j] = 0
+        if(i == j) P[i,j] = 1
+      }
+    }
+    return(P)
+  }
+
+  tmp <- rep(NA, dim_size)
+  for(i in 1:dim_size) {
+    tmp[i] <- exp(1.0 * eva[i] * rate * branch_length)
+  }
+
+  for(i in 1:dim_size) {
+    for(j in 1:dim_size) {
+      res = 0.0;
+      for(h in 1:dim_size) {
+        res <- res + ev[i, h] * tmp[h] * evei[h, j];
+      }
+      P[i, j] <- res;
+    }
+  }
+  return(P)
 }

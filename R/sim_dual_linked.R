@@ -28,11 +28,11 @@ draw_bases <- function(focal_base, trans_matrix) {
 }
 
 #' @keywords internal
-make_transition_matrix <- function(mut_single,
-                                   mut_double) {
+make_transition_matrix <- function(mut_double) {
+
   output <- matrix(NA, nrow = 4, ncol = 10)
 
-  one_sub <- mut_single
+  one_sub <- 1
   two_sub <- mut_double
   no_sub <- NA
 
@@ -106,8 +106,7 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
 #' @export
 sim_dual_linked <- function(phy,
                             Q = NULL,
-                            rate = 1,
-                            node_mut_rate_single = 1e-9,
+                            rate = 0.1,
                             node_mut_rate_double = 1e-9,
                             l = 1000,
                             bf = NULL,
@@ -148,10 +147,12 @@ sim_dual_linked <- function(phy,
   testit::assert(node_mut_rate_single >= 0) # if mu < 0, the model is undefined
   testit::assert(node_mut_rate_double >= 0) # if mu < 0, the model is undefined
 
-  node_transition_matrix <- make_transition_matrix(node_mut_rate_single,
-                                                   node_mut_rate_double)
+  node_transition_matrix <- make_transition_matrix(node_mut_rate_double)
   eigen_obj <- eigen(node_transition_matrix, FALSE)
   eigen_obj$inv <- solve.default(eigen_obj$vec)
+
+  total_node_subs <- 0
+  total_branch_subs <- 0
 
   for (focal_parent in parents) {
     # given parent alignment
@@ -164,6 +165,10 @@ sim_dual_linked <- function(phy,
 
     result <- get_mutated_sequences(res[, focal_parent],
                                       p_matrix)
+
+    node_subs_1 <- sum(res[,focal_parent] != result[[1]])
+    node_subs_2 <- sum(res[,focal_parent] != result[[2]])
+    total_node_subs <- total_node_subs + node_subs_1 + node_subs_2
 
     indices <- which(parent == focal_parent)
     for (i in 1:2) {
@@ -180,6 +185,8 @@ sim_dual_linked <- function(phy,
                                      prob = P[, j])
       }
       res[, offspring[i]] <- after_mut_seq
+      branch_subs <- sum(after_mut_seq != before_mut_seq)
+      total_branch_subs <- total_branch_subs + branch_subs
     }
   }
 
@@ -191,6 +198,8 @@ sim_dual_linked <- function(phy,
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
   output <- list("alignment" = alignment_phydat,
-                "root_seq" = rootseq)
+                "root_seq" = rootseq,
+                "total_branch_substitutions" = total_branch_subs,
+                "total_node_substitutions" = total_node_subs)
   return(output)
 }

@@ -52,6 +52,9 @@ sim_dual_independent <- function(phy,
   res[, root] <- rootseq
   tl <- phy$edge.length
 
+  total_node_subs <- 0
+  total_branch_subs <- 0
+
   for (i in seq_along(tl)) {
     from <- parent[i]
     to <- child[i]
@@ -65,6 +68,9 @@ sim_dual_independent <- function(phy,
       res[ind, to] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
     }
 
+    node_subs <- sum(res[,to] != res[, from])
+    total_node_subs <- total_node_subs + node_subs
+
     # and then we add extra substitutions
     from <- to # the parent is now the individual again
     P <- get_p_matrix(tl[i], eigQ1, rate1)
@@ -77,6 +83,10 @@ sim_dual_independent <- function(phy,
       after_mut_seq[ind] <- sample(levels, sum(ind), replace = TRUE,
                                    prob = P[, j])
     }
+
+    branch_subs <- sum(after_mut_seq != before_mut_seq)
+    total_branch_subs <- total_branch_subs + branch_subs
+
     res[, to] <- after_mut_seq
   }
 
@@ -89,6 +99,8 @@ sim_dual_independent <- function(phy,
   alignment_phydat <- phyDat.DNA( as.data.frame(res, stringsAsFactors = FALSE))
 
   output <- list("alignment" = alignment_phydat,
-                "root_seq" = rootseq)
+                "root_seq" = rootseq,
+                "total_branch_substitutions" = total_branch_subs,
+                "total_node_substitutions" = total_node_subs)
   return(output)
 }

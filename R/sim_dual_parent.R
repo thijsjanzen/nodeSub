@@ -55,18 +55,26 @@ sim_dual_parent <- function(phy,
   # all parental nodes are:
   parents <- unique(edge[, 1])
 
+  subs_along_branches <- 0
+  subs_at_node <- 0
+
+
   for (parent in parents) {
     # we first mutate the parent sequence to reflect mutations at the node
     P <- get_p_matrix(node_time, eigQ2, rate2)
     if (any(P < 0)) P[P < 0] <- 0
+    before_mut_seq <- res[, parent]
+    after_mut_seq <- before_mut_seq
     for (j in 1:m) {
       # from the parent select the locations of base levels[j]
       ind <- res[, parent] == levels[j]
-      # mutate them
-      mutated <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
       # store the result in the offspring location
-      res[ind, parent] <- mutated
+      after_mut_seq[ind] <- sample(levels, sum(ind),
+                                   replace = TRUE, prob = P[, j])
     }
+    res[, parent] <- after_mut_seq
+    num_subs <- sum(after_mut_seq != before_mut_seq)
+    subs_at_node <- subs_at_node + num_subs
 
     # now we generate the two offspring sequences.
     all_offspring <- edge[edge[, 1] == parent, 2]
@@ -78,7 +86,6 @@ sim_dual_parent <- function(phy,
       P <- get_p_matrix(branch_length, eigQ1, rate1)
       # avoid numerical problems for larger P and small t
       if (any(P < 0)) P[P < 0] <- 0
-
       for (j in 1:m) {
         # from the parent select the locations of base levels[j]
         ind <- res[, parent] == levels[j]
@@ -87,6 +94,8 @@ sim_dual_parent <- function(phy,
         # store the result in the offspring location
         res[ind, offspring] <- mutated
       }
+      num_subs <- sum(res[, offspring] != res[, parent])
+      subs_along_branches <- subs_along_branches + num_subs
     }
   }
 
@@ -99,6 +108,8 @@ sim_dual_parent <- function(phy,
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
   output <- list("alignment" = alignment_phydat,
-                "root_seq" = rootseq)
+                "root_seq" = rootseq,
+                "total_branch_substitutions" = subs_along_branches,
+                "total_node_substitutions" = subs_at_node)
   return(output)
 }

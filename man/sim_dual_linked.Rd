@@ -4,9 +4,9 @@
 \alias{sim_dual_linked}
 \title{simulate a sequence assuming conditional substitutions on the node}
 \usage{
-sim_dual_linked(phy, Q = NULL, rate = 1,
-  node_mut_rate_single = 1e-09, node_mut_rate_double = 1e-09,
-  l = 1000, bf = NULL, rootseq = NULL, node_time = 0.01)
+sim_dual_linked(phy, Q = NULL, rate = 0.1,
+  node_mut_rate_double = 1e-09, l = 1000, bf = NULL,
+  rootseq = NULL, node_time = 0.01)
 }
 \arguments{
 \item{phy}{tree for which to simulate sequences}
@@ -14,8 +14,6 @@ sim_dual_linked(phy, Q = NULL, rate = 1,
 \item{Q}{substitution matrix along the branches, default = JC}
 
 \item{rate}{mutation rate , default = 1}
-
-\item{node_mut_rate_single}{mutation rate on the node, default = 1e-9}
 
 \item{node_mut_rate_double}{mutation rate on the node, default = 1e-9}
 
@@ -26,6 +24,8 @@ sim_dual_linked(phy, Q = NULL, rate = 1,
 \item{rootseq}{sequence at the root, simulated by default}
 
 \item{node_time}{time spent at the node}
+
+\item{node_mut_rate_single}{mutation rate on the node, default = 1e-9}
 }
 \value{
 phyDat object
