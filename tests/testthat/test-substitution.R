@@ -59,7 +59,6 @@ test_that("required_node_time use", {
     sub4 <- sum(offsprings[[2]] != parentseq)
     found <- rbind(found, cbind("regular",c(sub1, sub2)))
     found <- rbind(found, cbind("nodesub",c(sub3, sub4)))
-    cat(repl,"\n")
   }
 
   colnames(found) <- c("method","substitutions")
@@ -72,3 +71,4 @@ test_that("required_node_time use", {
 
   testthat::expect_equal(vx$mean_sub[1], vx$mean_sub[2]/2,
                          tolerance = 0.5)
+})

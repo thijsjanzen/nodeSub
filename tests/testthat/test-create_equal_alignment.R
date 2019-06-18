@@ -12,7 +12,8 @@ test_that("create_equal_alignment", {
   seq_alt <- create_equal_alignment(input_tree = phy,
                                     focal_alignment = seq_node_sub$alignment,
                                     root_sequence = seq_node_sub$root_seq,
-                                    alt_model = sim_regular)
+                                    alt_model = sim_regular,
+                                    verbose = FALSE)
 
   testthat::expect_equal( length(seq_alt$alignment),
                           length(seq_node_sub$alignment))

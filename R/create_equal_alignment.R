@@ -3,12 +3,14 @@
 #' @param focal_alignment alignment to match information content with
 #' @param alt_model alternative substitution model
 #' @param root_sequence root sequence
+#' @param verbose provide intermediate output
 #' @return list with alignment and inferred rate
 #' @export
 create_equal_alignment <- function(input_tree,
                                    focal_alignment,
                                    root_sequence,
-                                   alt_model) {
+                                   alt_model,
+                                   verbose) {
 
   num_emp_subs <- sum(calc_dist(focal_alignment, root_sequence))
 
@@ -38,7 +40,8 @@ create_equal_alignment <- function(input_tree,
       adjusted_rate <- adjusted_rate * factor
       cnt <- 0
     }
-    cat(cnt, adjusted_rate, proposed_subs, num_emp_subs, factor, "\n")
+    if (verbose) cat(cnt, adjusted_rate, proposed_subs, num_emp_subs,
+                     factor, "\n")
     cnt <- cnt + 1
   }
   return(list("alignment" = proposed_alignment,
