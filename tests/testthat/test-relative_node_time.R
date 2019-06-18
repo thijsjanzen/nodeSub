@@ -69,7 +69,7 @@ test_that("required_node_time use", {
 
   testthat::expect_equal(predicted_frac, mean(found), tolerance = 0.05)
 
-
+  set.seed(42)
   focal_tree <- TreeSim::sim.bd.taxa(n = 10, numbsim = 1, lambda = 1, mu = 0,
                                      complete = FALSE)[[1]]
   node_time <- 0.5
