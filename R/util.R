@@ -116,25 +116,25 @@ slow_matrix <- function(eig, branch_length, rate) {
 
   P <- matrix(NA, nrow = dim_size, ncol = dim_size)
 
-  if(branch_length == 0 || rate <= 0) {
-    for(i in 1:dim_size) {
-      for(j in 1:dim_size) {
-        if(i != j) P[i,j] = 0
-        if(i == j) P[i,j] = 1
+  if (branch_length == 0 || rate <= 0) {
+    for (i in 1:dim_size) {
+      for (j in 1:dim_size) {
+        if (i != j) P[i, j] <- 0
+        if (i == j) P[i, j] <- 1
       }
     }
     return(P)
   }
 
   tmp <- rep(NA, dim_size)
-  for(i in 1:dim_size) {
+  for (i in 1:dim_size) {
     tmp[i] <- exp(1.0 * eva[i] * rate * branch_length)
   }
 
-  for(i in 1:dim_size) {
-    for(j in 1:dim_size) {
-      res = 0.0;
-      for(h in 1:dim_size) {
+  for (i in 1:dim_size) {
+    for (j in 1:dim_size) {
+      res <- 0.0
+      for (h in 1:dim_size) {
         res <- res + ev[i, h] * tmp[h] * evei[h, j];
       }
       P[i, j] <- res;

@@ -51,8 +51,8 @@ sim_normal <- function(x,
   if (is.null(rootseq)) rootseq <- sample(levels, l, replace = TRUE, prob = bf)
   x <- stats::reorder(x)
   edge <- x$edge
-  nNodes <- max(edge)
-  res <- matrix(NA, l, nNodes)
+  num_nodes <- max(edge)
+  res <- matrix(NA, l, num_nodes)
   parent <- as.integer(edge[, 1])
   child <- as.integer(edge[, 2])
   root <- as.integer(parent[!match(parent, child, 0)][1])
@@ -72,13 +72,13 @@ sim_normal <- function(x,
       res[ind, to] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
     }
 
-    branch_subs <- sum(res[,from] != res[,to])
+    branch_subs <- sum(res[, from] != res[, to])
     total_branch_subs <- total_branch_subs + branch_subs
   }
   phy_no_extinct <- geiger::drop.extinct(x)
 
   k <- length(x$tip.label)
-  label <- c(x$tip.label, as.character( (k + 1):nNodes))
+  label <- c(x$tip.label, as.character( (k + 1):num_nodes))
   colnames(res) <- label
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))

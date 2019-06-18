@@ -33,8 +33,8 @@ sim_dual_independent <- function(phy,
   if (is.matrix(Q1)) Q1 <- Q1[lower.tri(Q1)]
   if (is.matrix(Q2)) Q2 <- Q2[lower.tri(Q2)]
 
-  eigQ1 <- phangorn::edQt(Q1, bf) # eigen values
-  eigQ2 <- phangorn::edQt(Q2, bf) # eigen values
+  eig_q1 <- phangorn::edQt(Q1, bf) # eigen values
+  eig_q2 <- phangorn::edQt(Q2, bf) # eigen values
 
   m <- length(levels) # always 4 (bases)
 
@@ -42,13 +42,13 @@ sim_dual_independent <- function(phy,
 
   phy <- stats::reorder(phy)
   edge <- phy$edge
-  nNodes <- max(edge)
+  num_nodes <- max(edge)
 
   parent <- as.integer(edge[, 1])
   child <- as.integer(edge[, 2])
   root <- as.integer(parent[!match(parent, child, 0)][1])
 
-  res <- matrix(NA, l, nNodes)
+  res <- matrix(NA, l, num_nodes)
   res[, root] <- rootseq
   tl <- phy$edge.length
 
@@ -60,7 +60,7 @@ sim_dual_independent <- function(phy,
     to <- child[i]
 
     # first we do substitutions due to the node model:
-    P <- get_p_matrix(node_time, eigQ2, rate2)
+    P <- get_p_matrix(node_time, eig_q2, rate2)
     # avoid numerical problems for larger P and small t
     if (any(P < 0)) P[P < 0] <- 0
     for (j in 1:m) {
@@ -68,12 +68,12 @@ sim_dual_independent <- function(phy,
       res[ind, to] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
     }
 
-    node_subs <- sum(res[,to] != res[, from])
+    node_subs <- sum(res[, to] != res[, from])
     total_node_subs <- total_node_subs + node_subs
 
     # and then we add extra substitutions
     from <- to # the parent is now the individual again
-    P <- get_p_matrix(tl[i], eigQ1, rate1)
+    P <- get_p_matrix(tl[i], eig_q1, rate1)
     # avoid numerical problems for larger P and small t
     if (any(P < 0)) P[P < 0] <- 0
     before_mut_seq <- res[, from]
@@ -93,7 +93,7 @@ sim_dual_independent <- function(phy,
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   k <- length(phy$tip.label)
-  label <- c(phy$tip.label, as.character( (k + 1):nNodes))
+  label <- c(phy$tip.label, as.character( (k + 1):num_nodes))
   colnames(res) <- label
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA( as.data.frame(res, stringsAsFactors = FALSE))

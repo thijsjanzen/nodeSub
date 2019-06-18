@@ -18,38 +18,40 @@ calc_required_node_time <- function(phy,
                                     is_birth_death = FALSE,
                                     model = "parent") {
 
-  if(is.null(lambda) && !is_birth_death) {
-    birth_rate <- ape::yule(phy)
+  if (is.null(lambda) && !is_birth_death) {
+    lambda <- ape::yule(phy)
   }
-  if(is.null(lambda) && is.null(mu)) {
-    birth_rate <- ape::birthdeath(phy)
+  if (is.null(lambda) && is.null(mu)) {
+    lambda <- ape::birthdeath(phy)
   }
 
   node_time <- -1
-  if(model == "parent") {
-    if(!is_birth_death) {
+  if (model == "parent") {
+    if (!is_birth_death) {
       node_time <- fraction / (lambda - lambda * fraction)
     }
-    if(is_birth_death) {
+    if (is_birth_death) {
       t <- max(ape::branching.times(phy))
       tips <- length(phy$tip.label)
       nodes <- phy$Nnode
-      a <- lambda / (lambda - mu) - mu / ((lambda - mu) * exp((lambda - mu) * t))
-      node_time <- fraction/(1 - fraction) * tips/(mu * nodes) * log(a)
+      a <- lambda / (lambda - mu) -
+           mu / ( (lambda - mu) * exp( (lambda - mu) * t))
+      node_time <- fraction / (1 - fraction) * tips / (mu * nodes) * log(a)
     }
   }
 
 
-  if(model == "independent") {
-    if(!is_birth_death) {
+  if (model == "independent") {
+    if (!is_birth_death) {
       node_time <- fraction / (lambda - lambda * fraction)
     }
-    if(is_birth_death) {
+    if (is_birth_death) {
       t <- max(ape::branching.times(phy))
       tips <- length(phy$tip.label)
       nodes <- phy$Nnode
-      a <- lambda / (lambda - mu) - mu / ((lambda - mu) * exp((lambda - mu) * t))
-      node_time <- fraction/(1 - fraction) * tips/(mu * nodes) * log(a)
+      a <- lambda / (lambda - mu) -
+        mu / ( (lambda - mu) * exp( (lambda - mu) * t))
+      node_time <- fraction / (1 - fraction) * tips / (mu * nodes) * log(a)
     }
   }
   return(node_time)

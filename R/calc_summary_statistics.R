@@ -17,7 +17,7 @@ calc_tree_height <- function(focal_tree) {
 
 #' @keywords internal
 calc_mean_branch_length <- function(focal_tree) {
-  return(mean(focal_tree$edge.length, na.rm = T))
+  return(mean(focal_tree$edge.length, na.rm = TRUE))
 }
 
 #' @keywords internal
@@ -47,7 +47,7 @@ calc_sum_stats <- function(trees,
   all_sum_stats <- matrix(NA, nrow = length(trees), ncol = 4)
   all_differences <- matrix(NA, nrow = length(trees), ncol = 5)
   if (verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)
-  for (i in 1:length(sum_stats_trees)) {
+  for (i in seq_along(sum_stats_trees)) {
     # this for loop could be optimized later.
     to_add <- sum_stats_trees[[i]]
     local_diff <- abs(to_add - sum_stats_true_tree)
