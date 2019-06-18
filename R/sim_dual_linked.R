@@ -26,7 +26,7 @@ draw_bases <- function(focal_base, trans_matrix) {
          c("t", "g"),
          c("c", "g"))
 
-  if(runif(1, 0, 1) < 0.5) return(rev(output))
+  if(stats::runif(1, 0, 1) < 0.5) return(rev(output))
 
   return(output)
 }
@@ -72,11 +72,11 @@ make_transition_matrix <- function(mut_double) {
   }
 
   for(i in 1:4) {
-    output[i, ] <- output[i, ] / sum(output[i, ], na.rm = T)
+    output[i, ] <- output[i, ] / sum(output[i, ], na.rm = TRUE)
   }
 
   for (i in 1:4) {
-    output[i, i] <-  - sum(output[i, ], na.rm = T)
+    output[i, i] <-  - sum(output[i, ], na.rm = TRUE)
   }
   for (j in 1:6) {
     output <- rbind(output, rep(0, length(output[1, ])))
