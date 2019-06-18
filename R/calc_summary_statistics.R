@@ -33,7 +33,9 @@ calc_all_stats <- function(focal_tree) {
 #' @param trees a phyloList object containing multiple trees
 #' @param true_tree a phylo object containing the reference tree
 #' @param verbose verbose output if true (e.g. progressbars)
-#' @return list with two tibbles 1) containing the summary statistics of all trees and 2) containing the difference with the true tree
+#' @return list with two tibbles
+#' 1) containing the summary statistics of all trees and
+#' 2) containing the difference with the true tree
 #' @export
 calc_sum_stats <- function(trees,
                            true_tree,

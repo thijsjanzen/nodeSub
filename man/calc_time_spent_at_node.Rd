@@ -19,7 +19,8 @@ calc_time_spent_at_node(phy, node_time = NULL, lambda = NULL,
 
 \item{is_birth_death}{if false, a yule tree is}
 
-\item{model}{the used node substitution model}
+\item{model}{the used node substitution model choices are "parent",
+"independent" or "conditional"}
 }
 \value{
 expected fraction of time spent on the nodes

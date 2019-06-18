@@ -135,9 +135,9 @@ slow_matrix <- function(eig, branch_length, rate) {
     for (j in 1:dim_size) {
       res <- 0.0
       for (h in 1:dim_size) {
-        res <- res + ev[i, h] * tmp[h] * evei[h, j];
+        res <- res + ev[i, h] * tmp[h] * evei[h, j]
       }
-      P[i, j] <- res;
+      P[i, j] <- res
     }
   }
   return(P)

@@ -19,7 +19,8 @@ calc_required_node_time(phy, fraction, lambda = NULL, mu = NULL,
 
 \item{is_birth_death}{if false, a yule tree is assumed}
 
-\item{model}{the used node substitution model}
+\item{model}{the used node substitution model choices are "parent",
+"independent" or "conditional"}
 }
 \value{
 required fraction
