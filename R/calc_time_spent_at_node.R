@@ -6,7 +6,8 @@
 #' @param lambda the birth rate to generate the phylogenetic tree
 #' @param mu the death rate to generate the phylogenetic tree
 #' @param is_birth_death if false, a yule tree is
-#' @param model the used node substitution model
+#' @param model the used node substitution model choices are "parent",
+#' "independent" or "conditional"
 #' @details if no birth or death rates are provided, birth and death rates are
 #' estimated by fitting a birth-death model to the tree (or a yule tree)
 #' @return expected fraction of time spent on the nodes
@@ -32,7 +33,7 @@ calc_time_spent_at_node <- function(phy,
 
   rel_node_spent <- -1
 
-  if (model == "parent") {
+  if (model == "parent" || model == "conditional") {
 
     if (!is_birth_death) {
       rel_node_spent <- lambda * node_time / (lambda * node_time + 1)
