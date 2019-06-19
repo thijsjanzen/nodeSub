@@ -13,11 +13,20 @@
 #' @return required fraction
 #' @export
 calc_required_node_time <- function(phy,
-                                    fraction,
+                                    fraction = NULL,
                                     lambda = NULL,
                                     mu = NULL,
                                     is_birth_death = FALSE,
                                     model = "parent") {
+
+  if (is.null(fraction)) {
+    stop("Have to provide a fraction to calculate the expected \n
+         time spent on the nodes.")
+  }
+
+  if(class(phy) != "phylo") {
+    stop("Did you forget to provide an input phylogeny?")
+  }
 
   if (is.null(lambda) && !is_birth_death) {
     lambda <- ape::yule(phy)$lambda

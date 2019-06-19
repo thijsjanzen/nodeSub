@@ -19,6 +19,10 @@ calc_time_spent_at_node <- function(phy,
                                     is_birth_death = FALSE,
                                     model = "parent") {
 
+  if(class(phy) != "phylo") {
+    stop("Did you forget to provide an input phylogeny?")
+  }
+
   if (is.null(node_time)) {
     stop("Have to provide a node time to calculate the expected fraction of \n
          time spent on the nodes.")

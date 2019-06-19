@@ -180,3 +180,29 @@ test_that("required_node_time use no rates", {
   test_match(model = "conditional", is_birth_death = TRUE,
              bd_tree, node_time)
 })
+
+test_that("required_node_time abuse", {
+  node_time <- 0.1
+  yule_tree <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0,
+                                    complete = FALSE)[[1]]
+
+  testthat::expect_error(
+    nodeSub::calc_time_spent_at_node(phy = focal_tree),
+    "Have to provide a node time to calculate the expected fraction of \n
+         time spent on the nodes."
+  )
+  testthat::expect_error(
+    nodeSub::calc_required_node_time(phy = focal_tree),
+    "Have to provide a fraction to calculate the expected \n
+         time spent on the nodes."
+  )
+
+  testthat::expect_error(
+    nodeSub::calc_time_spent_at_node(phy = 1, node_time = 0.1),
+    "Did you forget to provide an input phylogeny?"
+  )
+  testthat::expect_error(
+    nodeSub::calc_required_node_time(phy = 1, fraction = 0.1),
+    "Did you forget to provide an input phylogeny?"
+  )
+})
