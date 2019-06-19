@@ -36,23 +36,27 @@ calc_required_node_time <- function(phy,
       tips <- length(phy$tip.label)
       nodes <- phy$Nnode
       a <- lambda / (lambda - mu) -
-           mu / ( (lambda - mu) * exp( (lambda - mu) * t))
-      node_time <- fraction / (1 - fraction) * tips / (mu * nodes) * log(a)
+           mu / ( (lambda - mu) *
+           exp( (lambda - mu) * t))
+      node_time <- fraction / (1 - fraction) * (tips / (mu * nodes)) * log(a)
     }
   }
 
 
   if (model == "independent") {
     if (!is_birth_death) {
-      node_time <- fraction / (lambda - lambda * fraction)
+      node_time <- fraction / (2 * lambda * (1 - fraction))
     }
     if (is_birth_death) {
       t <- max(ape::branching.times(phy))
       tips <- length(phy$tip.label)
       nodes <- phy$Nnode
       a <- lambda / (lambda - mu) -
-        mu / ( (lambda - mu) * exp( (lambda - mu) * t))
-      node_time <- fraction / (1 - fraction) * tips / (mu * nodes) * log(a)
+           mu / ( (lambda - mu) *
+           exp( (lambda - mu) * t))
+      node_time <- fraction / (1 - fraction) *
+                   (tips / (2 * mu * nodes)) *
+                   log(a)
     }
   }
   return(node_time)
