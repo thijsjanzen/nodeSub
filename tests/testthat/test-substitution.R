@@ -1,6 +1,6 @@
-context("calc_required_node_time")
+context("mutations")
 
-test_that("required_node_time use", {
+test_that("mutations use", {
 
   levels <- c("a", "c", "g", "t")
   lbf <- length(levels)
@@ -71,4 +71,31 @@ test_that("required_node_time use", {
 
   testthat::expect_equal(vx$mean_sub[1], vx$mean_sub[2]/2,
                          tolerance = 0.5)
+})
+
+
+test_that("matrices", {
+
+  levels <- c("a", "c", "g", "t")
+  lbf <- length(levels)
+
+  # default is c(0.25, 0.25, 0.25, 0.25)
+  bf <- rep(1 / lbf, lbf)
+  Q <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
+
+  # only extract the 6 important rates.
+  if (is.matrix(Q)) Q <- Q[lower.tri(Q)]
+
+  eigQ <- phangorn::edQt(Q, bf) # eigen values
+
+  branch_length <- 1
+  rate <- 0.1
+
+  P1 <- nodeSub::slow_matrix(eig = eigQ,
+                             branch_length,
+                             rate = rate)
+
+  P2 <- get_p_matrix(branch_length, eigQ, rate)
+
+  testthat::expect_equal(P1, P2)
 })

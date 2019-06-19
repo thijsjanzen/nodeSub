@@ -138,15 +138,17 @@ test_that("required_node_time use", {
 
 test_that("required_node_time use no rates", {
   test_match <- function(model, is_birth_death, focal_tree, node_time) {
-    predicted_frac <- calc_time_spent_at_node(focal_tree,
-                                              node_time,
-                                              is_birth_death,
-                                              model)
+    predicted_frac <-
+      nodeSub::calc_time_spent_at_node(phy = focal_tree,
+                                       node_time = node_time,
+                                       is_birth_death = is_birth_death,
+                                       model = model)
 
-    predicted_node_time <- calc_required_node_time(focal_tree,
-                                                   fraction = predicted_frac,
-                                                   is_birth_death,
-                                                   model)
+    predicted_node_time <-
+      nodeSub::calc_required_node_time(phy = focal_tree,
+                                       fraction = predicted_frac,
+                                       is_birth_death = is_birth_death,
+                                       model = model)
 
     testthat::expect_equal(node_time, predicted_node_time)
   }
@@ -177,6 +179,4 @@ test_that("required_node_time use no rates", {
              bd_tree, node_time)
   test_match(model = "conditional", is_birth_death = TRUE,
              bd_tree, node_time)
-
-
 })
