@@ -29,4 +29,5 @@ Imports: Rcpp,
          tibble,
          pbapply,
          geiger,
-         TreeSim
+         TreeSim,
+         dplyr

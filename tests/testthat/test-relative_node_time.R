@@ -1,7 +1,7 @@
 context("calc_required_node_time")
 
 test_that("required_node_time use", {
-
+  set.seed(666)
   focal_tree <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0,
                                      complete = FALSE)[[1]]
 
@@ -26,7 +26,11 @@ test_that("required_node_time use", {
 })
 
 test_that("required_node_time use", {
-  focal_tree <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0,
+  set.seed(1)
+  focal_tree <- TreeSim::sim.bd.taxa(n = 100,
+                                     numbsim = 1,
+                                     lambda = 1,
+                                     mu = 0,
                                      complete = FALSE)[[1]]
   node_time <- 0.5
   predicted_frac <- calc_time_spent_at_node(focal_tree,
@@ -39,13 +43,15 @@ test_that("required_node_time use", {
   found <- c()
   sub_rate <- 0.001
   for(repl in 1:10) {
-    vx <- sim_dual_parent(focal_tree, rate1 = sub_rate, rate2 = sub_rate,
-                          l = 10000, node_time = node_time)
-    found[repl] <- vx$total_node_substitutions / (vx$total_node_substitutions +
-                                                    vx$total_branch_substitutions)
+    vx <- sim_dual_parent(focal_tree,
+                          rate1 = sub_rate,
+                          rate2 = sub_rate,
+                          l = 10000,
+                          node_time = node_time)
+    found[repl] <- vx$total_node_substitutions /
+      (vx$total_node_substitutions + vx$total_branch_substitutions)
 
   }
-
 
   testthat::expect_equal(predicted_frac, mean(found), tolerance = 0.05)
 
@@ -60,10 +66,13 @@ test_that("required_node_time use", {
   found <- c()
   sub_rate <- 0.001
   for(repl in 1:10) {
-    vx <- sim_dual_independent(focal_tree, rate1 = sub_rate, rate2 = sub_rate,
-                               l = 10000, node_time = node_time)
-    found[repl] <- vx$total_node_substitutions / (vx$total_node_substitutions +
-                                                    vx$total_branch_substitutions)
+    vx <- sim_dual_independent(focal_tree,
+                               rate1 = sub_rate,
+                               rate2 = sub_rate,
+                               l = 10000,
+                               node_time = node_time)
+    found[repl] <- vx$total_node_substitutions /
+                  (vx$total_node_substitutions + vx$total_branch_substitutions)
 
   }
 

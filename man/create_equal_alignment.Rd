@@ -5,7 +5,7 @@
 \title{function create an alignment with highly similar information content}
 \usage{
 create_equal_alignment(input_tree, focal_alignment, root_sequence,
-  alt_model)
+  alt_model, verbose)
 }
 \arguments{
 \item{input_tree}{phylogeny for which to generate alignment}
@@ -15,6 +15,8 @@ create_equal_alignment(input_tree, focal_alignment, root_sequence,
 \item{root_sequence}{root sequence}
 
 \item{alt_model}{alternative substitution model}
+
+\item{verbose}{provide intermediate output}
 }
 \value{
 list with alignment and inferred rate
