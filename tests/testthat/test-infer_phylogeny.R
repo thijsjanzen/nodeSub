@@ -11,7 +11,7 @@ test_that("infer_phylogeny", {
                                burnin = 0.1)
   mcc_tree <- all_trees$mcc_tree
 
-  testthat::expect_lt(nLTT::nltt_diff(mcc_tree, phy), 0.03)
+  testthat::expect_lt(nLTT::nltt_diff(mcc_tree, phy), 0.05)
   phangorn_dist <- phangorn::RF.dist(mcc_tree, phy)[[1]]
   testthat::expect_equal(phangorn_dist, 0)
 })
