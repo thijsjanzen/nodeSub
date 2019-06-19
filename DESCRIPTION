@@ -30,4 +30,5 @@ Imports: Rcpp,
          pbapply,
          geiger,
          TreeSim,
-         dplyr
+         dplyr,
+         DDD

@@ -134,3 +134,49 @@ test_that("required_node_time use", {
 
   testthat::expect_equal(predicted_frac, mean(found), tolerance = 0.05)
 })
+
+
+test_that("required_node_time use no rates", {
+  test_match <- function(model, is_birth_death, focal_tree, node_time) {
+    predicted_frac <- calc_time_spent_at_node(focal_tree,
+                                              node_time,
+                                              is_birth_death,
+                                              model)
+
+    predicted_node_time <- calc_required_node_time(focal_tree,
+                                                   fraction = predicted_frac,
+                                                   is_birth_death,
+                                                   model)
+
+    testthat::expect_equal(node_time, predicted_node_time)
+  }
+
+  set.seed(666)
+  yule_tree <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0,
+                                    complete = FALSE)[[1]]
+
+  # first calculate the estimated time spent at the node
+  # for node time = 0.1
+  node_time <- 0.1
+
+  test_match(model = "parent", is_birth_death = FALSE,
+             yule_tree, node_time)
+  test_match(model = "independent", is_birth_death = FALSE,
+             yule_tree, node_time)
+  test_match(model = "conditional", is_birth_death = FALSE,
+             yule_tree, node_time)
+
+
+  bd_tree <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1,
+                                  lambda = 1, mu = 0.3,
+                                  complete = FALSE)[[1]]
+
+  test_match(model = "parent", is_birth_death = TRUE,
+             bd_tree, node_time)
+  test_match(model = "independent", is_birth_death = TRUE,
+             bd_tree, node_time)
+  test_match(model = "conditional", is_birth_death = TRUE,
+             bd_tree, node_time)
+
+
+})

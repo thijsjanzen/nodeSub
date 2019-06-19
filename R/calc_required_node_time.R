@@ -20,10 +20,12 @@ calc_required_node_time <- function(phy,
                                     model = "parent") {
 
   if (is.null(lambda) && !is_birth_death) {
-    lambda <- ape::yule(phy)
+    lambda <- ape::yule(phy)$lambda
   }
   if (is.null(lambda) && is.null(mu)) {
-    lambda <- ape::birthdeath(phy)
+    ml_results <- DDD::bd_ML(ape::branching.times(phy), verbose = FALSE)
+    lambda <- ml_results$lambda0
+    mu <- ml_results$mu0
   }
 
   node_time <- -1

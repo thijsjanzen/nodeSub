@@ -25,10 +25,12 @@ calc_time_spent_at_node <- function(phy,
   }
 
   if (is.null(lambda) && !is_birth_death) {
-    lambda <- ape::yule(phy)
+    lambda <- ape::yule(phy)$lambda
   }
   if (is.null(lambda) && is.null(mu)) {
-    lambda <- ape::birthdeath(phy)
+    ml_results <- DDD::bd_ML(ape::branching.times(phy), verbose = FALSE)
+    lambda <- ml_results$lambda0
+    mu <- ml_results$mu0
   }
 
   rel_node_spent <- -1
@@ -37,7 +39,9 @@ calc_time_spent_at_node <- function(phy,
 
     if (!is_birth_death) {
       rel_node_spent <- lambda * node_time / (lambda * node_time + 1)
+      return(rel_node_spent)
     }
+
     if (is_birth_death) {
       t <- max(ape::branching.times(phy))
       nodes <- phy$Nnode
@@ -45,12 +49,14 @@ calc_time_spent_at_node <- function(phy,
                                   ( (lambda - mu) * exp( (lambda - mu) * t))
       rel_node_spent <- mu * nodes * node_time /
                        (mu * nodes * node_time + (1 + nodes) * log(a))
+      return(rel_node_spent)
     }
   }
 
   if (model == "independent") {
     if (!is_birth_death) {
       rel_node_spent <- 2 * lambda * node_time / (2 * lambda * node_time + 1)
+      return(rel_node_spent)
     }
     if (is_birth_death) {
       t <- max(ape::branching.times(phy))
@@ -59,6 +65,7 @@ calc_time_spent_at_node <- function(phy,
                                    ( (lambda - mu) * exp( (lambda - mu) * t))
       rel_node_spent <- 2 * mu * nodes * node_time /
         (2 * mu * nodes * node_time + (1 + nodes) * log(a))
+      return(rel_node_spent)
     }
   }
 
