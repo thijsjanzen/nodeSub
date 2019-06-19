@@ -187,12 +187,12 @@ test_that("required_node_time abuse", {
                                     complete = FALSE)[[1]]
 
   testthat::expect_error(
-    nodeSub::calc_time_spent_at_node(phy = focal_tree),
+    nodeSub::calc_time_spent_at_node(phy = yule_tree),
     "Have to provide a node time to calculate the expected fraction of \n
          time spent on the nodes."
   )
   testthat::expect_error(
-    nodeSub::calc_required_node_time(phy = focal_tree),
+    nodeSub::calc_required_node_time(phy = yule_tree),
     "Have to provide a fraction to calculate the expected \n
          time spent on the nodes."
   )
