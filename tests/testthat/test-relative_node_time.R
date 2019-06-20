@@ -74,7 +74,7 @@ test_that("required_node_time use", {
 
   found <- c()
   sub_rate <- 0.001
-  for(repl in 1:10) {
+  for (repl in 1:10) {
     vx <- sim_dual_parent(focal_tree,
                           rate1 = sub_rate,
                           rate2 = sub_rate,
@@ -97,7 +97,7 @@ test_that("required_node_time use", {
 
   found <- c()
   sub_rate <- 0.001
-  for(repl in 1:10) {
+  for (repl in 1:10) {
     vx <- sim_dual_independent(focal_tree,
                                rate1 = sub_rate,
                                rate2 = sub_rate,
@@ -123,7 +123,7 @@ test_that("required_node_time use", {
 
   found <- c()
   sub_rate <- 0.001
-  for(repl in 1:2) {
+  for (repl in 1:2) {
     vx <- sim_dual_linked(focal_tree, rate = sub_rate,
                           node_mut_rate_double = 0,
                           l = 10000, node_time = node_time)

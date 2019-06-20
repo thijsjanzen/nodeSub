@@ -40,7 +40,6 @@ calc_all_stats <- function(focal_tree) {
 calc_sum_stats <- function(trees,
                            true_tree,
                            verbose = FALSE) {
-
   sum_stats_true_tree <- calc_all_stats(true_tree)
   sum_stats_trees <- list()
   if (!verbose) sum_stats_trees <- lapply(trees, calc_all_stats)

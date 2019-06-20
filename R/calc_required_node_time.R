@@ -24,7 +24,7 @@ calc_required_node_time <- function(phy,
          time spent on the nodes.")
   }
 
-  if(class(phy) != "phylo") {
+  if (class(phy) != "phylo") {
     stop("Did you forget to provide an input phylogeny?")
   }
 

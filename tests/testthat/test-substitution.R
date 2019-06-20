@@ -12,7 +12,7 @@ test_that("mutations use", {
   # only extract the 6 important rates.
   if (is.matrix(Q)) Q <- Q[lower.tri(Q)]
 
-  eigQ <- phangorn::edQt(Q, bf) # eigen values
+  eig_q <- phangorn::edQt(Q, bf) # eigen values
   m <- length(levels) # always 4 (bases)
 
   node_transition_matrix <- make_transition_matrix(mut_double = 0)
@@ -22,11 +22,11 @@ test_that("mutations use", {
   parentseq <- rep("a", 100)
 
   found <- c()
-  for(repl in 1:1000) {
+  for (repl in 1:100) {
     rate <- 0.3
     node_time <- 1
 
-    P <- nodeSub::slow_matrix(eig = eigQ,
+    P <- nodeSub::slow_matrix(eig = eig_q,
                               node_time,
                               rate = rate)
 
@@ -49,7 +49,7 @@ test_that("mutations use", {
     p_matrix <- slow_matrix(eig = eigen_obj,
                                      node_time,
                                      rate = rate)
-    p_matrix_bl <- slow_matrix(eig = eigQ,
+    p_matrix_bl <- slow_matrix(eig = eig_q,
                                         node_time,
                                         rate = rate)
 
@@ -57,11 +57,11 @@ test_that("mutations use", {
 
     sub3 <- sum(offsprings[[1]] != parentseq)
     sub4 <- sum(offsprings[[2]] != parentseq)
-    found <- rbind(found, cbind("regular",c(sub1, sub2)))
-    found <- rbind(found, cbind("nodesub",c(sub3, sub4)))
+    found <- rbind(found, cbind("regular", c(sub1, sub2)))
+    found <- rbind(found, cbind("nodesub", c(sub3, sub4)))
   }
 
-  colnames(found) <- c("method","substitutions")
+  colnames(found) <- c("method", "substitutions")
   found <- tibble::as_tibble(found)
   found$substitutions <- as.numeric(found$substitutions)
 
@@ -69,7 +69,7 @@ test_that("mutations use", {
     dplyr::group_by(method) %>%
     dplyr::summarise("mean_sub" = mean(substitutions))
 
-  testthat::expect_equal(vx$mean_sub[1], vx$mean_sub[2]/2,
+  testthat::expect_equal(vx$mean_sub[1], vx$mean_sub[2] / 2,
                          tolerance = 0.5)
 })
 
@@ -86,16 +86,16 @@ test_that("matrices", {
   # only extract the 6 important rates.
   if (is.matrix(Q)) Q <- Q[lower.tri(Q)]
 
-  eigQ <- phangorn::edQt(Q, bf) # eigen values
+  eig_q <- phangorn::edQt(Q, bf) # eigen values
 
   branch_length <- 1
   rate <- 0.1
 
-  P1 <- nodeSub::slow_matrix(eig = eigQ,
+  P1 <- nodeSub::slow_matrix(eig = eig_q,
                              branch_length,
                              rate = rate)
 
-  P2 <- get_p_matrix(branch_length, eigQ, rate)
+  P2 <- get_p_matrix(branch_length, eig_q, rate)
 
   testthat::expect_equal(P1, P2)
 })

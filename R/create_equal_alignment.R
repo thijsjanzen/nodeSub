@@ -10,7 +10,7 @@ create_equal_alignment <- function(input_tree,
                                    focal_alignment,
                                    root_sequence,
                                    alt_model,
-                                   verbose) {
+                                   verbose = FALSE) {
 
   num_emp_subs <- sum(calc_dist(focal_alignment, root_sequence))
 
@@ -35,7 +35,7 @@ create_equal_alignment <- function(input_tree,
     rolling_avg[cnt] <- proposed_subs
     factor <- 1
     if (cnt >= 10) {
-      avg_sub <- mean(rolling_avg, na.rm = T)
+      avg_sub <- mean(rolling_avg, na.rm = TRUE)
       factor <- num_emp_subs / avg_sub
       adjusted_rate <- adjusted_rate * factor
       cnt <- 0
