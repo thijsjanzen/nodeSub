@@ -8,10 +8,11 @@ test_that("infer_phylogeny", {
 
   all_trees <- infer_phylogeny(seq_node_sub$alignment,
                                treatment_name = "test",
-                               burnin = 0.1)
+                               burnin = 0.1,
+                               mcmc_seed = 42)
   mcc_tree <- all_trees$mcc_tree
 
-  testthat::expect_lt(nLTT::nltt_diff(mcc_tree, phy), 0.05)
+  testthat::expect_lt(nLTT::nltt_diff(mcc_tree, phy), 0.01)
   phangorn_dist <- phangorn::RF.dist(mcc_tree, phy)[[1]]
   testthat::expect_equal(phangorn_dist, 0)
 })

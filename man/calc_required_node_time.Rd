@@ -5,8 +5,8 @@
 \title{calculate the required node time to obtain a % of all substitutions
 in the nodes}
 \usage{
-calc_required_node_time(phy, fraction, lambda = NULL, mu = NULL,
-  is_birth_death = FALSE, model = "parent")
+calc_required_node_time(phy, fraction = NULL, lambda = NULL,
+  mu = NULL, is_birth_death = FALSE, model = "parent")
 }
 \arguments{
 \item{phy}{phylogenetic tree}
