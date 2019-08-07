@@ -29,6 +29,7 @@ r_github_packages:
   - ropensci/babette
   - richelbilderbeek/mcbette
   - richelbilderbeek/nLTT
+  - richelbilderbeek/peregrine
 
 after_success:
   - Rscript -e 'lintr::lint_package()'
