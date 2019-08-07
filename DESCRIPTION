@@ -31,4 +31,5 @@ Imports: Rcpp,
          geiger,
          TreeSim,
          dplyr,
-         DDD
+         DDD,
+         peregrine

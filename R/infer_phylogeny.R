@@ -28,16 +28,21 @@ infer_phylogeny <- function(alignment,
 
   if(is.null(mcmc_seed)) mcmc_seed = as.numeric(Sys.time())
 
+
+  intended_options <-  beastier::create_beast2_options(
+    overwrite = TRUE,
+    beast2_working_dir = working_dir,
+    output_trees_filenames = paste0(treatment_name, ".trees"),
+    output_log_filename = paste0(treatment_name, ".log"),
+    rng_seed = mcmc_seed
+  )
+
+  intended_options <- peregrine::to_pff_beast2_options(intended_options)
+
   posterior <- babette::bbt_run_from_model(
     temp_file_name,
     inference_model,
-    beast2_options = beastier::create_beast2_options(
-      overwrite = TRUE,
-      beast2_working_dir = working_dir,
-      output_trees_filenames = paste0(treatment_name, ".trees"),
-      output_log_filename = paste0(treatment_name, ".log"),
-      rng_seed = mcmc_seed
-    )
+    beast2_options = intended_options
   )
 
   file.remove(temp_file_name)
@@ -49,7 +54,7 @@ infer_phylogeny <- function(alignment,
 
   esses <- tracerer::calc_esses(beast_log, sample_interval = 5000)
   if (min(esses) < 200) {
-    cat("WARNING! MCMC chain not converged!\n")
+    warning("WARNING! MCMC chain not converged!\n")
   }
 
   found_trees <- tracerer::parse_beast_trees(paste0(treatment_name, ".trees"))
