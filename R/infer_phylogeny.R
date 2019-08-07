@@ -31,16 +31,12 @@ infer_phylogeny <- function(alignment,
 
   intended_options <-  beastier::create_beast2_options(
     overwrite = TRUE,
-    beast2_working_dir = working_dir,
+    beast2_working_dir = getwd(),
     output_trees_filenames = paste0(treatment_name, ".trees"),
     output_log_filename = paste0(treatment_name, ".log"),
     rng_seed = mcmc_seed
   )
 
-  #if(!peregrine::check_pff_beast2_options(intended_options)) {
-  #  cat("intended options are wrong, changing following peregrine:")
-  #
-  #}
   cat(intended_options$beast2_working_dir, "\n")
   intended_options <- peregrine::to_pff_beast2_options(intended_options)
   cat("working dir updated to: \n")
