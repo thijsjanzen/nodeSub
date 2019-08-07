@@ -37,11 +37,14 @@ infer_phylogeny <- function(alignment,
     rng_seed = mcmc_seed
   )
 
-  if(!peregrine::check_pff_beast2_options(intended_options)) {
-    cat("intended options are wrong, changing following peregrine:")
-    intended_options <- peregrine::to_pff_beast2_options(intended_options)
-  }
-
+  #if(!peregrine::check_pff_beast2_options(intended_options)) {
+  #  cat("intended options are wrong, changing following peregrine:")
+  #
+  #}
+  cat(intended_options$beast2_working_dir, "\n")
+  intended_options <- peregrine::to_pff_beast2_options(intended_options)
+  cat("working dir updated to: \n")
+  cat(intended_options$beast2_working_dir, "\n")
 
 
   posterior <- babette::bbt_run_from_model(
