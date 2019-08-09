@@ -34,7 +34,8 @@ infer_phylogeny <- function(alignment,
     beast2_working_dir = getwd(),
     output_trees_filenames = paste0(treatment_name, ".trees"),
     output_log_filename = paste0(treatment_name, ".log"),
-    rng_seed = mcmc_seed
+    rng_seed = mcmc_seed,
+    verbose = TRUE
   )
 
   cat(intended_options$beast2_working_dir, "\n")
