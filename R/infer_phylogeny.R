@@ -26,7 +26,7 @@ infer_phylogeny <- function(alignment,
   temp_file_name <- "temp.fasta"
   phangorn::write.phyDat(alignment, file = temp_file_name, format = "fasta")
 
-  if(is.null(mcmc_seed)) mcmc_seed = as.numeric(Sys.time())
+  if(is.null(mcmc_seed)) mcmc_seed = round(as.numeric(Sys.time()))
 
 
   intended_options <-  beastier::create_beast2_options(
