@@ -40,6 +40,7 @@ infer_phylogeny <- function(alignment,
 
   cat(intended_options$beast2_working_dir, "\n")
   intended_options <- peregrine::to_pff_beast2_options(intended_options)
+
   cat("working dir updated to: \n")
   cat(intended_options$beast2_working_dir, "\n")
 
@@ -62,7 +63,9 @@ infer_phylogeny <- function(alignment,
     warning("WARNING! MCMC chain not converged!\n")
   }
 
-  found_trees <- tracerer::parse_beast_trees(paste0(treatment_name, ".trees"))
+  found_trees <- tracerer::parse_beast_trees(
+                              paste0(working_dir, "/", treatment_name, ".trees")
+                            )
   remaining <- floor(burnin * length(found_trees))
   found_trees <- found_trees[remaining:length(found_trees)]
 
