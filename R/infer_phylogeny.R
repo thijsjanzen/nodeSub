@@ -43,7 +43,7 @@ infer_phylogeny <- function(alignment,
 
   cat("working dir updated to: \n")
   cat(intended_options$beast2_working_dir, "\n")
-
+  working_dir <- intended_options$beast2_working_dir
 
   posterior <- babette::bbt_run_from_model(
     temp_file_name,
