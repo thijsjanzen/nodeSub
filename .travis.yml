@@ -29,6 +29,7 @@ r_github_packages:
   - ropensci/babette
   - richelbilderbeek/mcbette
   - richelbilderbeek/nLTT
+  - richelbilderbeek/pirouette
   - richelbilderbeek/peregrine
 
 after_success:
