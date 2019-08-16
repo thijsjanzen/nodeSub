@@ -31,7 +31,7 @@ infer_phylogeny <- function(alignment,
 
   intended_options <-  beastier::create_beast2_options(
     overwrite = TRUE,
-    beast2_working_dir = getwd(),
+    beast2_working_dir = working_dir,
     output_trees_filenames = paste0(working_dir, "/", treatment_name, ".trees"),
     output_log_filename = paste0(working_dir, "/", treatment_name, ".log"),
     rng_seed = mcmc_seed,
