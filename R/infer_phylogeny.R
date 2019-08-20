@@ -47,6 +47,8 @@ infer_phylogeny <- function(alignment,
   cat(intended_options$beast2_working_dir, "\n")
   working_dir <- intended_options$beast2_working_dir
 
+  setwd(working_dir)
+
   posterior <- babette::bbt_run_from_model(
     temp_file_name,
     inference_model,
@@ -69,6 +71,7 @@ infer_phylogeny <- function(alignment,
                               #paste0(working_dir, "/", treatment_name, ".trees")
                                paste0(treatment_name, ".trees")
                             )
+
   remaining <- floor(burnin * length(found_trees))
   found_trees <- found_trees[remaining:length(found_trees)]
 
