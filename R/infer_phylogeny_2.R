@@ -52,7 +52,6 @@ infer_phylogeny_2 <- function(alignment,
   }
 
   found_trees <- posterior$temp_trees
-  str(found_trees)
 
   remaining <- floor(burnin * length(found_trees))
   cat("remaining", remaining, "\n")
