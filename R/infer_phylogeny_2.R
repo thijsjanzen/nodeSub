@@ -51,7 +51,7 @@ infer_phylogeny_2 <- function(alignment,
     warning("WARNING! MCMC chain not converged!\n")
   }
 
-  found_trees <- posterior$test_output_0_trees
+  found_trees <- posterior$temp_trees
   str(found_trees)
 
   remaining <- floor(burnin * length(found_trees))
