@@ -10,13 +10,13 @@
 #' @export
 infer_phylogeny <- function(alignment,
                             treatment_name,
-                        inference_model = beautier::create_inference_model(
-                          site_model = beautier::create_jc69_site_model(),
-                          clock_model = beautier::create_strict_clock_model(),
-                          tree_prior = beautier::create_yule_tree_prior(),
-                          mcmc = beautier::create_mcmc(chain_length = 1e6,
-                                                       store_every = 5000)
-                        ),
+                            inference_model = beautier::create_inference_model(
+                              site_model = beautier::create_jc69_site_model(),
+                              clock_model = beautier::create_strict_clock_model(),
+                              tree_prior = beautier::create_yule_tree_prior(),
+                              mcmc = beautier::create_mcmc(chain_length = 1e6,
+                                                           store_every = 5000)
+                            ),
                             mcmc_seed = NULL,
                             burnin,
                             working_dir = NULL)  {
@@ -28,31 +28,15 @@ infer_phylogeny <- function(alignment,
 
   if(is.null(mcmc_seed)) mcmc_seed = round(as.numeric(Sys.time()))
 
-
-  intended_options <-  beastier::create_beast2_options(
-    overwrite = TRUE,
-    beast2_working_dir = working_dir,
-   # output_trees_filenames = paste0(working_dir, "/", treatment_name, ".trees"),
-  #  output_log_filename = paste0(working_dir, "/", treatment_name, ".log"),
-    output_trees_filenames = paste0(treatment_name, ".trees"),
-    output_log_filename = paste0(treatment_name, ".log"),
-    rng_seed = mcmc_seed,
-    verbose = TRUE
+  beast2_options <- peregrine::create_pff_beast2_options(
+    #output_trees_filenames = paste0(treatment_name, ".trees"),
+    #output_log_filename = paste0(treatment_name, ".log"),
   )
 
-  cat(intended_options$beast2_working_dir, "\n")
-  intended_options <- peregrine::to_pff_beast2_options(intended_options)
-
-  cat("working dir updated to: \n")
-  cat(intended_options$beast2_working_dir, "\n")
-  working_dir <- intended_options$beast2_working_dir
-
-  #setwd(working_dir)
-
   posterior <- babette::bbt_run_from_model(
-    temp_file_name,
-    inference_model,
-    beast2_options = intended_options
+    fasta_filename = temp_file_name,
+    inference_model = inference_model,
+    beast2_options = beast2_options
   )
 
   file.remove(temp_file_name)
@@ -67,12 +51,11 @@ infer_phylogeny <- function(alignment,
     warning("WARNING! MCMC chain not converged!\n")
   }
 
-  found_trees <- tracerer::parse_beast_trees(
-                              paste0(working_dir, "/", treatment_name, ".trees")
-                              # paste0(treatment_name, ".trees")
-                            )
+  found_trees <- posterior$temp_trees
 
   remaining <- floor(burnin * length(found_trees))
+  cat("remaining", remaining, "\n")
+  cat("total_trees", length(found_trees), "\n")
   found_trees <- found_trees[remaining:length(found_trees)]
 
   consensus_tree <-  phangorn::maxCladeCred(found_trees)
