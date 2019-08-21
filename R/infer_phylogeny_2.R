@@ -52,8 +52,11 @@ infer_phylogeny_2 <- function(alignment,
   }
 
   found_trees <- posterior$test_output_0_trees
+  str(found_trees)
 
   remaining <- floor(burnin * length(found_trees))
+  cat("remaining", remaining, "\n")
+  cat("total_trees", length(found_trees), "\n")
   found_trees <- found_trees[remaining:length(found_trees)]
 
   consensus_tree <-  phangorn::maxCladeCred(found_trees)
