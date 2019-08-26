@@ -31,7 +31,9 @@ calc_all_stats <- function(focal_tree) {
 
 #' calculate summary statistics compared with a reference tree
 #' @param trees a phyloList object containing multiple trees
-#' @param true_tree a phylo object containing the reference tree
+#' @param true_tree a phylo object containing the reference tree, preferably
+#'                  without extinct lineages. If extinct lineages are found,
+#'                  these are dropped.
 #' @param verbose verbose output if true (e.g. progressbars)
 #' @return list with two tibbles
 #' 1) containing the summary statistics of all trees and
@@ -40,6 +42,11 @@ calc_all_stats <- function(focal_tree) {
 calc_sum_stats <- function(trees,
                            true_tree,
                            verbose = FALSE) {
+
+  if(length(geiger::is.extinct(true_tree) > 0)) {
+    warning("Found extinct lineages, removed these from tree\n")
+    true_tree <- geiger::drop.extinct(true_tree)
+  }
   sum_stats_true_tree <- calc_all_stats(true_tree)
   sum_stats_trees <- list()
   if (!verbose) sum_stats_trees <- lapply(trees, calc_all_stats)

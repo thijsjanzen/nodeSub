@@ -28,10 +28,17 @@ infer_phylogeny <- function(alignment,
 
   if(is.null(mcmc_seed)) mcmc_seed = round(as.numeric(Sys.time()))
 
-  beast2_options <- peregrine::create_pff_beast2_options(
-    #output_trees_filenames = paste0(treatment_name, ".trees"),
-    #output_log_filename = paste0(treatment_name, ".log"),
+  beast2_options <- beastier::create_beast2_options(
+    output_trees_filenames = paste0(treatment_name, ".trees"),
+    output_log_filename = paste0(treatment_name, ".log"),
   )
+
+  if(peregrine::is_on_peregrine()) {
+    beast2_options <- peregrine::create_pff_beast2_options(
+      #output_trees_filenames = paste0(treatment_name, ".trees"),
+      #output_log_filename = paste0(treatment_name, ".log"),
+    )
+  }
 
   posterior <- babette::bbt_run_from_model(
     fasta_filename = temp_file_name,
