@@ -25,25 +25,42 @@ create_equal_alignment <- function(input_tree,
                                   root_sequence)$alignment
 
   proposed_subs <- sum(calc_dist(proposed_alignment, root_sequence))
-  rolling_avg <- rep(NA, 9)
   cnt <- 1
-  while (proposed_subs != num_emp_subs) {
+
+  propose_alignments <- function(buffer, focal_rate) {
     proposed_alignment <- alt_model(phy = input_tree,
-                                    rate = adjusted_rate,
+                                    rate = focal_rate,
                                     rootseq = root_sequence)$alignment
-    proposed_subs <- sum(calc_dist(proposed_alignment, root_sequence))
-    rolling_avg[cnt] <- proposed_subs
-    factor <- 1
-    if (cnt >= 10) {
-      avg_sub <- mean(rolling_avg, na.rm = TRUE)
-      factor <- num_emp_subs / avg_sub
-      adjusted_rate <- adjusted_rate * factor
-      cnt <- 0
-    }
-    if (verbose) cat(cnt, adjusted_rate, proposed_subs, num_emp_subs,
-                     factor, "\n")
-    cnt <- cnt + 1
+    return(proposed_alignment)
   }
+
+  calc_subs <- function(local_alignment) {
+    sum(calc_dist(local_alignment, root_sequence))
+  }
+
+  stored_factor <- 0
+  while (proposed_subs != num_emp_subs) {
+
+    alignments <- vector("list", 10)
+    if(abs(stored_factor - 1) < 0.01) alignments <- vector("list", 100)
+    alignments <- lapply(alignments, propose_alignments, adjusted_rate)
+    all_subs <- unlist(lapply(alignments, calc_subs))
+
+    if(sum(all_subs == num_emp_subs)) {
+      a <- which(all_subs == num_emp_subs)
+      return(list("alignment" = alignments[[a]],
+                  "rate" = adjusted_rate))
+    } else {
+      avg_sub <- mean(all_subs, na.rm = TRUE)
+      factor <- num_emp_subs / avg_sub
+      stored_factor <- factor
+      adjusted_rate <- adjusted_rate * factor
+    }
+    cnt <- cnt + length(all_subs)
+    if (verbose) cat(cnt, adjusted_rate, mean(all_subs, na.rm = TRUE),
+                     num_emp_subs, factor, "\n")
+  }
+
   return(list("alignment" = proposed_alignment,
               "rate" = adjusted_rate))
 }
