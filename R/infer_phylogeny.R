@@ -67,8 +67,13 @@ infer_phylogeny <- function(alignment,
 
   consensus_tree <-  phangorn::maxCladeCred(found_trees)
 
+
+  file.remove(beast2_options$output_log_filename)
+  file.remove(beast2_options$output_trees_filenames)
+  file.remove(beast2_options$output_state_filename)
+
   output <- list("all_trees" = found_trees,
-                 "mcc_tree" = consensus_tree)
+                 "mcc_tree"  = consensus_tree)
 
   return(output)
 }
