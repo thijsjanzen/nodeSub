@@ -42,11 +42,11 @@ create_equal_alignment <- function(input_tree,
   while (proposed_subs != num_emp_subs) {
 
     alignments <- vector("list", 10)
-    if(abs(stored_factor - 1) < 0.01) alignments <- vector("list", 100)
+    if (abs(stored_factor - 1) < 0.01) alignments <- vector("list", 100)
     alignments <- lapply(alignments, propose_alignments, adjusted_rate)
     all_subs <- unlist(lapply(alignments, calc_subs))
 
-    if(sum(all_subs == num_emp_subs)) {
+    if (sum(all_subs == num_emp_subs)) {
       a <- which(all_subs == num_emp_subs)
       return(list("alignment" = alignments[[a]],
                   "rate" = adjusted_rate))

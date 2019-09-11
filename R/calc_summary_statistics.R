@@ -43,7 +43,7 @@ calc_sum_stats <- function(trees,
                            true_tree,
                            verbose = FALSE) {
 
-  if(length(geiger::is.extinct(true_tree) > 0)) {
+  if (length(geiger::is.extinct(true_tree) > 0)) {
     warning("Found extinct lineages, removed these from tree\n")
     true_tree <- geiger::drop.extinct(true_tree)
   }

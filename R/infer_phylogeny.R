@@ -9,31 +9,31 @@
 #' @return list with all trees, and the consensus tree
 #' @export
 infer_phylogeny <- function(alignment,
-                            treatment_name,
-                            inference_model = beautier::create_inference_model(
-                              site_model = beautier::create_jc69_site_model(),
-                              clock_model = beautier::create_strict_clock_model(),
-                              tree_prior = beautier::create_yule_tree_prior(),
-                              mcmc = beautier::create_mcmc(chain_length = 1e6,
-                                                           store_every = 5000)
-                            ),
-                            mcmc_seed = NULL,
-                            burnin,
-                            working_dir = NULL)  {
+                          treatment_name,
+                          inference_model = beautier::create_inference_model(
+                            site_model = beautier::create_jc69_site_model(),
+                            clock_model = beautier::create_strict_clock_model(),
+                            tree_prior = beautier::create_yule_tree_prior(),
+                            mcmc = beautier::create_mcmc(chain_length = 1e6,
+                                                         store_every = 5000)
+                          ),
+                          mcmc_seed = NULL,
+                          burnin,
+                          working_dir = NULL)  {
 
   if (is.null(working_dir)) working_dir <- getwd()
 
   temp_file_name <- "temp.fasta"
   phangorn::write.phyDat(alignment, file = temp_file_name, format = "fasta")
 
-  if(is.null(mcmc_seed)) mcmc_seed = round(as.numeric(Sys.time()))
+  if (is.null(mcmc_seed)) mcmc_seed <- round(as.numeric(Sys.time()))
 
   beast2_options <- beastier::create_beast2_options(
     output_trees_filenames = paste0(treatment_name, ".trees"),
     output_log_filename = paste0(treatment_name, ".log"),
   )
 
-  if(peregrine::is_on_peregrine()) {
+  if (peregrine::is_on_peregrine()) {
     beast2_options <- peregrine::create_pff_beast2_options(
       #output_trees_filenames = paste0(treatment_name, ".trees"),
       #output_log_filename = paste0(treatment_name, ".log"),
