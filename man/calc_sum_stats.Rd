@@ -9,7 +9,9 @@ calc_sum_stats(trees, true_tree, verbose = FALSE)
 \arguments{
 \item{trees}{a phyloList object containing multiple trees}
 
-\item{true_tree}{a phylo object containing the reference tree}
+\item{true_tree}{a phylo object containing the reference tree, preferably
+without extinct lineages. If extinct lineages are found,
+these are dropped.}
 
 \item{verbose}{verbose output if true (e.g. progressbars)}
 }
