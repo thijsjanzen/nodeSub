@@ -39,6 +39,9 @@ estimate_marginal_models <- function(fasta_filename,
   tree_prior_names <- rep(NA, n_rows)
   marg_log_liks <- rep(NA, n_rows)
   marg_log_lik_sds <- rep(NA, n_rows)
+
+  file_paths <- peregrine::create_pff_beast2_options()
+
   row_index <- 1
   for (site_model in site_models) {
     for (clock_model in clock_models) {
@@ -50,9 +53,9 @@ estimate_marginal_models <- function(fasta_filename,
                                        tree_prior = tree_prior,
                                        mcmc = beautier::create_mcmc_nested_sampling(epsilon = epsilon),
                                        beast2_path = beastier::get_default_beast2_bin_path(),
-                                       beast2_output_log_filename = "local.log",
-                                       beast2_output_trees_filenames = "local.trees",
-                                       beast2_output_state_filename = "local.state",
+                                       beast2_output_log_filename = file_paths$output_log_filename,
+                                       beast2_output_trees_filenames = file_paths$output_trees_filenames,
+                                       beast2_output_state_filename = file_paths$output_state_filename,
                                        rng_seed = rng_seed,
                                        overwrite = TRUE)$ns
           marg_log_liks[row_index] <- marg_lik$marg_log_lik
@@ -72,8 +75,16 @@ estimate_marginal_models <- function(fasta_filename,
       }
     }
   }
-  weights <- as.numeric(calc_weights(marg_liks = exp(Rmpfr::mpfr(marg_log_liks,
-                                                                 256))))
+
+  calc_w <- function(v) {
+    a <- exp(-0.5 *  Rmpfr::mpfr(marg_log_liks, 256))
+    b <- a / sum(a)
+    return(b)
+  }
+
+
+  weights <- as.numeric(calc_w(marg_liks) )
+
   df <- data.frame(site_model_name = site_model_names, clock_model_name = clock_model_names,
                    tree_prior_name = tree_prior_names, marg_log_lik = marg_log_liks,
                    marg_log_lik_sd = marg_log_lik_sds, weight = weights)

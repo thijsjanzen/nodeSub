@@ -46,6 +46,12 @@ infer_phylogeny <- function(alignment,
     beast2_options = beast2_options
   )
 
+
+
+
+
+
+
   file.remove(temp_file_name)
 
   beast_log <- tracerer::remove_burn_ins(
