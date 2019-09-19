@@ -10,7 +10,6 @@ estimate_marginal_models <- function(fasta_filename,
                                      rng_seed = 42,
                                      verbose = FALSE) {
 
-  epsilon = 1e-12
   site_models = list(beautier::create_jc69_site_model())
   clock_models = beautier::create_clock_models()
   tree_priors = list(beautier::create_bd_tree_prior())
@@ -26,10 +25,7 @@ estimate_marginal_models <- function(fasta_filename,
   beautier::check_site_models(site_models)
   beautier::check_clock_models(clock_models)
   beautier::check_tree_priors(tree_priors)
-  if (!is.numeric(epsilon) || length(epsilon) != 1) {
-    stop("'epsilon' must be one numerical value. Actual value(s): ",
-         epsilon)
-  }
+
   testit::assert(file.exists(fasta_filename))
   testit::assert(beastier::is_beast2_installed())
   testit::assert(mauricer::is_beast2_pkg_installed("NS"))
@@ -40,26 +36,42 @@ estimate_marginal_models <- function(fasta_filename,
   marg_log_liks <- rep(NA, n_rows)
   marg_log_lik_sds <- rep(NA, n_rows)
 
-  beast2_file_paths <- peregrine::create_pff_beast2_options()
+  #beast2_file_paths <- peregrine::create_pff_beast2_options()
 
-  beast2_file_paths$output_log_filename <- "output_log.txt"
-  beast2_file_paths$output_trees_filenames <- "output_trees.txt"
-  beast2_file_paths$output_state_filename <- "output_state.txt"
+ # beast2_file_paths$output_log_filename <- "output_log.txt"
+#  beast2_file_paths$output_trees_filenames <- "output_trees.txt"
+#  beast2_file_paths$output_state_filename <- "output_state.txt"
+
+  beast2_options <- peregrine::create_pff_beast2_options()
 
   row_index <- 1
   for (site_model in site_models) {
     for (clock_model in clock_models) {
       for (tree_prior in tree_priors) {
         tryCatch({
+          #marg_lik <- babette::bbt_run(fasta_filename = fasta_filename,
+          #                             site_model = site_model,
+          #                             clock_model = clock_model,
+          #                             tree_prior = tree_prior,
+          #                             mcmc = beautier::create_mcmc_nested_sampling(chain_length = 1e4),
+          #                             beast2_path = beastier::get_default_beast2_bin_path(),
+          #                             beast2_output_log_filename = beast2_file_paths$output_log_filename,
+          #                             beast2_output_trees_filenames = beast2_file_paths$output_trees_filenames,
+          #                             beast2_output_state_filename = beast2_file_paths$output_state_filename,
+          #                             rng_seed = rng_seed,
+          #                             overwrite = TRUE)$ns
+
           marg_lik <- babette::bbt_run(fasta_filename = fasta_filename,
                                        site_model = site_model,
                                        clock_model = clock_model,
                                        tree_prior = tree_prior,
-                                       mcmc = beautier::create_mcmc_nested_sampling(epsilon = epsilon),
-                                       beast2_path = beastier::get_default_beast2_bin_path(),
-                                       beast2_output_log_filename = beast2_file_paths$output_log_filename,
-                                       beast2_output_trees_filenames = beast2_file_paths$output_trees_filenames,
-                                       beast2_output_state_filename = beast2_file_paths$output_state_filename,
+                                       mcmc = beautier::create_mcmc_nested_sampling(chain_length = 1e4),
+                                       beast2_path = beast2_options$beast2_path,
+                                       beast2_output_log_filename = beast2_options$output_log_filename,
+                                       beast2_output_trees_filenames = beast2_options$output_trees_filenames,
+                                       beast2_output_state_filename = beast2_options$output_state_filename,
+                                       beast2_working_dir = beast2_options$beast2_working_dir,
+                                       beast2_input_filename = beast2_options$input_filename,
                                        rng_seed = rng_seed,
                                        overwrite = TRUE)$ns
           marg_log_liks[row_index] <- marg_lik$marg_log_lik
