@@ -33,4 +33,6 @@ Imports: Rcpp,
          DDD,
          Rmpfr,
          peregrine,
-         mcbette
+         mcbette,
+         mauricer,
+         rappdirs
