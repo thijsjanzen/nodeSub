@@ -32,4 +32,5 @@ Imports: Rcpp,
          dplyr,
          DDD,
          Rmpfr,
-         peregrine
+         peregrine,
+         mcbette
