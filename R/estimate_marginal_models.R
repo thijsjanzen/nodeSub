@@ -65,7 +65,7 @@ estimate_marginal_models <- function(fasta_filename,
                                        site_model = site_model,
                                        clock_model = clock_model,
                                        tree_prior = tree_prior,
-                                       mcmc = beautier::create_mcmc_nested_sampling(chain_length = 1e4),
+                                       mcmc = beautier::create_mcmc_nested_sampling(),
                                        beast2_path = beastier::get_default_beast2_bin_path(),
                                        beast2_output_log_filename = beast2_options$output_log_filename,
                                        beast2_output_trees_filenames = beast2_options$output_trees_filenames,
@@ -92,18 +92,10 @@ estimate_marginal_models <- function(fasta_filename,
     }
   }
 
-  calc_w <- function(v) {
-    v <- v - max(v)
-    a <- exp(-0.5 * v)
-    b <- a / sum(a)
-    return(b)
 
-    #a <- exp(-0.5 *  Rmpfr::mpfr(marg_log_liks, 256))
-    #b <- a / sum(a)
-    #return(b)
-  }
 
-  weights <- as.numeric(calc_w(marg_log_liks) )
+  weights <- as.numeric(mcbette::calc_weights(marg_liks = exp(Rmpfr::mpfr(marg_log_liks,
+                                                                 256))))
 
   df <- data.frame(site_model_name = site_model_names, clock_model_name = clock_model_names,
                    tree_prior_name = tree_prior_names, marg_log_lik = marg_log_liks,
