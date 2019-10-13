@@ -33,7 +33,6 @@ Imports:
     dplyr,
     DDD,
     Rmpfr,
-    peregrine,
     mcbette,
     mauricer,
     rappdirs
