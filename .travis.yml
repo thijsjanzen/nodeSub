@@ -34,7 +34,7 @@ before_install:
   
 before_script:
   - # BEAST2
-  - Rscript -e "beastier::install_beast2()"
+  - # Rscript -e "beastier::install_beast2()"
 
 script:
   - travis_wait 60 R CMD build .
