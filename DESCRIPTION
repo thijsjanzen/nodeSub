@@ -1,7 +1,7 @@
 Package: nodeSub
 Type: Package
 Title: Simulate Sequences
-Version: 0.3.0
+Version: 0.4.0
 Author: Thijs Janzen
 Maintainer: Thijs Janzen <thijsjanzen@gmail.com>
 Description: Simulate DNA sequences under different models.
@@ -11,28 +11,28 @@ LazyData: true
 RoxygenNote: 6.1.1
 LinkingTo: 
     Rcpp
-Imports: Rcpp,
-         phangorn, 
-         testit, 
-         stringr,
-         testthat,
-         MASS,
-         phytools,
-         beautier,
-         beastier (>= 2.0.18),
-         babette,
-         tracerer,
-         ape,
-         nLTT,
-         apTreeshape,
-         tibble,
-         pbapply,
-         geiger,
-         TreeSim,
-         dplyr,
-         DDD,
-         Rmpfr,
-         peregrine,
-         mcbette,
-         mauricer,
-         rappdirs
+Imports: 
+    Rcpp,
+    phangorn, 
+    testit, 
+    stringr,
+    testthat,
+    MASS,
+    phytools,
+    beautier,
+    beastier (>= 2.0.18),
+    babette,
+    tracerer,
+    ape,
+    nLTT,
+    apTreeshape,
+    tibble,
+    pbapply,
+    geiger,
+    TreeSim,
+    dplyr,
+    DDD,
+    Rmpfr,
+    mcbette,
+    mauricer,
+    rappdirs

@@ -38,7 +38,11 @@ estimate_marginal_models <- function(fasta_filename,
   marg_log_liks <- rep(NA, n_rows)
   marg_log_lik_sds <- rep(NA, n_rows)
 
-  beast2_options <- peregrine::create_pff_beast2_options()
+  # @thijsjanzen
+  # Remove circular dependency: pirouette must depend on nodeSub,
+  # so nodeSub cannot depend on Peregrine -> razzo -> pirouette
+  # beast2_options <- peregrine::create_pff_beast2_options()  # nolint this is commented-out code indeed
+  beast2_options <- beastier::create_beast2_options()
 
   row_index <- 1
   for (site_model in site_models) {
