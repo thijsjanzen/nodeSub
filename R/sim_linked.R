@@ -17,6 +17,14 @@ sim_linked <- function(phy,
                        bf = NULL,
                        rootseq = NULL,
                        node_time = 0.01) {
+  if (!is.null(rootseq) && length(rootseq) != l) {
+    stop(
+      "'rootseq' must have the same length as 'l'. \n",
+      "length 'rootseq': ", length(rootseq), " \n",
+      "value of 'l': ", l, " \n"
+    )
+  }
+
   levels <- c("a", "c", "g", "t")
   lbf <- length(levels)
 
