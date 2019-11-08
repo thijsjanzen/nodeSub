@@ -14,7 +14,7 @@ infer_phylogeny <- function(alignment,
                             site_model = beautier::create_jc69_site_model(),
                             clock_model = beautier::create_strict_clock_model(),
                             tree_prior = beautier::create_yule_tree_prior(),
-                            mcmc = beautier::create_mcmc(chain_length = 1e6,
+                            mcmc = beautier::create_mcmc(chain_length = 1e7,
                                                          store_every = 5000)
                           ),
                           mcmc_seed = NULL,
@@ -37,21 +37,15 @@ infer_phylogeny <- function(alignment,
   # Remove circular dependency: pirouette must depend on nodeSub,
   # so nodeSub cannot depend on Peregrine -> razzo -> pirouette
   # Removed:
-  # if (peregrine::is_on_peregrine()) { # nolint this is commented-out code indeed
-  #  beast2_options <- peregrine::create_pff_beast2_options() # nolint this is commented-out code indeed
-  # } # nolint this is commented-out code indeed
+   if (peregrine::is_on_peregrine()) { # nolint this is commented-out code indeed
+    beast2_options <- peregrine::create_pff_beast2_options() # nolint this is commented-out code indeed
+   } # nolint this is commented-out code indeed
 
   posterior <- babette::bbt_run_from_model(
     fasta_filename = temp_file_name,
     inference_model = inference_model,
     beast2_options = beast2_options
   )
-
-
-
-
-
-
 
   file.remove(temp_file_name)
 
