@@ -37,9 +37,9 @@ infer_phylogeny <- function(alignment,
   # Remove circular dependency: pirouette must depend on nodeSub,
   # so nodeSub cannot depend on Peregrine -> razzo -> pirouette
   # Removed:
-   if (peregrine::is_on_peregrine()) { # nolint this is commented-out code indeed
-    beast2_options <- peregrine::create_pff_beast2_options() # nolint this is commented-out code indeed
-   } # nolint this is commented-out code indeed
+ #  if (peregrine::is_on_peregrine()) { # nolint this is commented-out code indeed
+#    beast2_options <- peregrine::create_pff_beast2_options() # nolint this is commented-out code indeed
+ #  } # nolint this is commented-out code indeed
 
   posterior <- babette::bbt_run_from_model(
     fasta_filename = temp_file_name,
