@@ -1,0 +1,44 @@
+#' function to remove speciation events occuring after an extinction event.
+#' Extinct species are pruned randomly, such that only a single extinct species
+#' per branching event (if any extinct species) remains.
+#' @param tree phylo object
+#' @return pruned tree
+#' @export
+reduce_tree <- function(tree) {
+  num_extant_species <- length(geiger::drop.extinct(tree)$tip.label)
+
+  extinct_species <- tree$tip.label[(num_extant_species+1):length(tree$tip.label)]
+
+  root_node <- min(tree$edge[, 1])
+  all_nodes <- unique(tree$edge[, 1])
+
+  for (n in all_nodes) {
+    desc <- names(phylobase::descendants(phylobase::phylo4(tree),
+                                         n,
+                                         "children"))
+
+    b <- desc[ desc %in% extinct_species]
+    if (length(b) > 1) {
+      for (i in 2:length(b)) {
+        tree <- ape::drop.tip(tree, b[[i]])
+      }
+      return(reduce_tree(tree))
+    } else {
+      if(n == root_node && length(b) == 1)  {
+        tree <- ape::drop.tip(tree, b[[1]])
+        return(reduce_tree(tree))
+      }
+    }
+  }
+  return(tree)
+}
+
+#' function to calculate the number of hidden speication events
+#' @param tree phylo object
+#' @return number of hidden speciation eventsß
+#' @export
+count_hidden <- function(tree) {
+  reduced_tree <- reduce_tree(tree)
+  num_extinct_taxa <- length(geiger::is.extinct(reduced_tree))
+  return(num_extinct_taxa)
+}

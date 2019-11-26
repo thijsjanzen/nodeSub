@@ -19,7 +19,6 @@ r_github_packages:
   - richelbilderbeek/nLTT
   - rsetienne/PBD/PBD
   - richelbilderbeek/becosys
-  - thijsjanzen/nodeSub
 
 before_install:
   # ImageMagick
