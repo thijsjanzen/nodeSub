@@ -7,6 +7,10 @@
 reduce_tree <- function(tree) {
   num_extant_species <- length(geiger::drop.extinct(tree)$tip.label)
 
+  if(num_extant_species == length(tree$tip.label)) {
+    return(tree)
+  }
+
   extinct_species <- tree$tip.label[(num_extant_species+1):length(tree$tip.label)]
 
   root_node <- min(tree$edge[, 1])
