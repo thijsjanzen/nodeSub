@@ -4,8 +4,7 @@
 \alias{sim_normal}
 \title{Simulate sequences.}
 \usage{
-sim_normal(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
-  rate = 1)
+sim_normal(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL, rate = 1)
 }
 \arguments{
 \item{x}{a phylogenetic tree \code{tree}, i.e. an object of class

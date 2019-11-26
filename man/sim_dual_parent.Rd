@@ -4,8 +4,17 @@
 \alias{sim_dual_parent}
 \title{simulate a sequence assuming node substitutions are shared among the offspring}
 \usage{
-sim_dual_parent(phy, Q1 = NULL, Q2 = NULL, rate1 = 1, rate2 = 1,
-  l = 1000, bf = NULL, rootseq = NULL, node_time = 0.001)
+sim_dual_parent(
+  phy,
+  Q1 = NULL,
+  Q2 = NULL,
+  rate1 = 1,
+  rate2 = 1,
+  l = 1000,
+  bf = NULL,
+  rootseq = NULL,
+  node_time = 0.001
+)
 }
 \arguments{
 \item{phy}{tree for which to simulate sequences}

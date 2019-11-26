@@ -5,8 +5,14 @@
 \title{calculate the expected time spent on the node
 in the nodes}
 \usage{
-calc_time_spent_at_node(phy, node_time = NULL, lambda = NULL,
-  mu = NULL, is_birth_death = FALSE, model = "parent")
+calc_time_spent_at_node(
+  phy,
+  node_time = NULL,
+  lambda = NULL,
+  mu = NULL,
+  is_birth_death = FALSE,
+  model = "parent"
+)
 }
 \arguments{
 \item{phy}{phylogenetic tree}

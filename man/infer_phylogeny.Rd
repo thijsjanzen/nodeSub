@@ -4,13 +4,18 @@
 \alias{infer_phylogeny}
 \title{infer the time calibrated phylogeny associated with the}
 \usage{
-infer_phylogeny(alignment, treatment_name,
+infer_phylogeny(
+  alignment,
+  treatment_name,
   inference_model = beautier::create_inference_model(site_model =
-  beautier::create_jc69_site_model(), clock_model =
-  beautier::create_strict_clock_model(), tree_prior =
-  beautier::create_yule_tree_prior(), mcmc =
-  beautier::create_mcmc(chain_length = 1e+06, store_every = 5000)),
-  mcmc_seed = NULL, burnin, working_dir = NULL)
+    beautier::create_jc69_site_model(), clock_model =
+    beautier::create_strict_clock_model(), tree_prior =
+    beautier::create_yule_tree_prior(), mcmc = beautier::create_mcmc(chain_length = 1e+07,
+    store_every = 5000)),
+  mcmc_seed = NULL,
+  burnin,
+  working_dir = NULL
+)
 }
 \arguments{
 \item{alignment}{Phydat object containing the focal alignment}

@@ -4,8 +4,13 @@
 \alias{create_equal_alignment}
 \title{function create an alignment with highly similar information content}
 \usage{
-create_equal_alignment(input_tree, focal_alignment, root_sequence,
-  alt_model, verbose = FALSE)
+create_equal_alignment(
+  input_tree,
+  focal_alignment,
+  root_sequence,
+  alt_model,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{input_tree}{phylogeny for which to generate alignment}
