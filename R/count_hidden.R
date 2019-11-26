@@ -28,7 +28,7 @@ reduce_tree <- function(tree) {
         tree <- ape::drop.tip(tree, b[[1]])
         return(reduce_tree(tree))
       }
-    }ß
+    }
   }
   return(tree)
 }
