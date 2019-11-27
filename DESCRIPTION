@@ -35,4 +35,5 @@ Imports:
     Rmpfr,
     mcbette,
     mauricer,
-    rappdirs
+    rappdirs,
+    phylobase
