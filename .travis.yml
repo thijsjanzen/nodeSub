@@ -10,11 +10,7 @@ r_github_packages:
   - jimhester/covr
   - jimhester/lintr
   - MangoTheCat/goodpractice
-  - ropensci/beautier@develop
-  - ropensci/tracerer
-  - ropensci/beastier@develop
-  - ropensci/mauricer
-  - ropensci/babette@develop
+  - ropensci/babette
   - richelbilderbeek/mcbette@develop
   - rsetienne/PBD/PBD
   - richelbilderbeek/becosys
