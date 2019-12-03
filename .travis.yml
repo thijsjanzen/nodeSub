@@ -16,7 +16,6 @@ r_github_packages:
   - ropensci/mauricer
   - ropensci/babette@develop
   - richelbilderbeek/mcbette@develop
-  - richelbilderbeek/nLTT
   - rsetienne/PBD/PBD
   - richelbilderbeek/becosys
 
