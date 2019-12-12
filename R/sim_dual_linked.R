@@ -165,6 +165,14 @@ sim_dual_linked <- function(phy,
   total_node_subs <- 0
   total_branch_subs <- 0
 
+  phy_no_extinct <- geiger::drop.extinct(phy)
+
+  check_to_extinct_tip <- function(number) {
+    if(number > length(phy$tip.label)) return(TRUE)
+    if(number <= length(phy_no_extinct$tip.label)) return(TRUE)
+    return(FALSE)
+  }
+
   for (focal_parent in parents) {
     # given parent alignment
     # generate two children aligments
@@ -179,7 +187,8 @@ sim_dual_linked <- function(phy,
 
     node_subs_1 <- sum(res[, focal_parent] != result[[1]])
     node_subs_2 <- sum(res[, focal_parent] != result[[2]])
-    total_node_subs <- total_node_subs + node_subs_1 + node_subs_2
+    node_subs <- c(node_subs_1, node_subs_2)
+   # total_node_subs <- total_node_subs + node_subs_1 + node_subs_2
 
     indices <- which(parent == focal_parent)
     for (i in 1:2) {
@@ -197,7 +206,11 @@ sim_dual_linked <- function(phy,
       }
       res[, offspring[i]] <- after_mut_seq
       branch_subs <- sum(after_mut_seq != before_mut_seq)
-      total_branch_subs <- total_branch_subs + branch_subs
+
+      if(check_to_extinct_tip(offspring[i])) {
+            total_branch_subs <- total_branch_subs + branch_subs
+            total_node_subs   <- total_node_subs + node_subs[i]
+      }
     }
   }
 

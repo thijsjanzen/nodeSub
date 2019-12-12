@@ -5,13 +5,14 @@
 #' @return pruned tree
 #' @export
 reduce_tree <- function(tree) {
-  num_extant_species <- length(geiger::drop.extinct(tree)$tip.label)
+  extant_species <- geiger::drop.extinct(tree)$tip.label
+  num_extant_species <- length(extant_species)
 
   if(num_extant_species == length(tree$tip.label)) {
     return(tree)
   }
 
-  extinct_species <- tree$tip.label[(num_extant_species+1):length(tree$tip.label)]
+  extinct_species <- tree$tip.label[!(tree$tip.label %in% extant_species)]
 
   root_node <- min(tree$edge[, 1])
   all_nodes <- unique(tree$edge[, 1])

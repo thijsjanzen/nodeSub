@@ -4,14 +4,7 @@
 \alias{calc_required_node_time}
 \title{calculate the required node time to obtain a desired fraction of substitions at the node}
 \usage{
-calc_required_node_time(
-  phy = NULL,
-  num_tips = NULL,
-  s,
-  model = "unlinked",
-  lambda = NULL,
-  mu = NULL
-)
+calc_required_node_time(phy = NULL, num_tips = NULL, s, model = "unlinked")
 }
 \arguments{
 \item{phy}{phylogenetic tree (optional)}
@@ -21,10 +14,6 @@ calc_required_node_time(
 \item{s}{desired fraction}
 
 \item{model}{node substitution model}
-
-\item{lambda}{the birth rate to generate the phylogenetic tree}
-
-\item{mu}{the death rate to generate the phylogenetic tree}
 }
 \value{
 expected fraction
