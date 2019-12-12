@@ -1,12 +1,16 @@
 #' function create an alignment with highly similar information content
 #' @param input_tree phylogeny for which to generate alignment
 #' @param focal_alignment alignment to match information content with
+#' @param fraction fraction of time spent on the nodes
+#' @param sub_rate substitution rate used in the original phylogeny
 #' @param alt_model alternative substitution model
 #' @param root_sequence root sequence
 #' @param verbose provide intermediate output
 #' @return list with alignment and inferred rate
 #' @export
 create_equal_alignment <- function(input_tree,
+                                   fraction,
+                                   sub_rate,
                                    focal_alignment,
                                    root_sequence,
                                    alt_model,
@@ -14,11 +18,8 @@ create_equal_alignment <- function(input_tree,
 
   num_emp_subs <- sum(calc_dist(focal_alignment, root_sequence))
 
-  t_mrca <- calc_tree_height(input_tree)
-
   # make an educated guess
-  adjusted_rate <- num_emp_subs /
-    (length(root_sequence) * t_mrca * length(input_tree$tip.label))
+  adjusted_rate <- (1+ fraction) * sub_rate
 
   proposed_alignment <- alt_model(input_tree,
                                   adjusted_rate,

@@ -4,12 +4,10 @@
 \alias{calc_required_node_time}
 \title{calculate the required node time to obtain a desired fraction of substitions at the node}
 \usage{
-calc_required_node_time(phy = NULL, num_tips = NULL, s, model = "unlinked")
+calc_required_node_time(phy = NULL, s = 0.5, model = "unlinked")
 }
 \arguments{
-\item{phy}{phylogenetic tree (optional)}
-
-\item{num_tips}{number of tips (optional)}
+\item{phy}{phylogenetic tree}
 
 \item{s}{desired fraction}
 

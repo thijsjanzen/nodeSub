@@ -6,6 +6,8 @@
 \usage{
 create_equal_alignment(
   input_tree,
+  fraction,
+  sub_rate,
   focal_alignment,
   root_sequence,
   alt_model,
@@ -14,6 +16,10 @@ create_equal_alignment(
 }
 \arguments{
 \item{input_tree}{phylogeny for which to generate alignment}
+
+\item{fraction}{fraction of time spent on the nodes}
+
+\item{sub_rate}{substitution rate used in the original phylogeny}
 
 \item{focal_alignment}{alignment to match information content with}
 
