@@ -16,5 +16,5 @@ test_that("calc_dist abuse", {
   seq_dnabin <- ape::as.DNAbin(seq_node_sub$alignment)
   testthat::expect_error(calc_dist(seq_dnabin, seq_node_sub$root_seq))
 
-  testthat::expect_error( calc_dist(seq_node_sub$alignment) )
+  testthat::expect_error(calc_dist(seq_node_sub$alignment))
 })

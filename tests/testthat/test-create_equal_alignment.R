@@ -19,8 +19,8 @@ test_that("create_equal_alignment", {
                                     alt_model = sim_regular,
                                     verbose = FALSE)
 
-  testthat::expect_equal( length(seq_alt$alignment),
-                          length(seq_node_sub$alignment))
+  testthat::expect_equal(length(seq_alt$alignment),
+                         length(seq_node_sub$alignment))
 
   num_diff_base <- calc_dist(seq_node_sub$alignment, seq_node_sub$root_seq)
   num_diff_alt  <- calc_dist(seq_alt$alignment, seq_node_sub$root_seq)

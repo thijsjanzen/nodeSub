@@ -40,7 +40,7 @@ phyDat.DNA <- function(data) {
 
   compress <- TRUE
   if (length(data[[1]]) == 1) compress <- FALSE
-  if (compress){
+  if (compress) {
     ddd <- fast.table(data)
     data <- ddd$data
     weight <- ddd$weight

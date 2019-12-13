@@ -8,7 +8,7 @@ reduce_tree <- function(tree) {
   extant_species <- geiger::drop.extinct(tree)$tip.label
   num_extant_species <- length(extant_species)
 
-  if(num_extant_species == length(tree$tip.label)) {
+  if (num_extant_species == length(tree$tip.label)) {
     return(tree)
   }
 
@@ -22,14 +22,14 @@ reduce_tree <- function(tree) {
                                          n,
                                          "children"))
 
-    b <- desc[ desc %in% extinct_species]
+    b <- desc[desc %in% extinct_species]
     if (length(b) > 1) {
       for (i in 2:length(b)) {
         tree <- ape::drop.tip(tree, b[[i]])
       }
       return(reduce_tree(tree))
     } else {
-      if(n == root_node && length(b) == 1)  {
+      if (n == root_node && length(b) == 1)  {
         tree <- ape::drop.tip(tree, b[[1]])
         return(reduce_tree(tree))
       }

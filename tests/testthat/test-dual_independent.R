@@ -16,8 +16,6 @@ test_that("sim_dual_independent", {
   testthat::expect_true(class(sequences) == "phyDat")
   sequences <- sim_unlinked(phy, Q1 = Q_JC, Q2 = Q_JC)
   testthat::expect_true(class(sequences) == "phyDat")
-
-
 })
 
 test_that("zeros", {

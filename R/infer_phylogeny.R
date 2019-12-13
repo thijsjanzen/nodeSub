@@ -21,27 +21,24 @@ infer_phylogeny <- function(alignment,
 
   if (is.null(mcmc_seed)) mcmc_seed <- round(as.numeric(Sys.time()))
 
-  output_trees_filenames = paste0(treatment_name, ".trees")
-  output_log_filename = paste0(treatment_name, ".log")
+  output_trees_filenames <- paste0(treatment_name, ".trees")
+  output_log_filename <- paste0(treatment_name, ".log")
 
   inf_model <- beautier::create_inference_model(
     site_model = beautier::create_jc69_site_model(),
     clock_model = beautier::create_strict_clock_model(),
     tree_prior = tree_prior,
     mcmc = beautier::create_mcmc(chain_length = 1e7,
-                                 treelog = beautier::create_treelog(filename = output_trees_filenames,
-                                                                    log_every = 5000),
-                                 tracelog = beautier::create_tracelog(filename = output_log_filename,
-                                                                      log_every = 5000)
+          treelog = beautier::create_treelog(filename = output_trees_filenames,
+                                                             log_every = 5000),
+          tracelog = beautier::create_tracelog(filename = output_log_filename,
+                                                              log_every = 5000)
     )
   )
-
-  beast_opt <- beastier::create_beast2_options()
 
   posterior <- babette::bbt_run_from_model(
     fasta_filename = temp_file_name,
     inference_model = inf_model,
-
   )
 
   file.remove(temp_file_name)
@@ -65,10 +62,8 @@ infer_phylogeny <- function(alignment,
 
   consensus_tree <-  phangorn::maxCladeCred(found_trees)
 
-
   file.remove(output_log_filename)
   file.remove(output_trees_filenames)
- # file.remove(beast_opt$output_state_filename)
 
   output <- list("all_trees" = found_trees,
                  "mcc_tree"  = consensus_tree)
