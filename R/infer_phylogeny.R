@@ -68,7 +68,7 @@ infer_phylogeny <- function(alignment,
 
   file.remove(output_log_filename)
   file.remove(output_trees_filenames)
-  file.remove(beast_opt$output_state_filename)
+ # file.remove(beast_opt$output_state_filename)
 
   output <- list("all_trees" = found_trees,
                  "mcc_tree"  = consensus_tree)

@@ -6,7 +6,8 @@
 \usage{
 create_equal_alignment(
   input_tree,
-  fraction,
+  node_time,
+  node_model = "unlinked",
   sub_rate,
   focal_alignment,
   root_sequence,
@@ -17,7 +18,9 @@ create_equal_alignment(
 \arguments{
 \item{input_tree}{phylogeny for which to generate alignment}
 
-\item{fraction}{fraction of time spent on the nodes}
+\item{node_time}{fraction of time spent on the nodes}
+
+\item{node_model}{model used to generate substitutions on the nodes (linked or unlinked)}
 
 \item{sub_rate}{substitution rate used in the original phylogeny}
 
