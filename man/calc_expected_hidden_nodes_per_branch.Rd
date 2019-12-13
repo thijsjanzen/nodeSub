@@ -17,5 +17,6 @@ calc_expected_hidden_nodes_per_branch(bl, lambda, mu)
 expected number of hidden nodes
 }
 \description{
-calculate the number of expected hidden nodes by integrating over equation 1 in Maceau et al. 2019
+calculate the number of expected hidden nodes by
+integrating over equation 1 in Maceau et al. 2019
 }

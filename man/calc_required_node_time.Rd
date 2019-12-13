@@ -2,7 +2,8 @@
 % Please edit documentation in R/calc_rel_contr_node_time.R
 \name{calc_required_node_time}
 \alias{calc_required_node_time}
-\title{calculate the required node time to obtain a desired fraction of substitions at the node}
+\title{calculate the required node time to obtain a desired fraction of substitions
+at the node}
 \usage{
 calc_required_node_time(phy = NULL, s = 0.5, model = "unlinked")
 }
@@ -17,5 +18,6 @@ calc_required_node_time(phy = NULL, s = 0.5, model = "unlinked")
 expected fraction
 }
 \description{
-calculates the required node time to obtain a desired fraction of susbstitutions at the node
+calculates the required node time to obtain a desired fraction
+of susbstitutions at the node
 }

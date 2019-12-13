@@ -17,5 +17,6 @@ calc_expected_hidden_nodes(phy, lambda = NULL, mu = NULL)
 expected number of hidden nodes
 }
 \description{
-calculate the number of expected hidden nodes using equation 1 in Maceau et al. 2019
+calculate the number of expected hidden nodes
+using equation 1 in Maceau et al. 2019
 }
