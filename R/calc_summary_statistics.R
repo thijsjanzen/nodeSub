@@ -62,8 +62,8 @@ calc_sum_stats <- function(trees,
     local_nltt <- nLTT::nltt_diff_exact(true_tree, trees[[i]])
 
     # this is rather inefficient off course, RPANDA can do all pairwise comparisons?
-    local_jsd <- NA
-    try( local_jsd <- RPANDA::JSDtree(list(true_tree, trees[[i]]))[1,2] )
+    local_jsd <- tryCatch(RPANDA::JSDtree(list(true_tree, trees[[i]]))[1,2],
+                          error = NA)
 
     local_diff <- c(local_diff, local_nltt, local_jsd)
 
