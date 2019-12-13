@@ -64,7 +64,13 @@ create_equal_alignment <- function(input_tree,
       a <- which(all_subs == num_emp_subs)[[1]]
       return(list("alignment" = alignments[[a]],
                   "rate" = adjusted_rate))
+    } else {
+      avg_sub <- mean(all_subs, na.rm = TRUE)
+      factor <- num_emp_subs / avg_sub
+      stored_factor <- factor
+      adjusted_rate <- adjusted_rate * factor
     }
+
     cnt <- cnt + length(all_subs)
     if (verbose) cat(cnt, adjusted_rate, mean(all_subs, na.rm = TRUE),
                      num_emp_subs, factor, "\n")
