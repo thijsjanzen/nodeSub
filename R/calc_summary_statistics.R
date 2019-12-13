@@ -53,14 +53,18 @@ calc_sum_stats <- function(trees,
   if (verbose) sum_stats_trees <-  pbapply::pblapply(trees, calc_all_stats)
 
   all_sum_stats <- matrix(NA, nrow = length(trees), ncol = 4)
-  all_differences <- matrix(NA, nrow = length(trees), ncol = 5)
+  all_differences <- matrix(NA, nrow = length(trees), ncol = 6)
   if (verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)
   for (i in seq_along(sum_stats_trees)) {
     # this for loop could be optimized later.
     to_add <- sum_stats_trees[[i]]
     local_diff <- abs(to_add - sum_stats_true_tree)
     local_nltt <- nLTT::nltt_diff_exact(true_tree, trees[[i]])
-    local_diff <- c(local_diff, local_nltt)
+
+    # this is rather inefficient off course, RPANDA can do all pairwise comparisons?
+    local_jsd <- RPANDA::JSDtree(list(true_tree, trees[[i]]))[1,2]
+
+    local_diff <- c(local_diff, local_nltt, local_jsd)
 
     all_differences[i, ] <- local_diff
     all_sum_stats[i, ] <- to_add
@@ -69,7 +73,7 @@ calc_sum_stats <- function(trees,
   colnames(all_sum_stats) <- c("beta", "gamma", "tree_height",
                                "mean_branch_length")
   colnames(all_differences) <- c("beta", "gamma", "tree_height",
-                                 "mean_branch_length", "nLTT")
+                                 "mean_branch_length", "nLTT", "jsd")
 
   all_sum_stats <- tibble::as_tibble(all_sum_stats)
   all_differences <- tibble::as_tibble(all_differences)
