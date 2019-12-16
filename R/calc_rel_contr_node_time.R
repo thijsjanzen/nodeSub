@@ -106,10 +106,10 @@ calc_expected_hidden_nodes <- function(phy,
 
   bt <- ape::branching.times(phy)
   branches <- c()
-  for (i in seq_len(bt)) {
+  for (i in seq_along(bt)) {
     a <- as.numeric(names(bt)[[i]])
     desc <- which(phy$edge[, 1] == a)
-    for (j in seq_len(desc)) {
+    for (j in seq_along(desc)) {
       start_node <- phy$edge[desc[j], 1]
       end_node <- phy$edge[desc[j], 2]
       t0 <- bt[names(bt) == start_node]
