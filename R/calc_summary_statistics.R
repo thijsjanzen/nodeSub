@@ -53,7 +53,7 @@ calc_sum_stats <- function(trees,
   if (verbose) sum_stats_trees <-  pbapply::pblapply(trees, calc_all_stats)
 
   all_sum_stats <- matrix(NA, nrow = length(trees), ncol = 4)
-  all_differences <- matrix(NA, nrow = length(trees), ncol = 6)
+  all_differences <- matrix(NA, nrow = length(trees), ncol = 7)
   if (verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)
   for (i in seq_along(sum_stats_trees)) {
     # this for loop could be optimized later.
@@ -65,7 +65,10 @@ calc_sum_stats <- function(trees,
     local_jsd <- tryCatch(RPANDA::JSDtree(list(true_tree, trees[[i]]))[1,2],
                           error = NA)
 
-    local_diff <- c(local_diff, local_nltt, local_jsd)
+    local_rf <- phangorn::RF.dist(true_tree, trees[[i]], check.labels = FALSE, rooted = TRUE)
+
+
+    local_diff <- c(local_diff, local_nltt, local_jsd, local_rf)
 
     all_differences[i, ] <- local_diff
     all_sum_stats[i, ] <- to_add
@@ -74,7 +77,7 @@ calc_sum_stats <- function(trees,
   colnames(all_sum_stats) <- c("beta", "gamma", "tree_height",
                                "mean_branch_length")
   colnames(all_differences) <- c("beta", "gamma", "tree_height",
-                                 "mean_branch_length", "nLTT", "jsd")
+                                 "mean_branch_length", "nLTT", "jsd", "RF")
 
   all_sum_stats <- tibble::as_tibble(all_sum_stats)
   all_differences <- tibble::as_tibble(all_differences)

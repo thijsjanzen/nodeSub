@@ -278,3 +278,103 @@ sim_unlinked_tree <- function(phy,
                  "total_node_substitutions" = total_node_subs)
   return(output)
 }
+
+#' simulate a sequence assuming node substitutions are shared among the offspring
+#' optimize to obtain an equal amount of substitutions as a given alignment
+#' @param input_tree tree for which to simulate sequences
+#' @param focal_alignment alignment to match information content with
+#' @param Q1 substitution matrix along the branches, default = JC
+#' @param Q2 substitution matrix on the nodes, default = JC
+#' @param rate1 mutation rate along the branch, default = 1
+#' @param rate2 mutation rate on the node, default = 1
+#' @param l number of base pairs to simulate
+#' @param bf base frequencies, default = c(0.25, 0.25, 0.25, 0.25)
+#' @param rootseq sequence at the root, simulated by default
+#' @param node_time amount of time spent at the nodes
+#' @param lambda birth rate
+#' @param mu death rate
+#' @param verbose should intermediate output be displayed?
+#' @return phyDat object
+#' @export
+create_equal_alignment_tree <- function(input_tree,
+                                       focal_alignment = NULL,
+                                       Q1 = NULL,
+                                       Q2 = NULL,
+                                       rate1 = 1,
+                                       rate2 = 1,
+                                       l = 1000,
+                                       bf = NULL,
+                                       rootseq = NULL,
+                                       fraction = 0.0,
+                                       lambda = NULL,
+                                       mu = NULL,
+                                       verbose = FALSE) {
+
+  if(length(geiger::is.extinct(input_tree)) > 0) {
+    warning("found extinct tips, removing all extinct tips")
+    input_tree <- geiger::drop.extinct(input_tree)
+  }
+
+
+
+  if(is.null(focal_alignment)) {
+    warning("not found input alignment, simulating vanilla alignment")
+    focal_alignment <- nodeSub::sim_normal(input_tree, l = l, Q = Q1, bf = bf, rootseq = rootseq, rate = rate1)
+    rootseq <- focal_alignment$rootseq
+    focal_alignment <- focal_alignment$alignment
+  }
+
+  num_emp_subs <- sum(calc_dist(focal_alignment, rootseq))
+
+  adjusted_rate <-  rate1 + rate1 * fraction / (1 - fraction)
+
+  node_time <- nodeSub::calc_required_node_time(input_tree, s = fraction)
+
+
+
+  propose_alignments <- function(buffer, focal_rate) {
+    proposed_alignment <- nodeSub::sim_unlinked_tree(input_tree, Q1 = Q1, Q2 = Q2,
+                                                     rate1 = focal_rate, rate2 = focal_rate, l = l, bf = bf, rootseq = rootseq,
+                                                     node_time = node_time, lambda = lambda, mu = mu)
+    return(proposed_alignment$alignment)
+  }
+
+  calc_subs <- function(local_alignment) {
+    sum(calc_dist(local_alignment, rootseq))
+  }
+
+
+  proposed_alignment <- propose_alignments(buffer = c(), focal_rate = adjusted_rate)
+
+  proposed_subs <- calc_subs(proposed_alignment)
+  cnt <- 1
+
+  stored_factor <- 0
+  while (proposed_subs != num_emp_subs) {
+
+    alignments <- vector("list", 10)
+    if (abs(stored_factor - 1) < 0.01) alignments <- vector("list", 100)
+    alignments <- lapply(alignments, propose_alignments, adjusted_rate)
+    all_subs <- unlist(lapply(alignments, calc_subs))
+
+    num_matches <- length(which(all_subs == num_emp_subs))
+
+    if (num_matches > 0) {
+      a <- which(all_subs == num_emp_subs)[[1]]
+      return(list("alignment" = alignments[[a]],
+                  "rate" = adjusted_rate))
+    } else {
+      avg_sub <- mean(all_subs, na.rm = TRUE)
+      factor <- num_emp_subs / avg_sub
+      stored_factor <- factor
+      adjusted_rate <- adjusted_rate * factor
+    }
+
+    cnt <- cnt + length(all_subs)
+    if (verbose) cat(cnt, adjusted_rate, mean(all_subs, na.rm = TRUE),
+                     num_emp_subs, factor, "\n")
+  }
+
+  return(list("alignment" = proposed_alignment,
+              "rate" = adjusted_rate))
+}
