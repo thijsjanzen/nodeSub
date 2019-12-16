@@ -62,13 +62,12 @@ calc_sum_stats <- function(trees,
     local_nltt <- nLTT::nltt_diff_exact(true_tree, trees[[i]])
 
     # this is rather inefficient off course, RPANDA can do all pairwise comparisons?
-    local_jsd <- tryCatch(RPANDA::JSDtree(list(true_tree, trees[[i]]))[1,2],
+    local_jsd <- tryCatch(RPANDA::JSDtree(list(true_tree, trees[[i]]), meth = "standard")[1,2],
                           error = NA)
 
-    local_rf <- phangorn::RF.dist(true_tree, trees[[i]], check.labels = FALSE, rooted = TRUE)
+    local_topo <- ape::dist.topo(true_tree, trees[[i]], method = "PH85")
 
-
-    local_diff <- c(local_diff, local_nltt, local_jsd, local_rf)
+    local_diff <- c(local_diff, local_nltt, local_jsd, local_topo)
 
     all_differences[i, ] <- local_diff
     all_sum_stats[i, ] <- to_add
@@ -77,7 +76,7 @@ calc_sum_stats <- function(trees,
   colnames(all_sum_stats) <- c("beta", "gamma", "tree_height",
                                "mean_branch_length")
   colnames(all_differences) <- c("beta", "gamma", "tree_height",
-                                 "mean_branch_length", "nLTT", "jsd", "RF")
+                                 "mean_branch_length", "nLTT", "jsd", "topo_dist")
 
   all_sum_stats <- tibble::as_tibble(all_sum_stats)
   all_differences <- tibble::as_tibble(all_differences)
