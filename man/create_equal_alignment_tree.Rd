@@ -15,9 +15,12 @@ create_equal_alignment_tree(
   l = 1000,
   bf = NULL,
   rootseq = NULL,
-  node_time = 0.001,
+  fraction = NULL,
+  node_time = NULL,
   lambda = NULL,
   mu = NULL,
+  model = "unlinked",
+  reconstruct_hidden_nodes = FALSE,
   verbose = FALSE
 )
 }
@@ -40,11 +43,15 @@ create_equal_alignment_tree(
 
 \item{rootseq}{sequence at the root, simulated by default}
 
+\item{fraction}{fraction of time spent at the nodes}
+
 \item{node_time}{amount of time spent at the nodes}
 
-\item{lambda}{birth rate}
+\item{lambda}{birth rate, used if reconstruct_hidden_nodes = TRUE}
 
-\item{mu}{death rate}
+\item{mu}{death rate, used if reconstruct_hidden_nodes = TRUE}
+
+\item{reconstruct_hidden_nodes}{simulate hidden nodes along branches}
 
 \item{verbose}{should intermediate output be displayed?}
 }

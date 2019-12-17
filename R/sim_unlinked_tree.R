@@ -290,32 +290,30 @@ sim_unlinked_tree <- function(phy,
 #' @param l number of base pairs to simulate
 #' @param bf base frequencies, default = c(0.25, 0.25, 0.25, 0.25)
 #' @param rootseq sequence at the root, simulated by default
+#' @param fraction fraction of time spent at the nodes
 #' @param node_time amount of time spent at the nodes
-#' @param lambda birth rate
-#' @param mu death rate
+#' @param reconstruct_hidden_nodes simulate hidden nodes along branches
+#' @param lambda birth rate, used if reconstruct_hidden_nodes = TRUE
+#' @param mu death rate, used if reconstruct_hidden_nodes = TRUE
 #' @param verbose should intermediate output be displayed?
 #' @return phyDat object
 #' @export
 create_equal_alignment_tree <- function(input_tree,
-                                       focal_alignment = NULL,
-                                       Q1 = NULL,
-                                       Q2 = NULL,
-                                       rate1 = 1,
-                                       rate2 = 1,
-                                       l = 1000,
-                                       bf = NULL,
-                                       rootseq = NULL,
-                                       fraction = 0.0,
-                                       lambda = NULL,
-                                       mu = NULL,
-                                       verbose = FALSE) {
-
-  if(length(geiger::is.extinct(input_tree)) > 0) {
-    warning("found extinct tips, removing all extinct tips")
-    input_tree <- geiger::drop.extinct(input_tree)
-  }
-
-
+                                        focal_alignment = NULL,
+                                        Q1 = NULL,
+                                        Q2 = NULL,
+                                        rate1 = 1,
+                                        rate2 = 1,
+                                        l = 1000,
+                                        bf = NULL,
+                                        rootseq = NULL,
+                                        fraction = NULL,
+                                        node_time = NULL,
+                                        lambda = NULL,
+                                        mu = NULL,
+                                        model = "unlinked",
+                                        reconstruct_hidden_nodes = FALSE,
+                                        verbose = FALSE) {
 
   if(is.null(focal_alignment)) {
     warning("not found input alignment, simulating vanilla alignment")
@@ -324,25 +322,62 @@ create_equal_alignment_tree <- function(input_tree,
     focal_alignment <- focal_alignment$alignment
   }
 
+  if(is.null(fraction) && is.null(node_time)) {
+    stop("need to provide either fraction or node time")
+  }
+  if(is.null(node_time)) {
+    node_time <- nodeSub::calc_required_node_time(input_tree, s = fraction, model = model)
+  }
+  if(is.null(fraction)) {
+    fraction <- nodeSub::calc_fraction(input_tree, node_time = node_time, model = model)
+  }
+
   num_emp_subs <- sum(calc_dist(focal_alignment, rootseq))
 
   adjusted_rate <-  rate1 + rate1 * fraction / (1 - fraction)
 
-  node_time <- nodeSub::calc_required_node_time(input_tree, s = fraction)
-
-
-
   propose_alignments <- function(buffer, focal_rate) {
-    proposed_alignment <- nodeSub::sim_unlinked_tree(input_tree, Q1 = Q1, Q2 = Q2,
-                                                     rate1 = focal_rate, rate2 = focal_rate, l = l, bf = bf, rootseq = rootseq,
-                                                     node_time = node_time, lambda = lambda, mu = mu)
+
+    proposed_alignment <- c()
+    if(reconstruct_hidden_nodes) {
+      if(model == "unlinked") proposed_alignment <- nodeSub::sim_unlinked_tree(input_tree,
+                                                       Q1 = Q1, Q2 = Q2,
+                                                       rate1 = focal_rate,
+                                                       rate2 = focal_rate,
+                                                       l = l, bf = bf,
+                                                       rootseq = rootseq,
+                                                       node_time = node_time,
+                                                       lambda = lambda, mu = mu)
+      if(model == "linked") stop("hidden nodes in linked model not implemented yet")
+    } else {
+      if(model == "unlinked") {
+        proposed_alignment <- nodeSub::sim_dual_independent(input_tree,
+                                                            Q1 = Q1, Q2 = Q2,
+                                                            rate1 = focal_rate,
+                                                            rate2 = focal_rate,
+                                                            l = l,
+                                                            bf = bf,
+                                                            rootseq = rootseq,
+                                                            node_time = node_time)
+      }
+      if(model == "linked") {
+        proposed_alignment <- nodeSub::sim_dual_linked(input_tree,
+                                                       Q = Q1,
+                                                       rate = focal_rate,
+                                                       node_mut_rate_double = focal_rate ^ 2,
+                                                       l = l,
+                                                       bf = bf,
+                                                       rootseq = rootseq,
+                                                       node_time = node_time)
+      }
+    }
+
     return(proposed_alignment$alignment)
   }
 
   calc_subs <- function(local_alignment) {
     sum(calc_dist(local_alignment, rootseq))
   }
-
 
   proposed_alignment <- propose_alignments(buffer = c(), focal_rate = adjusted_rate)
 

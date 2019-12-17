@@ -10,7 +10,8 @@ infer_phylogeny(
   tree_prior = beautier::create_bd_tree_prior(),
   mcmc_seed = NULL,
   burnin = 0.1,
-  working_dir = NULL
+  working_dir = NULL,
+  sub_rate = 1
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ infer_phylogeny(
 \item{burnin}{burnin of posterior distribution}
 
 \item{working_dir}{beast2 working dir}
+
+\item{sub_rate}{substitution rate used to generate the original alignment (if available), default is 1}
 }
 \value{
 list with all trees, and the consensus tree
