@@ -46,7 +46,7 @@ infer_phylogeny <- function(alignment,
   posterior <- babette::bbt_run_from_model(
     fasta_filename = temp_file_name,
     inference_model = inf_model,
-    beast2_options <- beast2_options
+    beast2_options <- beast2_options_local
   )
 
   file.remove(temp_file_name)
