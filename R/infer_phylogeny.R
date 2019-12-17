@@ -41,9 +41,12 @@ infer_phylogeny <- function(alignment,
     )
   )
 
+  beast2_options_local <- beastier::create_beast2_options()
+
   posterior <- babette::bbt_run_from_model(
     fasta_filename = temp_file_name,
     inference_model = inf_model,
+    beast2_options <- beast2_options
   )
 
   file.remove(temp_file_name)
@@ -69,6 +72,8 @@ infer_phylogeny <- function(alignment,
 
   file.remove(output_log_filename)
   file.remove(output_trees_filenames)
+  file.remove(beast2_options_local$input_filename)
+  file.remove(beast2_options_output_state_filename)
 
   output <- list("all_trees" = found_trees,
                  "mcc_tree"  = consensus_tree)
