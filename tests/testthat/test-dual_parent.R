@@ -6,7 +6,7 @@ test_that("sim_dual_parent", {
   sequences <- sim_dual_parent(phy)
   testthat::expect_true(class(sequences$alignment) == "phyDat")
 
-  Q_JC <- matrix(1, nrow = 4, ncol = 4)
+  Q_JC <- matrix(1, nrow = 4, ncol = 4)  # nolint
   sequences <- sim_dual_parent(phy, Q1 = Q_JC, Q2 = Q_JC)
   testthat::expect_true(class(sequences$alignment) == "phyDat")
 

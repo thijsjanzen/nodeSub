@@ -58,9 +58,9 @@ calc_required_node_time <- function(phy = NULL,
 
   node_time <- -1
   if (model == "linked")  node_time <- (s * total_bl) /
-                                   ((1 - s) * (    num_nodes + num_hidden_nodes))
+                               ((1 - s) * (num_nodes + num_hidden_nodes))
   if (model == "unlinked") node_time <- (s * total_bl) /
-                                   ((1 - s) * (2 * num_nodes + num_hidden_nodes))
+                               ((1 - s) * (2 * num_nodes + num_hidden_nodes))
   return(node_time)
 }
 
@@ -72,7 +72,7 @@ calc_required_node_time <- function(phy = NULL,
 #' @param mu death rate
 #' @return expected number of hidden nodes
 #' @export
-calc_expected_hidden_nodes_per_branch <- function(bl, lambda, mu) {
+calc_expected_hidden_nodes_per_branch <- function(bl, lambda, mu) {  # nolint
   t0 <- bl
   t1 <- 0
   numerator <- 1 - lambda / (mu) * exp((lambda - mu) * t0)
@@ -122,7 +122,7 @@ calc_expected_hidden_nodes <- function(phy,
   }
 
   #now we integrate over each branch
-  calc_expected_hidden_nodes_per_dt <- function(t, lambda, mu) {
+  calc_expected_hidden_nodes_per_dt <- function(t, lambda, mu) {  # nolint
     t0 <- t[1]
     t1 <- t[2]
     numerator <- 1 - lambda / (mu) * exp((lambda - mu) * t0)

@@ -109,7 +109,7 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
 #' @return phyDat object
 #' @export
 sim_dual_linked <- function(phy,
-                            Q = NULL,
+                            Q = NULL,  # nolint
                             rate = 0.1,
                             node_mut_rate_double = 1e-9,
                             l = 1000,
@@ -129,10 +129,12 @@ sim_dual_linked <- function(phy,
 
   # default is c(0.25, 0.25, 0.25, 0.25)
   if (is.null(bf)) bf <- rep(1 / lbf, lbf)
-  if (is.null(Q)) Q <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
+
+  # default is JC69
+  if (is.null(Q)) Q <- rep(1, lbf * (lbf - 1) / 2)   # nolint
 
   # only extract the 6 important rates.
-  if (is.matrix(Q)) Q <- Q[lower.tri(Q)]
+  if (is.matrix(Q)) Q <- Q[lower.tri(Q)] # nolint
 
   eig_q <- phangorn::edQt(Q, bf) # eigen values
 
@@ -168,8 +170,8 @@ sim_dual_linked <- function(phy,
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   check_to_extinct_tip <- function(number) {
-    if(number > length(phy$tip.label)) return(TRUE)
-    if(number <= length(phy_no_extinct$tip.label)) return(TRUE)
+    if (number > length(phy$tip.label)) return(TRUE)
+    if (number <= length(phy_no_extinct$tip.label)) return(TRUE)
     return(FALSE)
   }
 
@@ -188,12 +190,11 @@ sim_dual_linked <- function(phy,
     node_subs_1 <- sum(res[, focal_parent] != result[[1]])
     node_subs_2 <- sum(res[, focal_parent] != result[[2]])
     node_subs <- c(node_subs_1, node_subs_2)
-   # total_node_subs <- total_node_subs + node_subs_1 + node_subs_2
 
     indices <- which(parent == focal_parent)
     for (i in 1:2) {
       branch_length <- phy$edge.length[indices[i]]
-      P <- get_p_matrix(branch_length, eig_q, rate)
+      P <- get_p_matrix(branch_length, eig_q, rate)   # nolint
 
       # avoid numerical problems for larger P and small t
       if (any(P < 0)) P[P < 0] <- 0
@@ -207,7 +208,7 @@ sim_dual_linked <- function(phy,
       res[, offspring[i]] <- after_mut_seq
       branch_subs <- sum(after_mut_seq != before_mut_seq)
 
-      if(check_to_extinct_tip(offspring[i])) {
+      if (check_to_extinct_tip(offspring[i])) {
             total_branch_subs <- total_branch_subs + branch_subs
             total_node_subs   <- total_node_subs + node_subs[i]
       }
@@ -217,7 +218,7 @@ sim_dual_linked <- function(phy,
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   k <- length(phy$tip.label)
-  label <- c(phy$tip.label, as.character( (k + 1):num_nodes))
+  label <- c(phy$tip.label, as.character((k + 1):num_nodes))
   colnames(res) <- label
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))

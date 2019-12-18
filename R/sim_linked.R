@@ -10,7 +10,7 @@
 #' @return phyDat object
 #' @export
 sim_linked <- function(phy,
-                       Q = NULL,
+                       Q = NULL, # nolint
                        rate = 0.1,
                        node_mut_rate_double = 1e-9,
                        l = 1000,
@@ -30,10 +30,10 @@ sim_linked <- function(phy,
 
   # default is c(0.25, 0.25, 0.25, 0.25)
   if (is.null(bf)) bf <- rep(1 / lbf, lbf)
-  if (is.null(Q)) Q <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
+  if (is.null(Q)) Q <- rep(1, lbf * (lbf - 1) / 2) # nolint
 
   # only extract the 6 important rates.
-  if (is.matrix(Q)) Q <- Q[lower.tri(Q)]
+  if (is.matrix(Q)) Q <- Q[lower.tri(Q)]  # nolint
 
   eig_q <- phangorn::edQt(Q, bf) # eigen values
 
@@ -85,7 +85,7 @@ sim_linked <- function(phy,
     indices <- which(parent == focal_parent)
     for (i in 1:2) {
       branch_length <- phy$edge.length[indices[i]]
-      P <- get_p_matrix(branch_length, eig_q, rate)
+      P <- get_p_matrix(branch_length, eig_q, rate)  # nolint
 
       # avoid numerical problems for larger P and small t
       if (any(P < 0)) P[P < 0] <- 0
@@ -105,7 +105,7 @@ sim_linked <- function(phy,
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   k <- length(phy$tip.label)
-  label <- c(phy$tip.label, as.character( (k + 1):num_nodes))
+  label <- c(phy$tip.label, as.character((k + 1):num_nodes))
   colnames(res) <- label
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))

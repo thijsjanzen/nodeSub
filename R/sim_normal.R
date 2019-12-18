@@ -28,7 +28,7 @@
 #' @export
 sim_normal <- function(x,
                        l = 1000,
-                       Q = NULL,
+                       Q = NULL,   # nolint
                        bf = NULL,
                        rootseq = NULL,
                        rate = 1) {
@@ -40,9 +40,9 @@ sim_normal <- function(x,
 
   if (is.null(bf)) bf <- rep(1 / lbf, lbf)
   if (is.null(Q)) {
-    Q <- rep(1, lbf * (lbf - 1) / 2)
+    Q <- rep(1, lbf * (lbf - 1) / 2) # nolint
   }
-  if (is.matrix(Q)) Q <- Q[lower.tri(Q)]
+  if (is.matrix(Q)) Q <- Q[lower.tri(Q)]  # nolint
 
   eig <- phangorn::edQt(Q, bf)
 
@@ -64,7 +64,7 @@ sim_normal <- function(x,
   for (i in seq_along(tl)) {
     from <- parent[i]
     to <- child[i]
-    P <- get_p_matrix(tl[i], eig, rate)
+    P <- get_p_matrix(tl[i], eig, rate)  # nolint
     # avoid numerical problems for larger P and small t
     if (any(P < 0)) P[P < 0] <- 0
     for (j in 1:m) {
@@ -78,7 +78,7 @@ sim_normal <- function(x,
   phy_no_extinct <- geiger::drop.extinct(x)
 
   k <- length(x$tip.label)
-  label <- c(x$tip.label, as.character( (k + 1):num_nodes))
+  label <- c(x$tip.label, as.character((k + 1):num_nodes))
   colnames(res) <- label
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))

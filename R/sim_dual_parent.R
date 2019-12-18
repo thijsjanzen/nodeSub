@@ -1,4 +1,5 @@
-#' simulate a sequence assuming node substitutions are shared among the offspring
+#' simulate a sequence assuming node substitutions are shared
+#' among the offspring
 #' @param phy tree for which to simulate sequences
 #' @param Q1 substitution matrix along the branches, default = JC
 #' @param Q2 substitution matrix on the nodes, default = JC
@@ -11,8 +12,8 @@
 #' @return phyDat object
 #' @export
 sim_dual_parent <- function(phy,
-                          Q1 = NULL,
-                          Q2 = NULL,
+                          Q1 = NULL,  # nolint
+                          Q2 = NULL,  # nolint
                           rate1 = 1,
                           rate2 = 1,
                           l = 1000,
@@ -26,12 +27,12 @@ sim_dual_parent <- function(phy,
   # default is c(0.25, 0.25, 0.25, 0.25)
   if (is.null(bf)) bf <- rep(1 / lbf, lbf)
 
-  if (is.null(Q1)) Q1 <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
-  if (is.null(Q2)) Q2 <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
+  if (is.null(Q1)) Q1 <- rep(1, lbf * (lbf - 1) / 2) # nolint
+  if (is.null(Q2)) Q2 <- rep(1, lbf * (lbf - 1) / 2) # nolint
 
   # only extract the 6 important rates.
-  if (is.matrix(Q1)) Q1 <- Q1[lower.tri(Q1)]
-  if (is.matrix(Q2)) Q2 <- Q2[lower.tri(Q2)]
+  if (is.matrix(Q1)) Q1 <- Q1[lower.tri(Q1)] # nolint
+  if (is.matrix(Q2)) Q2 <- Q2[lower.tri(Q2)] # nolint
 
   eig_q1 <- phangorn::edQt(Q1, bf) # eigen values
   eig_q2 <- phangorn::edQt(Q2, bf) # eigen values
@@ -61,7 +62,7 @@ sim_dual_parent <- function(phy,
 
   for (parent in parents) {
     # we first mutate the parent sequence to reflect mutations at the node
-    P <- get_p_matrix(node_time, eig_q2, rate2)
+    P <- get_p_matrix(node_time, eig_q2, rate2)  # nolint
     if (any(P < 0)) P[P < 0] <- 0
     before_mut_seq <- res[, parent]
     after_mut_seq <- before_mut_seq
@@ -83,7 +84,7 @@ sim_dual_parent <- function(phy,
       local_index <- get_index(edge, parent, offspring)
       branch_length <- tl[local_index]
 
-      P <- get_p_matrix(branch_length, eig_q1, rate1)
+      P <- get_p_matrix(branch_length, eig_q1, rate1)  # nolint
       # avoid numerical problems for larger P and small t
       if (any(P < 0)) P[P < 0] <- 0
       for (j in 1:m) {
@@ -102,7 +103,7 @@ sim_dual_parent <- function(phy,
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   k <- length(phy$tip.label)
-  label <- c(phy$tip.label, as.character( (k + 1):num_nodes))
+  label <- c(phy$tip.label, as.character((k + 1):num_nodes))
   colnames(res) <- label
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))

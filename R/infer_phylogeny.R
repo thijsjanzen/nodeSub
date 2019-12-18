@@ -5,7 +5,8 @@
 #' @param mcmc_seed seed of the mcmc chain, default is the system time
 #' @param burnin burnin of posterior distribution
 #' @param working_dir beast2 working dir
-#' @param sub_rate substitution rate used to generate the original alignment (if available), default is 1
+#' @param sub_rate substitution rate used to generate the original
+#' alignment (if available), default is 1
 #' @return list with all trees, and the consensus tree
 #' @export
 infer_phylogeny <- function(alignment,
@@ -29,8 +30,8 @@ infer_phylogeny <- function(alignment,
   inf_model <- beautier::create_inference_model(
     site_model = beautier::create_jc69_site_model(),
     clock_model = beautier::create_strict_clock_model(
-          clock_rate_param = beautier::create_clock_rate_param(value = sub_rate),
-          clock_rate_distr = beautier::create_gamma_distr()
+      clock_rate_param = beautier::create_clock_rate_param(value = sub_rate),
+      clock_rate_distr = beautier::create_gamma_distr()
     ),
     tree_prior = tree_prior,
     mcmc = beautier::create_mcmc(chain_length = 1e7,
@@ -72,10 +73,10 @@ infer_phylogeny <- function(alignment,
 
   file.remove(output_log_filename)
   file.remove(output_trees_filenames)
-  if(file.exists(beast2_options_local$input_filename)) {
+  if (file.exists(beast2_options_local$input_filename)) {
     file.remove(beast2_options_local$input_filename)
   }
-  if(file.exists(beast2_options_local$output_state_filename)) {
+  if (file.exists(beast2_options_local$output_state_filename)) {
     file.remove(beast2_options_local$output_state_filename)
   }
 

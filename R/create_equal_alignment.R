@@ -1,7 +1,8 @@
 #' function create an alignment with highly similar information content
 #' @param input_tree phylogeny for which to generate alignment
 #' @param node_time fraction of time spent on the nodes
-#' @param node_model model used to generate substitutions on the nodes (linked or unlinked)
+#' @param node_model model used to generate substitutions on the nodes
+#'                   (linked or unlinked)
 #' @param sub_rate substitution rate used in the original phylogeny
 #' @param focal_alignment alignment to match information content with
 #' @param alt_model alternative substitution model
