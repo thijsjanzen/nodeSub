@@ -1,5 +1,9 @@
 #' function create an alignment with highly similar information content
 #' @param input_tree phylogeny for which to generate alignment
+#' @param node_time fraction of time spent on the nodes
+#' @param node_model model used to generate substitutions on the nodes
+#'                   (linked or unlinked)
+#' @param sub_rate substitution rate used in the original phylogeny
 #' @param focal_alignment alignment to match information content with
 #' @param alt_model alternative substitution model
 #' @param root_sequence root sequence
@@ -7,6 +11,9 @@
 #' @return list with alignment and inferred rate
 #' @export
 create_equal_alignment <- function(input_tree,
+                                   node_time,
+                                   node_model = "unlinked",
+                                   sub_rate,
                                    focal_alignment,
                                    root_sequence,
                                    alt_model,
@@ -14,11 +21,17 @@ create_equal_alignment <- function(input_tree,
 
   num_emp_subs <- sum(calc_dist(focal_alignment, root_sequence))
 
-  t_mrca <- calc_tree_height(input_tree)
-
   # make an educated guess
-  adjusted_rate <- num_emp_subs /
-    (length(root_sequence) * t_mrca * length(input_tree$tip.label))
+  num_nodes <- geiger::drop.extinct(input_tree)$Nnode
+  num_hidden_nodes <- count_hidden(input_tree)
+
+  factor <- 1
+  if (node_model == "unlinked") factor <- 2
+
+  total_on_nodes <- (factor * num_nodes + num_hidden_nodes) * node_time
+  total_bl <- sum(geiger::drop.extinct(input_tree)$edge.length)
+
+  adjusted_rate <-  sub_rate + sub_rate * total_on_nodes / total_bl
 
   proposed_alignment <- alt_model(input_tree,
                                   adjusted_rate,
@@ -46,8 +59,10 @@ create_equal_alignment <- function(input_tree,
     alignments <- lapply(alignments, propose_alignments, adjusted_rate)
     all_subs <- unlist(lapply(alignments, calc_subs))
 
-    if (sum(all_subs == num_emp_subs)) {
-      a <- which(all_subs == num_emp_subs)
+    num_matches <- length(which(all_subs == num_emp_subs))
+
+    if (num_matches > 0) {
+      a <- which(all_subs == num_emp_subs)[[1]]
       return(list("alignment" = alignments[[a]],
                   "rate" = adjusted_rate))
     } else {
@@ -56,6 +71,7 @@ create_equal_alignment <- function(input_tree,
       stored_factor <- factor
       adjusted_rate <- adjusted_rate * factor
     }
+
     cnt <- cnt + length(all_subs)
     if (verbose) cat(cnt, adjusted_rate, mean(all_subs, na.rm = TRUE),
                      num_emp_subs, factor, "\n")

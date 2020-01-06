@@ -7,10 +7,10 @@ test_that("mutations use", {
 
   # default is c(0.25, 0.25, 0.25, 0.25)
   bf <- rep(1 / lbf, lbf)
-  Q <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
+  Q <- rep(1, lbf * (lbf - 1) / 2) # default is JC69      # nolint
 
   # only extract the 6 important rates.
-  if (is.matrix(Q)) Q <- Q[lower.tri(Q)]
+  if (is.matrix(Q)) Q <- Q[lower.tri(Q)] # nolint
 
   eig_q <- phangorn::edQt(Q, bf) # eigen values
   m <- length(levels) # always 4 (bases)
@@ -26,7 +26,7 @@ test_that("mutations use", {
     rate <- 0.3
     node_time <- 1
 
-    P <- nodeSub::slow_matrix(eig = eig_q,
+    P <- nodeSub::slow_matrix(eig = eig_q,  # nolint
                               node_time,
                               rate = rate)
 
@@ -81,21 +81,21 @@ test_that("matrices", {
 
   # default is c(0.25, 0.25, 0.25, 0.25)
   bf <- rep(1 / lbf, lbf)
-  Q <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
+  Q <- rep(1, lbf * (lbf - 1) / 2) # nolint
 
   # only extract the 6 important rates.
-  if (is.matrix(Q)) Q <- Q[lower.tri(Q)]
+  if (is.matrix(Q)) Q <- Q[lower.tri(Q)]  # nolint
 
   eig_q <- phangorn::edQt(Q, bf) # eigen values
 
   branch_length <- 1
   rate <- 0.1
 
-  P1 <- nodeSub::slow_matrix(eig = eig_q,
+  P1 <- nodeSub::slow_matrix(eig = eig_q,  # nolint
                              branch_length,
                              rate = rate)
 
-  P2 <- get_p_matrix(branch_length, eig_q, rate)
+  P2 <- get_p_matrix(branch_length, eig_q, rate) # nolint
 
   testthat::expect_equal(P1, P2)
 })

@@ -1,5 +1,5 @@
 #' @keywords internal
-fast.table <- function(data) {
+fast.table <- function(data) {  # nolint
   if (!is.data.frame(data))
     data <- as.data.frame(data, stringsAsFactors = FALSE)
   da <- do.call("paste", c(data, sep = "\r"))
@@ -17,7 +17,7 @@ fast.table <- function(data) {
 }
 
 #' @keywords internal
-phyDat.DNA <- function(data) {
+phyDat.DNA <- function(data) {  # nolint
   if (is.matrix(data))
     nam <- row.names(data)
   else nam <- names(data)
@@ -32,7 +32,7 @@ phyDat.DNA <- function(data) {
 
   ac <- c("a", "c", "g", "t", "u", "m", "r", "w", "s", "y",
           "k", "v", "h", "d", "b", "n", "?", "-")
-  AC <- matrix(c(c(1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1),
+  AC <- matrix(c(c(1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1), # nolint
                  c(0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1),
                  c(0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1),
                  c(0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1)),
@@ -40,7 +40,7 @@ phyDat.DNA <- function(data) {
 
   compress <- TRUE
   if (length(data[[1]]) == 1) compress <- FALSE
-  if (compress){
+  if (compress) {
     ddd <- fast.table(data)
     data <- ddd$data
     weight <- ddd$weight
@@ -113,7 +113,7 @@ slow_matrix <- function(eig, branch_length, rate) {
 
   dim_size <- ncol(evei)
 
-  P <- matrix(NA, nrow = dim_size, ncol = dim_size)
+  P <- matrix(NA, nrow = dim_size, ncol = dim_size)  # nolint
 
   if (branch_length == 0 || rate <= 0) {
     for (i in 1:dim_size) {

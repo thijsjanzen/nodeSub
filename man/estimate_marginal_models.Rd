@@ -4,8 +4,7 @@
 \alias{estimate_marginal_models}
 \title{infer the time calibrated phylogeny associated with the}
 \usage{
-estimate_marginal_models(fasta_filename, rng_seed = 42,
-  verbose = FALSE)
+estimate_marginal_models(fasta_filename, rng_seed = 42, verbose = FALSE)
 }
 \arguments{
 \item{fasta_filename}{file name of fasta file holding alignment for which the

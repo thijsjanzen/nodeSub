@@ -17,7 +17,7 @@ test_that("sim_normal", {
 test_that("JC", {
   phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
 
-  Q_JC <- matrix(1, nrow = 4, ncol = 4)
+  Q_JC <- matrix(1, nrow = 4, ncol = 4)  # nolint
   set.seed(42) # for reproducability
   seq_phangorn <- phangorn::simSeq(x = phy, Q = Q_JC, l = 10000, rate = 0.01)
   dist_phangorn <- phangorn::dist.ml(seq_phangorn)

@@ -4,9 +4,16 @@
 \alias{sim_dual_linked}
 \title{simulate a sequence assuming conditional substitutions on the node}
 \usage{
-sim_dual_linked(phy, Q = NULL, rate = 0.1,
-  node_mut_rate_double = 1e-09, l = 1000, bf = NULL,
-  rootseq = NULL, node_time = 0.01)
+sim_dual_linked(
+  phy,
+  Q = NULL,
+  rate = 0.1,
+  node_mut_rate_double = 1e-09,
+  l = 1000,
+  bf = NULL,
+  rootseq = NULL,
+  node_time = 0.01
+)
 }
 \arguments{
 \item{phy}{tree for which to simulate sequences}

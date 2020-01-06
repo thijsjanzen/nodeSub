@@ -6,7 +6,7 @@ test_that("sim_dual_linked", {
   sequences <- sim_dual_linked(phy)
   testthat::expect_true(class(sequences$alignment) == "phyDat")
 
-  Q_JC <- matrix(1, nrow = 4, ncol = 4)
+  Q_JC <- matrix(1, nrow = 4, ncol = 4)  # nolint
 
   sequences <- sim_dual_linked(phy, Q = Q_JC)
   testthat::expect_true(class(sequences$alignment) == "phyDat")
