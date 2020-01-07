@@ -14,7 +14,7 @@ estimate_marginal_models <- function(fasta_filename,
   site_models <- list(beautier::create_jc69_site_model())
   clock_models <- beautier::create_clock_models()
   tree_priors <- list(beautier::create_bd_tree_prior())
-  if(use_yule_prior) {
+  if (use_yule_prior) {
     tree_priors <- list(beautier::create_yule_tree_prior())
   }
 
@@ -58,9 +58,9 @@ estimate_marginal_models <- function(fasta_filename,
             site_model = site_model,
             clock_model = clock_model,
             tree_prior = tree_prior,
-            mcmc = beautier::create_ns_mcmc(chain_length = 1e9, store_every = 5000,
-                                             tracelog = beautier::create_tracelog(filename = "marg.trace"),
-                                             treelog = beautier::create_treelog(filename = "marg.trees")),
+            mcmc = beautier::create_ns_mcmc(chain_length = 1e9, store_every = 5000,    # nolint
+                                             tracelog = beautier::create_tracelog(filename = "marg.trace"),  # nolint
+                                             treelog = beautier::create_treelog(filename = "marg.trees")),   # nolint
             beast2_path = beastier::get_default_beast2_bin_path(),
             rng_seed = rng_seed,
             overwrite = TRUE)$ns
