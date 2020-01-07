@@ -19,3 +19,4 @@ src/getP.o
 *.fasta
 *.pdf
 *.o
+*.trace

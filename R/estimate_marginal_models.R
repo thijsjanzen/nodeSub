@@ -7,12 +7,16 @@
 #' @return data frame
 #' @export
 estimate_marginal_models <- function(fasta_filename,
+                                     use_yule_prior = FALSE,
                                      rng_seed = 42,
                                      verbose = FALSE) {
 
   site_models <- list(beautier::create_jc69_site_model())
   clock_models <- beautier::create_clock_models()
   tree_priors <- list(beautier::create_bd_tree_prior())
+  if(use_yule_prior) {
+    tree_priors <- list(beautier::create_yule_tree_prior())
+  }
 
   if (rappdirs::app_dir()$os == "win") {
     stop("mcbette must run on Linux or Mac.\n",
