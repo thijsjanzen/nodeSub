@@ -42,7 +42,7 @@ estimate_marginal_models <- function(fasta_filename,
   # Remove circular dependency: pirouette must depend on nodeSub,
   # so nodeSub cannot depend on Peregrine -> razzo -> pirouette
   # beast2_options <- peregrine::create_pff_beast2_options()  # nolint this is commented-out code indeed
-  beast2_options <- beastier::create_beast2_options()
+
 
   row_index <- 1
   for (site_model in site_models) {
@@ -54,16 +54,10 @@ estimate_marginal_models <- function(fasta_filename,
             site_model = site_model,
             clock_model = clock_model,
             tree_prior = tree_prior,
-            mcmc = beautier::create_mcmc_nested_sampling(),
+            mcmc = beautier::create_ns_mcmc(chain_length = 1e9, store_every = 5000,
+                                             tracelog = beautier::create_tracelog(filename = "marg.trace"),
+                                             treelog = beautier::create_treelog(filename = "marg.trees")),
             beast2_path = beastier::get_default_beast2_bin_path(),
-            beast2_output_log_filename =
-              beast2_options$output_log_filename,
-            beast2_output_trees_filenames =
-              beast2_options$output_trees_filenames,
-            beast2_output_state_filename =
-              beast2_options$output_state_filename,
-            beast2_working_dir = beast2_options$beast2_working_dir,
-            beast2_input_filename = beast2_options$input_filename,
             rng_seed = rng_seed,
             overwrite = TRUE)$ns
           marg_log_liks[row_index] <- marg_lik$marg_log_lik
