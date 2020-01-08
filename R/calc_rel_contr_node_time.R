@@ -61,22 +61,6 @@ calc_required_node_time <- function(phy = NULL,
   return(node_time)
 }
 
-#' calculate the number of expected hidden nodes along a branch
-#' @description calculate the number of expected hidden nodes by
-#' integrating over equation 1 in Maceau et al. 2019
-#' @param bl branch length
-#' @param lambda birth rate
-#' @param mu death rate
-#' @return expected number of hidden nodes
-#' @export
-calc_expected_hidden_nodes_per_branch <- function(bl, lambda, mu) {  # nolint
-  t0 <- bl
-  t1 <- 0
-  numerator <- 1 - lambda / (mu) * exp((lambda - mu) * t0)
-  denominator <- 1 - lambda / (mu) * exp((lambda - mu) * t1)
-  return(2 * lambda * (t0 - t1) - 2 * log(numerator / denominator))
-}
-
 #' calculate the number of expected hidden nodes in a phylogenetic tree
 #' @description calculate the number of expected hidden nodes
 #' using equation 1 in Maceau et al. 2019

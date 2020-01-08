@@ -2,21 +2,22 @@ context("create_equal_alignment")
 
 test_that("create_equal_alignment", {
   phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
-  seq_node_sub <- sim_normal(x = phy, l = 1000,  rate = 0.1)
+
+  set.seed(666)
+
+  sub_rate <- 0.1
+  seq_node_sub <- sim_normal(x = phy, l = 1000,  rate = sub_rate)
 
   sim_regular <- function(phy, rate, rootseq) {
     sim_normal(x = phy, l = 1000, rootseq = rootseq, rate = rate)
   }
 
-
-  # I do notice this test sometimes passes. I see no RNG seed
-  # being set, which I hypothesize would be the cause of that
-  skip("Not now, @thijsjanzen")
-
   seq_alt <- create_equal_alignment(input_tree = phy,
+                                    node_time = 0,
                                     focal_alignment = seq_node_sub$alignment,
                                     root_sequence = seq_node_sub$root_seq,
                                     alt_model = sim_regular,
+                                    sub_rate = sub_rate,
                                     verbose = FALSE)
 
   testthat::expect_equal(length(seq_alt$alignment),
