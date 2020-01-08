@@ -32,13 +32,34 @@ draw_bases <- function(focal_base, trans_matrix) {
 }
 
 #' @keywords internal
+pick_rate <- function(matching_bases, double_rate, focal_target) {
+  output <- NA
+
+  if (matching_bases == 2) {
+    output <- NA  # e.g. A -> AA, to be filled in later
+  }
+  if (matching_bases == 1) {
+    output <- 1 # e.g. A -> AT, one mutation
+  }
+  if (matching_bases == 0) { # double mutation!
+    a <- substr(focal_target, 1, 1)
+    b <- substr(focal_target, 2, 2)
+    if (a != b) {
+      output <- double_rate  # e.g. A -> TG
+    } else {
+      output <- 0            # e.g. A -> TT, impossible by definition
+    }
+    # if a == b, use default output = 0
+  }
+  return(output)
+}
+
+#' @keywords internal
 make_transition_matrix <- function(mut_double) {
 
   output <- matrix(NA, nrow = 4, ncol = 10)
 
-  one_sub <- 1
-  two_sub <- mut_double
-  no_sub <- NA
+
 
   order_events <- c("aa", "tt", "cc", "gg",
                     "ac", "at", "ag",
@@ -52,21 +73,8 @@ make_transition_matrix <- function(mut_double) {
     for (i in seq_along(order_events)) {
       focal_target <- order_events[i]
       matching_bases <- stringr::str_count(focal_target, focal)
-      if (matching_bases == 2) {
-        to_add[i] <- no_sub
-      }
-      if (matching_bases == 1) {
-        to_add[i] <- one_sub
-      }
-      if (matching_bases == 0) {
-        a <- substr(focal_target, 1, 1)
-        b <- substr(focal_target, 2, 2)
-        if (a != b) {
-          to_add[i] <- two_sub
-        } else {
-          to_add[i] <- 0
-        }
-      }
+
+      to_add[i] <- pick_rate(matching_bases, mut_double, focal_target)
     }
     output[j, ] <- to_add
   }
@@ -109,14 +117,18 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
 #' @return phyDat object
 #' @export
 sim_dual_linked <- function(phy,
-                            Q = NULL,
+                            Q = rep(1, 6),  # nolint
                             rate = 0.1,
                             node_mut_rate_double = 1e-9,
                             l = 1000,
-                            bf = NULL,
+                            bf = rep(0.25, 4),
                             rootseq = NULL,
                             node_time = 0.01) {
-  if (!is.null(rootseq) && length(rootseq) != l) {
+  levels <- c("a", "c", "g", "t")
+  if (is.null(rootseq)) {
+    rootseq <- sample(levels, l, replace = TRUE, prob = bf)
+  }
+  if (length(rootseq) != l) {
     stop(
       "'rootseq' must have the same length as 'l'. \n",
       "length 'rootseq': ", length(rootseq), " \n",
@@ -124,21 +136,14 @@ sim_dual_linked <- function(phy,
     )
   }
 
-  levels <- c("a", "c", "g", "t")
-  lbf <- length(levels)
 
-  # default is c(0.25, 0.25, 0.25, 0.25)
-  if (is.null(bf)) bf <- rep(1 / lbf, lbf)
-  if (is.null(Q)) Q <- rep(1, lbf * (lbf - 1) / 2) # default is JC69
 
   # only extract the 6 important rates.
-  if (is.matrix(Q)) Q <- Q[lower.tri(Q)]
+  if (is.matrix(Q)) Q <- Q[lower.tri(Q)] # nolint
 
   eig_q <- phangorn::edQt(Q, bf) # eigen values
 
   m <- length(levels) # always 4 (bases)
-
-  if (is.null(rootseq)) rootseq <- sample(levels, l, replace = TRUE, prob = bf)
 
   phy <- stats::reorder(phy)
   edge <- phy$edge
@@ -154,22 +159,24 @@ sim_dual_linked <- function(phy,
   parents <- sort(unique(as.integer(edge[, 1])))
 
   # the first parent should be the root, otherwise the algorithm doesn't work
-  testit::assert(parents[1] == root)
 
-  testit::assert(node_mut_rate_double >= 0) # if mu < 0, the model is undefined
+  assertthat::assert_that(parents[1] == root)
+
+  # if mu < 0, the model is undefined
+  assertthat::assert_that(node_mut_rate_double >= 0)
 
   node_transition_matrix <- make_transition_matrix(node_mut_rate_double)
-  eigen_obj <- eigen(node_transition_matrix, FALSE)
-  eigen_obj$inv <- solve.default(eigen_obj$vec)
+  eigen_obj <- base::eigen(node_transition_matrix, FALSE)
+  eigen_obj$inv <- base::solve.default(eigen_obj$vec)
 
-  total_node_subs <- 0
+  total_node_subs   <- 0
   total_branch_subs <- 0
 
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   check_to_extinct_tip <- function(number) {
-    if(number > length(phy$tip.label)) return(TRUE)
-    if(number <= length(phy_no_extinct$tip.label)) return(TRUE)
+    if (number > length(phy$tip.label)) return(TRUE)
+    if (number <= length(phy_no_extinct$tip.label)) return(TRUE)
     return(FALSE)
   }
 
@@ -188,15 +195,12 @@ sim_dual_linked <- function(phy,
     node_subs_1 <- sum(res[, focal_parent] != result[[1]])
     node_subs_2 <- sum(res[, focal_parent] != result[[2]])
     node_subs <- c(node_subs_1, node_subs_2)
-   # total_node_subs <- total_node_subs + node_subs_1 + node_subs_2
 
     indices <- which(parent == focal_parent)
     for (i in 1:2) {
       branch_length <- phy$edge.length[indices[i]]
-      P <- get_p_matrix(branch_length, eig_q, rate)
+      P <- get_p_matrix(branch_length, eig_q, rate)   # nolint
 
-      # avoid numerical problems for larger P and small t
-      if (any(P < 0)) P[P < 0] <- 0
       before_mut_seq <- result[[i]]
       after_mut_seq <- c()
       for (j in 1:m) {
@@ -207,7 +211,7 @@ sim_dual_linked <- function(phy,
       res[, offspring[i]] <- after_mut_seq
       branch_subs <- sum(after_mut_seq != before_mut_seq)
 
-      if(check_to_extinct_tip(offspring[i])) {
+      if (check_to_extinct_tip(offspring[i])) {
             total_branch_subs <- total_branch_subs + branch_subs
             total_node_subs   <- total_node_subs + node_subs[i]
       }
@@ -217,7 +221,7 @@ sim_dual_linked <- function(phy,
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   k <- length(phy$tip.label)
-  label <- c(phy$tip.label, as.character( (k + 1):num_nodes))
+  label <- c(phy$tip.label, as.character((k + 1):num_nodes))
   colnames(res) <- label
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))

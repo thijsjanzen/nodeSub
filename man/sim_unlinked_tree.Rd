@@ -2,16 +2,18 @@
 % Please edit documentation in R/sim_unlinked_tree.R
 \name{sim_unlinked_tree}
 \alias{sim_unlinked_tree}
-\title{simulate a sequence assuming node substitutions are shared among the offspring}
+\title{simulate a sequence assuming node substitutions are
+shared among the offspring
+this 'tacks on' hidden nodes ONTO the tree!}
 \usage{
 sim_unlinked_tree(
   phy,
-  Q1 = NULL,
-  Q2 = NULL,
-  rate1 = 1,
-  rate2 = 1,
+  Q1 = rep(1, 6),
+  Q2 = rep(1, 6),
+  rate1 = 0.1,
+  rate2 = 0.1,
   l = 1000,
-  bf = NULL,
+  bf = rep(0.25, 4),
   rootseq = NULL,
   node_time = 0.001,
   lambda = NULL,
@@ -45,5 +47,7 @@ sim_unlinked_tree(
 phyDat object
 }
 \description{
-simulate a sequence assuming node substitutions are shared among the offspring
+simulate a sequence assuming node substitutions are
+shared among the offspring
+this 'tacks on' hidden nodes ONTO the tree!
 }

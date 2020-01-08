@@ -1,18 +1,24 @@
 #' infer the time calibrated phylogeny associated with the
 #' @param fasta_filename file name of fasta file holding alignment for which the
 #' marginal likelihood is to be estimated
+#' @param use_yule_prior by default, a birth-death prior is used as tree prior,
+#' but if use_yule_prior is set to TRUE, a pure-birth prior will be used.
 #' @param rng_seed seed of pseudo-random number generator
 #' @param verbose boolean indicating if verbose intermediate output is to be
 #' generated
 #' @return data frame
 #' @export
 estimate_marginal_models <- function(fasta_filename,
+                                     use_yule_prior = FALSE,
                                      rng_seed = 42,
                                      verbose = FALSE) {
 
   site_models <- list(beautier::create_jc69_site_model())
   clock_models <- beautier::create_clock_models()
   tree_priors <- list(beautier::create_bd_tree_prior())
+  if (use_yule_prior) {
+    tree_priors <- list(beautier::create_yule_tree_prior())
+  }
 
   if (rappdirs::app_dir()$os == "win") {
     stop("mcbette must run on Linux or Mac.\n",
@@ -38,13 +44,10 @@ estimate_marginal_models <- function(fasta_filename,
   marg_log_liks <- rep(NA, n_rows)
   marg_log_lik_sds <- rep(NA, n_rows)
 
-  # @thijsjanzen
-  # Remove circular dependency: pirouette must depend on nodeSub,
-  # so nodeSub cannot depend on Peregrine -> razzo -> pirouette
-  # beast2_options <- peregrine::create_pff_beast2_options()  # nolint this is commented-out code indeed
-  beast2_options <- beastier::create_beast2_options()
-
   row_index <- 1
+
+  # this code looks awful right now. TODO: clean up!
+
   for (site_model in site_models) {
     for (clock_model in clock_models) {
       for (tree_prior in tree_priors) {
@@ -54,16 +57,10 @@ estimate_marginal_models <- function(fasta_filename,
             site_model = site_model,
             clock_model = clock_model,
             tree_prior = tree_prior,
-            mcmc = beautier::create_mcmc_nested_sampling(),
+            mcmc = beautier::create_ns_mcmc(chain_length = 1e9, store_every = 5000,    # nolint
+                                             tracelog = beautier::create_tracelog(filename = "marg.trace"),  # nolint
+                                             treelog = beautier::create_treelog(filename = "marg.trees")),   # nolint
             beast2_path = beastier::get_default_beast2_bin_path(),
-            beast2_output_log_filename =
-              beast2_options$output_log_filename,
-            beast2_output_trees_filenames =
-              beast2_options$output_trees_filenames,
-            beast2_output_state_filename =
-              beast2_options$output_state_filename,
-            beast2_working_dir = beast2_options$beast2_working_dir,
-            beast2_input_filename = beast2_options$input_filename,
             rng_seed = rng_seed,
             overwrite = TRUE)$ns
           marg_log_liks[row_index] <- marg_lik$marg_log_lik
@@ -84,8 +81,6 @@ estimate_marginal_models <- function(fasta_filename,
       }
     }
   }
-
-
 
   weights <- as.numeric(mcbette::calc_weights(
     marg_liks = exp(Rmpfr::mpfr(marg_log_liks, 256))))
