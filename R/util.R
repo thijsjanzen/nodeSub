@@ -1,4 +1,5 @@
 #' @keywords internal
+#' this is an internal function from the phangorn package.
 fast.table <- function(data) {  # nolint
   if (!is.data.frame(data))
     data <- as.data.frame(data, stringsAsFactors = FALSE)
@@ -17,6 +18,7 @@ fast.table <- function(data) {  # nolint
 }
 
 #' @keywords internal
+#' this is an internal function from the phangorn package.
 phyDat.DNA <- function(data) {  # nolint
   if (is.matrix(data))
     nam <- row.names(data)
@@ -117,6 +119,8 @@ slow_matrix <- function(eig,
   dim_size <- ncol(evei)
 
   P <- matrix(NA, nrow = dim_size, ncol = dim_size)  # nolint
+  # capital P is retained to conform to mathematical notation on wikipedia
+  # and in the literature
 
   if (branch_length == 0 || rate <= 0) {
     P <- matrix(0, nrow = dim_size, ncol = dim_size)  # nolint

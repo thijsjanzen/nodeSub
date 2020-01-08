@@ -71,7 +71,8 @@ sim_dual_independent <- function(phy,
 
     # first we do substitutions due to the node model:
     P <- get_p_matrix(node_time, eig_q2, rate2)  # nolint
-    # avoid numerical problems for larger P and small t
+    # capital P is retained to conform to mathematical notation on wikipedia
+    # and in the literature
 
     for (j in 1:m) {
       ind <- res[, from] == levels[j]
@@ -83,6 +84,8 @@ sim_dual_independent <- function(phy,
     # and then we add extra substitutions
     from <- to # the parent is now the individual again
     P <- get_p_matrix(tl[i], eig_q1, rate1)   # nolint
+    # capital P is retained to conform to mathematical notation on wikipedia
+    # and in the literature
 
     # avoid numerical problems for larger P and small t
     before_mut_seq <- res[, from]

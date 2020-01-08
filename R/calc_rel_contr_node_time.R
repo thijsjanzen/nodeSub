@@ -106,13 +106,13 @@ calc_expected_hidden_nodes <- function(phy,
   }
 
   #now we integrate over each branch
-  calc_expected_hidden_nodes_per_dt <- function(t, lambda, mu) {  # nolint
+  calc_exp_hidden_nodes_per_dt <- function(t, lambda, mu) {
     t0 <- t[1]
     t1 <- t[2]
     numerator <- 1 - lambda / (mu) * exp((lambda - mu) * t0)
     denominator <- 1 - lambda / (mu) * exp((lambda - mu) * t1)
     return(2 * lambda * (t0 - t1) - 2 * log(numerator / denominator))
   }
-  exp_n <- apply(branches, 1, calc_expected_hidden_nodes_per_dt, lambda, mu)
+  exp_n <- apply(branches, 1, calc_exp_hidden_nodes_per_dt, lambda, mu)
   return(sum(exp_n))
 }

@@ -57,7 +57,7 @@ estimate_marginal_models <- function(fasta_filename,
             site_model = site_model,
             clock_model = clock_model,
             tree_prior = tree_prior,
-            mcmc = beautier::create_ns_mcmc(chain_length = 1e9, store_every = 5000,    # nolint
+            mcmc = beautier::create_ns_mcmc(chain_length = 1e9, store_every = 5000,    # nolint - hard to reduce length for now
                                              tracelog = beautier::create_tracelog(filename = "marg.trace"),  # nolint
                                              treelog = beautier::create_treelog(filename = "marg.trees")),   # nolint
             beast2_path = beastier::get_default_beast2_bin_path(),

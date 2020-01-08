@@ -1,7 +1,7 @@
 Package: nodeSub
 Type: Package
 Title: Simulate Sequences
-Version: 0.4.2
+Version: 0.5
 Author: Thijs Janzen
 Maintainer: Thijs Janzen <thijsjanzen@gmail.com>
 Description: Simulate DNA sequences under different models.
@@ -17,8 +17,6 @@ Imports:
     testit, 
     stringr,
     testthat,
-    MASS,
-    phytools,
     beautier,
     beastier (>= 2.0.18),
     babette,
@@ -29,13 +27,13 @@ Imports:
     tibble,
     pbapply,
     geiger,
-    TreeSim,
-    dplyr,
-    DDD,
     Rmpfr,
     mcbette,
     mauricer,
     rappdirs,
     phylobase,
     RPANDA,
-    assertthat
+    assertthat,
+    TreeSim,
+    dplyr,
+    phytools

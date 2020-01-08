@@ -36,6 +36,8 @@ sim_unlinked <- function(phy,
   # only extract the 6 important rates.
   if (is.matrix(Q1)) Q1 <- Q1[lower.tri(Q1)]  # nolint
   if (is.matrix(Q2)) Q2 <- Q2[lower.tri(Q2)]  # nolint
+  # capital Q is retained to conform to mathematical notation on wikipedia
+  # and in the literature
 
   eig_q1 <- phangorn::edQt(Q1, bf) # eigen values
   eig_q2 <- phangorn::edQt(Q2, bf) # eigen values
@@ -63,6 +65,8 @@ sim_unlinked <- function(phy,
 
     # first we do substitutions due to the node model:
     P <- get_p_matrix(node_time, eig_q2, rate2)  # nolint
+    # capital P is retained to conform to mathematical notation on wikipedia
+    # and in the literature
 
     for (j in 1:m) {
       ind <- res[, from] == levels[j]
@@ -75,6 +79,8 @@ sim_unlinked <- function(phy,
     # and then we add extra substitutions
     from <- to # the parent is now the individual again
     P <- get_p_matrix(tl[i], eig_q1, rate1)  # nolint
+    # capital P is retained to conform to mathematical notation on wikipedia
+    # and in the literature
 
     before_mut_seq <- res[, from]
     after_mut_seq <- before_mut_seq

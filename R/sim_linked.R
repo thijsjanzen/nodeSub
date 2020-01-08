@@ -33,6 +33,8 @@ sim_linked <- function(phy,
 
   # only extract the 6 important rates.
   if (is.matrix(Q)) Q <- Q[lower.tri(Q)]  # nolint
+  # capital Q is retained to conform to mathematical notation on wikipedia
+  # and in the literature
 
   eig_q <- phangorn::edQt(Q, bf) # eigen values
 
@@ -84,6 +86,8 @@ sim_linked <- function(phy,
     for (i in 1:2) {
       branch_length <- phy$edge.length[indices[i]]
       P <- get_p_matrix(branch_length, eig_q, rate)  # nolint
+      # capital P is retained to conform to mathematical notation on wikipedia
+      # and in the literature
 
       before_mut_seq <- result[[i]]
       after_mut_seq <- c()
