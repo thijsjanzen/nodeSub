@@ -2,18 +2,19 @@
 % Please edit documentation in R/sim_unlinked_tree.R
 \name{create_equal_alignment_tree}
 \alias{create_equal_alignment_tree}
-\title{simulate a sequence assuming node substitutions are shared among the offspring
+\title{simulate a sequence assuming node substitutions are shared
+among the offspring
 optimize to obtain an equal amount of substitutions as a given alignment}
 \usage{
 create_equal_alignment_tree(
   input_tree,
   focal_alignment = NULL,
-  Q1 = NULL,
-  Q2 = NULL,
-  rate1 = 1,
-  rate2 = 1,
+  Q1 = rep(1, 6),
+  Q2 = rep(1, 6),
+  rate1 = 0.1,
+  rate2 = 0.1,
   l = 1000,
-  bf = NULL,
+  bf = rep(0.25, 4),
   rootseq = NULL,
   fraction = NULL,
   node_time = NULL,
@@ -51,6 +52,8 @@ create_equal_alignment_tree(
 
 \item{mu}{death rate, used if reconstruct_hidden_nodes = TRUE}
 
+\item{model}{used node substitution model, options: "linked" and "unlinked"}
+
 \item{reconstruct_hidden_nodes}{simulate hidden nodes along branches}
 
 \item{verbose}{should intermediate output be displayed?}
@@ -59,6 +62,7 @@ create_equal_alignment_tree(
 phyDat object
 }
 \description{
-simulate a sequence assuming node substitutions are shared among the offspring
+simulate a sequence assuming node substitutions are shared
+among the offspring
 optimize to obtain an equal amount of substitutions as a given alignment
 }

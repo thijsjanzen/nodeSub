@@ -3,8 +3,8 @@
 #' @param phy tree for which to simulate sequences
 #' @param Q1 substitution matrix along the branches, default = JC
 #' @param Q2 substitution matrix on the nodes, default = JC
-#' @param rate1 mutation rate along the branch, default = 1
-#' @param rate2 mutation rate on the node, default = 1
+#' @param rate1 mutation rate along the branch, default = 0.1
+#' @param rate2 mutation rate on the node, default = 0.1
 #' @param l number of base pairs to simulate
 #' @param bf base frequencies, default = c(0.25, 0.25, 0.25, 0.25)
 #' @param rootseq sequence at the root, simulated by default
@@ -12,31 +12,26 @@
 #' @return phyDat object
 #' @export
 sim_unlinked <- function(phy,
-                         Q1 = NULL,   # nolint
-                         Q2 = NULL,   # nolint
-                         rate1 = 1,
-                         rate2 = 1,
+                         Q1 = rep(1, 6),   # nolint
+                         Q2 = rep(1, 6),   # nolint
+                         rate1 = 0.1,
+                         rate2 = 0.1,
                          l = 1000,
-                         bf = NULL,
+                         bf = rep(0.25, 4),
                          rootseq = NULL,
                          node_time = 1e-3) {
 
-  if (!is.null(rootseq) && length(rootseq) != l) {
+  levels <- c("a", "c", "g", "t")
+  if (is.null(rootseq)) {
+    rootseq <- sample(levels, l, replace = TRUE, prob = bf)
+  }
+  if (length(rootseq) != l) {
     stop(
       "'rootseq' must have the same length as 'l'. \n",
       "length 'rootseq': ", length(rootseq), " \n",
       "value of 'l': ", l, " \n"
     )
   }
-
-  levels <- c("a", "c", "g", "t")
-  lbf <- length(levels)
-
-  # default is c(0.25, 0.25, 0.25, 0.25)
-  if (is.null(bf)) bf <- rep(1 / lbf, lbf)
-
-  if (is.null(Q1)) Q1 <- rep(1, lbf * (lbf - 1) / 2) # nolint
-  if (is.null(Q2)) Q2 <- rep(1, lbf * (lbf - 1) / 2) # nolint
 
   # only extract the 6 important rates.
   if (is.matrix(Q1)) Q1 <- Q1[lower.tri(Q1)]  # nolint
@@ -46,8 +41,6 @@ sim_unlinked <- function(phy,
   eig_q2 <- phangorn::edQt(Q2, bf) # eigen values
 
   m <- length(levels) # always 4 (bases)
-
-  if (is.null(rootseq)) rootseq <- sample(levels, l, replace = TRUE, prob = bf)
 
   phy <- stats::reorder(phy)
   edge <- phy$edge
@@ -70,8 +63,7 @@ sim_unlinked <- function(phy,
 
     # first we do substitutions due to the node model:
     P <- get_p_matrix(node_time, eig_q2, rate2)  # nolint
-    # avoid numerical problems for larger P and small t
-    if (any(P < 0)) P[P < 0] <- 0
+
     for (j in 1:m) {
       ind <- res[, from] == levels[j]
       res[ind, to] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
@@ -83,8 +75,7 @@ sim_unlinked <- function(phy,
     # and then we add extra substitutions
     from <- to # the parent is now the individual again
     P <- get_p_matrix(tl[i], eig_q1, rate1)  # nolint
-    # avoid numerical problems for larger P and small t
-    if (any(P < 0)) P[P < 0] <- 0
+
     before_mut_seq <- res[, from]
     after_mut_seq <- before_mut_seq
     for (j in 1:m) {

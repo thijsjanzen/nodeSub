@@ -3,11 +3,8 @@
 #' @description calculates the relative contribution of substitutions at
 #' the nodes
 #' @param phy phylogenetic tree (optional)
-#' @param num_tips number of tips (optional)
 #' @param node_time time spent at the node
 #' @param model node substitution model
-#' @param lambda the birth rate to generate the phylogenetic tree
-#' @param mu the death rate to generate the phylogenetic tree
 #' @return expected fraction
 #' @export
 calc_fraction <- function(phy = NULL,
@@ -99,10 +96,13 @@ calc_expected_hidden_nodes <- function(phy,
     stop("requires valid input for lambda and mu")
   }
 
-  if (sum(geiger::is.extinct(phy))) {
-    stop("can not calculate number of hidden nodes for a tree
-          with extinct branches")
+  if (length(geiger::is.extinct(phy)) > 0) {
+    warning("can not calculate number of hidden nodes for a tree
+          with extinct branches, removing extinct branches!")
+    phy <- geiger::drop.extinct(phy)
   }
+
+  if (mu == 0) return(0)
 
   bt <- ape::branching.times(phy)
   branches <- c()

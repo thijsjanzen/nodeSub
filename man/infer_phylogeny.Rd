@@ -27,7 +27,8 @@ infer_phylogeny(
 
 \item{working_dir}{beast2 working dir}
 
-\item{sub_rate}{substitution rate used to generate the original alignment (if available), default is 1}
+\item{sub_rate}{substitution rate used to generate the original
+alignment (if available), default is 1}
 }
 \value{
 list with all trees, and the consensus tree

@@ -94,6 +94,7 @@ phyDat.DNA <- function(data) {  # nolint
 #' @return p matrix
 get_p_matrix <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
   res <- get_p_m_rcpp(eig, branch_length, rate)
+  if (any(res < 0)) res[res < 0] <- 0
   return(res)
 }
 
@@ -105,7 +106,9 @@ get_p_matrix <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
 #' @param rate substitution rate
 #' @return p matrix
 #' @export
-slow_matrix <- function(eig, branch_length, rate) {
+slow_matrix <- function(eig,
+                        branch_length,
+                        rate) {
 
   eva <- eig$values
   ev <- eig$vectors
@@ -116,19 +119,12 @@ slow_matrix <- function(eig, branch_length, rate) {
   P <- matrix(NA, nrow = dim_size, ncol = dim_size)  # nolint
 
   if (branch_length == 0 || rate <= 0) {
-    for (i in 1:dim_size) {
-      for (j in 1:dim_size) {
-        if (i != j) P[i, j] <- 0
-        if (i == j) P[i, j] <- 1
-      }
-    }
+    P <- matrix(0, nrow = dim_size, ncol = dim_size)  # nolint
+    diag(P) <- 1
     return(P)
   }
 
-  tmp <- rep(NA, dim_size)
-  for (i in 1:dim_size) {
-    tmp[i] <- exp(1.0 * eva[i] * rate * branch_length)
-  }
+  tmp <- exp(eva * rate * branch_length)
 
   for (i in 1:dim_size) {
     for (j in 1:dim_size) {

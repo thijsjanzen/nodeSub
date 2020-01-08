@@ -47,12 +47,12 @@ add_hidden_nodes <- function(phy,
   }
 
   exp_hidden <- as.numeric(
-                  apply(branches[, c(3, 4)], 1,
-                        calc_expected_hidden_nodes_per_dt,
-                        lambda, mu))
+    apply(branches[, c(3, 4)], 1,
+          calc_expected_hidden_nodes_per_dt,
+          lambda, mu))
 
   draw_nodes <- function(x) {
-    return(rpois(1, x))
+    return(stats::rpois(1, x))
   }
 
   obs_hidden <- sapply(exp_hidden, draw_nodes)
@@ -62,6 +62,7 @@ add_hidden_nodes <- function(phy,
 
 #' simulate a sequence assuming node substitutions are
 #' shared among the offspring
+#' this 'tacks on' hidden nodes ONTO the tree!
 #' @param phy tree for which to simulate sequences
 #' @param Q1 substitution matrix along the branches, default = JC
 #' @param Q2 substitution matrix on the nodes, default = JC
@@ -76,18 +77,21 @@ add_hidden_nodes <- function(phy,
 #' @return phyDat object
 #' @export
 sim_unlinked_tree <- function(phy,
-                              Q1 = NULL,   # nolint
-                              Q2 = NULL,   # nolint
-                              rate1 = 1,
-                              rate2 = 1,
+                              Q1 = rep(1, 6), # nolint
+                              Q2 = rep(1, 6), # nolint
+                              rate1 = 0.1,
+                              rate2 = 0.1,
                               l = 1000,
-                              bf = NULL,
+                              bf = rep(0.25, 4),
                               rootseq = NULL,
                               node_time = 1e-3,
                               lambda = NULL,
                               mu = NULL) {
-
-  if (!is.null(rootseq) && length(rootseq) != l) {
+  levels <- c("a", "c", "g", "t")
+  if (is.null(rootseq)) {
+    rootseq <- sample(levels, l, replace = TRUE, prob = bf)
+  }
+  if (length(rootseq) != l) {
     stop(
       "'rootseq' must have the same length as 'l'. \n",
       "length 'rootseq': ", length(rootseq), " \n",
@@ -105,15 +109,6 @@ sim_unlinked_tree <- function(phy,
     stop("lambda and mu have to be provided")
   }
 
-  levels <- c("a", "c", "g", "t")
-  lbf <- length(levels)
-
-  # default is c(0.25, 0.25, 0.25, 0.25)
-  if (is.null(bf)) bf <- rep(1 / lbf, lbf)
-
-  if (is.null(Q1)) Q1 <- rep(1, lbf * (lbf - 1) / 2) # nolint
-  if (is.null(Q2)) Q2 <- rep(1, lbf * (lbf - 1) / 2) # nolint
-
   # only extract the 6 important rates.
   if (is.matrix(Q1)) Q1 <- Q1[lower.tri(Q1)] # nolint
   if (is.matrix(Q2)) Q2 <- Q2[lower.tri(Q2)] # nolint
@@ -123,8 +118,6 @@ sim_unlinked_tree <- function(phy,
 
   m <- length(levels) # always 4 (bases)
 
-  if (is.null(rootseq)) rootseq <- sample(levels, l, replace = TRUE, prob = bf)
-
   phy <- stats::reorder(phy)
   edge <- phy$edge
   num_nodes <- max(edge)
@@ -132,12 +125,9 @@ sim_unlinked_tree <- function(phy,
   hidden_nodes <- add_hidden_nodes(phy, lambda, mu)
   obs_hidden_nodes <- hidden_nodes$observed
 
-
   parent <- as.integer(edge[, 1])
   child <- as.integer(edge[, 2])
   root <- as.integer(parent[!match(parent, child, 0)][1])
-
-
 
   total_node_subs <- 0
   total_branch_subs <- 0
@@ -145,8 +135,6 @@ sim_unlinked_tree <- function(phy,
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   P_n <- get_p_matrix(node_time, eig_q2, rate2)   # nolint
-  if (any(P_n < 0)) P_n[P_n < 0] <- 0
-
 
   check_to_extinct_tip <- function(number) {
     if (number > length(phy$tip.label)) return(TRUE)
@@ -157,7 +145,6 @@ sim_unlinked_tree <- function(phy,
   res <- matrix(NA, l, num_nodes)
   res[, root] <- rootseq
   tl <- phy$edge.length
-
 
   for (i in seq_along(tl)) {
     from <- parent[i]
@@ -185,9 +172,9 @@ sim_unlinked_tree <- function(phy,
       focal_t <- 0
       bl <- c()
       for (j in 1:obs_hidden_nodes[i]) {
-        dt <- rexp(1, 1 / hidden_nodes$lambda[i])
+        dt <- stats::rexp(1, 1 / hidden_nodes$lambda[i])
         while (focal_t + dt >= total_bl) {
-          dt <- rexp(1, 1 / hidden_nodes$lambda[i])
+          dt <- stats::rexp(1, 1 / hidden_nodes$lambda[i])
         }
         focal_t <- focal_t + dt
         bl[j] <- dt
@@ -198,7 +185,6 @@ sim_unlinked_tree <- function(phy,
       # branch until first node:
       P_b <- get_p_matrix(bl[1], eig_q1, rate1)  # nolint
       # avoid numerical problems for larger P and small t
-      if (any(P_b < 0)) P_b[P_b < 0] <- 0
       before_mut_seq <- res[, from]
       after_mut_seq <- before_mut_seq
       for (j in 1:m) {
@@ -226,9 +212,6 @@ sim_unlinked_tree <- function(phy,
         # and the subsequent branch
         P_b <- get_p_matrix(bl[1], eig_q1, rate1)  # nolint
 
-        # avoid numerical problems for larger P and small t
-        if (any(P_b < 0)) P_b[P_b < 0] <- 0
-
         before_mut_seq <- res[, from]
         after_mut_seq <- before_mut_seq
         for (j in 1:m) {
@@ -245,8 +228,6 @@ sim_unlinked_tree <- function(phy,
       # "only" extra substitutions along the branch:
       P <- get_p_matrix(tl[i], eig_q1, rate1)  # nolint
 
-      # avoid numerical problems for larger P and small t
-      if (any(P < 0)) P[P < 0] <- 0
       before_mut_seq <- res[, from]
       after_mut_seq <- before_mut_seq
       for (j in 1:m) {
@@ -294,17 +275,18 @@ sim_unlinked_tree <- function(phy,
 #' @param reconstruct_hidden_nodes simulate hidden nodes along branches
 #' @param lambda birth rate, used if reconstruct_hidden_nodes = TRUE
 #' @param mu death rate, used if reconstruct_hidden_nodes = TRUE
+#' @param model used node substitution model, options: "linked" and "unlinked"
 #' @param verbose should intermediate output be displayed?
 #' @return phyDat object
 #' @export
 create_equal_alignment_tree <- function(input_tree,
                                         focal_alignment = NULL,
-                                        Q1 = NULL,  # nolint
-                                        Q2 = NULL,  # nolint
-                                        rate1 = 1,
-                                        rate2 = 1,
+                                        Q1 = rep(1, 6), # nolint
+                                        Q2 = rep(1, 6), # nolint
+                                        rate1 = 0.1,
+                                        rate2 = 0.1,
                                         l = 1000,
-                                        bf = NULL,
+                                        bf = rep(0.25, 4),
                                         rootseq = NULL,
                                         fraction = NULL,
                                         node_time = NULL,

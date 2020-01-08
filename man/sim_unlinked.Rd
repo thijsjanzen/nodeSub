@@ -2,16 +2,17 @@
 % Please edit documentation in R/sim_unlinked.R
 \name{sim_unlinked}
 \alias{sim_unlinked}
-\title{simulate a sequence assuming node substitutions are shared among the offspring}
+\title{simulate a sequence assuming node substitutions
+are shared among the offspring}
 \usage{
 sim_unlinked(
   phy,
-  Q1 = NULL,
-  Q2 = NULL,
-  rate1 = 1,
-  rate2 = 1,
+  Q1 = rep(1, 6),
+  Q2 = rep(1, 6),
+  rate1 = 0.1,
+  rate2 = 0.1,
   l = 1000,
-  bf = NULL,
+  bf = rep(0.25, 4),
   rootseq = NULL,
   node_time = 0.001
 )
@@ -23,9 +24,9 @@ sim_unlinked(
 
 \item{Q2}{substitution matrix on the nodes, default = JC}
 
-\item{rate1}{mutation rate along the branch, default = 1}
+\item{rate1}{mutation rate along the branch, default = 0.1}
 
-\item{rate2}{mutation rate on the node, default = 1}
+\item{rate2}{mutation rate on the node, default = 0.1}
 
 \item{l}{number of base pairs to simulate}
 
@@ -39,5 +40,6 @@ sim_unlinked(
 phyDat object
 }
 \description{
-simulate a sequence assuming node substitutions are shared among the offspring
+simulate a sequence assuming node substitutions
+are shared among the offspring
 }

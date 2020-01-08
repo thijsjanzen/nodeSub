@@ -36,4 +36,6 @@ Imports:
     mcbette,
     mauricer,
     rappdirs,
-    phylobase
+    phylobase,
+    RPANDA,
+    assertthat

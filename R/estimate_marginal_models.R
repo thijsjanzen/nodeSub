@@ -1,6 +1,8 @@
 #' infer the time calibrated phylogeny associated with the
 #' @param fasta_filename file name of fasta file holding alignment for which the
 #' marginal likelihood is to be estimated
+#' @param use_yule_prior by default, a birth-death prior is used as tree prior,
+#' but if use_yule_prior is set to TRUE, a pure-birth prior will be used.
 #' @param rng_seed seed of pseudo-random number generator
 #' @param verbose boolean indicating if verbose intermediate output is to be
 #' generated
@@ -42,13 +44,10 @@ estimate_marginal_models <- function(fasta_filename,
   marg_log_liks <- rep(NA, n_rows)
   marg_log_lik_sds <- rep(NA, n_rows)
 
-  # @thijsjanzen
-  # Remove circular dependency: pirouette must depend on nodeSub,
-  # so nodeSub cannot depend on Peregrine -> razzo -> pirouette
-  # beast2_options <- peregrine::create_pff_beast2_options()  # nolint this is commented-out code indeed
-
-
   row_index <- 1
+
+  # this code looks awful right now. TODO: clean up!
+
   for (site_model in site_models) {
     for (clock_model in clock_models) {
       for (tree_prior in tree_priors) {
@@ -82,8 +81,6 @@ estimate_marginal_models <- function(fasta_filename,
       }
     }
   }
-
-
 
   weights <- as.numeric(mcbette::calc_weights(
     marg_liks = exp(Rmpfr::mpfr(marg_log_liks, 256))))
