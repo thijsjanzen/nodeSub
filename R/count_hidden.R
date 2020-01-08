@@ -27,10 +27,12 @@ reduce_tree <- function(tree) {
       tree <- ape::drop.tip(tree, b[[1]])
       return(reduce_tree(tree))
     } else {
-      for (i in 2:length(b)) {
-        tree <- ape::drop.tip(tree, b[[i]])
+      if (length(b) >= 2) {
+        for (i in 2:length(b)) {
+          tree <- ape::drop.tip(tree, b[[i]])
+        }
+        return(reduce_tree(tree))
       }
-      return(reduce_tree(tree))
     }
   }
   return(tree)
