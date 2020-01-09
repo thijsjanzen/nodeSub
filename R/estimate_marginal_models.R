@@ -1,3 +1,24 @@
+get_marg_lik <- function(fasta_filename,
+                         site_model,
+                         clock_model,
+                         tree_prior,
+                         rng_seed) {
+  marg_lik <- babette::bbt_run(
+    fasta_filename = fasta_filename,
+    site_model = site_model,
+    clock_model = clock_model,
+    tree_prior = tree_prior,
+    mcmc =
+      beautier::create_ns_mcmc(chain_length = 1e9,
+               store_every = 5000,
+               tracelog = beautier::create_tracelog(filename = "marg.trace"),
+               treelog = beautier::create_treelog(filename = "marg.trees")),
+    beast2_path = beastier::get_default_beast2_bin_path(),
+    rng_seed = rng_seed,
+    overwrite = TRUE)$ns
+  return(marg_lik)
+}
+
 #' infer the time calibrated phylogeny associated with the
 #' @param fasta_filename file name of fasta file holding alignment for which the
 #' marginal likelihood is to be estimated
@@ -30,6 +51,7 @@ estimate_marginal_models <- function(fasta_filename,
     stop("'fasta_filename' must be the name of an existing FASTA file.\n",
          "File '", fasta_filename, "' not found")
   }
+
   beautier::check_site_models(site_models)
   beautier::check_clock_models(clock_models)
   beautier::check_tree_priors(tree_priors)
@@ -37,12 +59,16 @@ estimate_marginal_models <- function(fasta_filename,
   testit::assert(file.exists(fasta_filename))
   testit::assert(beastier::is_beast2_installed())
   testit::assert(mauricer::is_beast2_pkg_installed("NS"))
-  n_rows <- length(site_models) * length(clock_models) * length(tree_priors)
-  site_model_names <- rep(NA, n_rows)
+
+  n_rows <- length(site_models) *
+            length(clock_models) *
+            length(tree_priors)
+
+  site_model_names  <- rep(NA, n_rows)
   clock_model_names <- rep(NA, n_rows)
-  tree_prior_names <- rep(NA, n_rows)
-  marg_log_liks <- rep(NA, n_rows)
-  marg_log_lik_sds <- rep(NA, n_rows)
+  tree_prior_names  <- rep(NA, n_rows)
+  marg_log_liks     <- rep(NA, n_rows)
+  marg_log_lik_sds  <- rep(NA, n_rows)
 
   row_index <- 1
 
@@ -52,17 +78,11 @@ estimate_marginal_models <- function(fasta_filename,
     for (clock_model in clock_models) {
       for (tree_prior in tree_priors) {
         tryCatch({
-          marg_lik <- babette::bbt_run(
-            fasta_filename = fasta_filename,
-            site_model = site_model,
-            clock_model = clock_model,
-            tree_prior = tree_prior,
-            mcmc = beautier::create_ns_mcmc(chain_length = 1e9, store_every = 5000,    # nolint - hard to reduce length for now
-                                             tracelog = beautier::create_tracelog(filename = "marg.trace"),  # nolint
-                                             treelog = beautier::create_treelog(filename = "marg.trees")),   # nolint
-            beast2_path = beastier::get_default_beast2_bin_path(),
-            rng_seed = rng_seed,
-            overwrite = TRUE)$ns
+          marg_lik <- get_marg_lik(fasta_filename,
+                                   site_model,
+                                   clock_model,
+                                   tree_prior,
+                                   rng_seed)
           marg_log_liks[row_index] <- marg_lik$marg_log_lik
           marg_log_lik_sds[row_index] <- marg_lik$marg_log_lik_sd},
           error = function(msg) {
@@ -91,5 +111,11 @@ estimate_marginal_models <- function(fasta_filename,
                    marg_log_lik = marg_log_liks,
                    marg_log_lik_sd = marg_log_lik_sds,
                    weight = weights)
-  df
+
+  file.remove("marg.trace")
+  file.remove("marg.trees")
+  file.remove("marg.posterior.trace")
+  file.remove("marg.posterior.trees")
+
+  return(df)
 }
