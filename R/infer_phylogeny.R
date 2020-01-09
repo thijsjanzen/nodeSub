@@ -10,12 +10,12 @@
 #' @return list with all trees, and the consensus tree
 #' @export
 infer_phylogeny <- function(alignment,
-                          treatment_name,
-                          tree_prior = beautier::create_bd_tree_prior(),
-                          mcmc_seed = NULL,
-                          burnin = 0.1,
-                          working_dir = NULL,
-                          sub_rate = 1)  {
+                            treatment_name,
+                            tree_prior = beautier::create_bd_tree_prior(),
+                            mcmc_seed = NULL,
+                            burnin = 0.1,
+                            working_dir = NULL,
+                            sub_rate = 1)  {
 
   if (is.null(working_dir)) working_dir <- getwd()
 
@@ -35,10 +35,10 @@ infer_phylogeny <- function(alignment,
     ),
     tree_prior = tree_prior,
     mcmc = beautier::create_mcmc(chain_length = 1e7,
-          treelog = beautier::create_treelog(filename = output_trees_filenames,
-                                                             log_every = 5000),
-          tracelog = beautier::create_tracelog(filename = output_log_filename,
-                                                              log_every = 5000)
+                                 treelog = beautier::create_treelog(filename = output_trees_filenames,
+                                                                    log_every = 5000),
+                                 tracelog = beautier::create_tracelog(filename = output_log_filename,
+                                                                      log_every = 5000)
     )
   )
 
@@ -47,7 +47,7 @@ infer_phylogeny <- function(alignment,
   posterior <- babette::bbt_run_from_model(
     fasta_filename = temp_file_name,
     inference_model = inf_model,
-    beast2_options <- beast2_options_local
+    beast2_options = beast2_options_local
   )
 
   file.remove(temp_file_name)

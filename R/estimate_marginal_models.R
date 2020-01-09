@@ -3,11 +3,17 @@ get_marg_lik <- function(fasta_filename,
                          clock_model,
                          tree_prior,
                          rng_seed) {
+
+  beast2_input_filename = beastier::create_temp_input_filename()
+  beast2_output_state_filename = beastier::create_temp_output_state_filename()
+
   marg_lik <- babette::bbt_run(
     fasta_filename = fasta_filename,
     site_model = site_model,
     clock_model = clock_model,
     tree_prior = tree_prior,
+    beast2_input_filename = beast2_input_filename,
+    beast2_output_state_filename = beast2_output_state_filename,
     mcmc =
       beautier::create_ns_mcmc(chain_length = 1e9,
                store_every = 5000,
@@ -16,6 +22,10 @@ get_marg_lik <- function(fasta_filename,
     beast2_path = beastier::get_default_beast2_bin_path(),
     rng_seed = rng_seed,
     overwrite = TRUE)$ns
+
+  file.remove(beast2_output_state_filename)
+  file.remove(beast2_input_filename)
+
   return(marg_lik)
 }
 
