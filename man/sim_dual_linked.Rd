@@ -6,11 +6,11 @@
 \usage{
 sim_dual_linked(
   phy,
-  Q = NULL,
+  Q = rep(1, 6),
   rate = 0.1,
   node_mut_rate_double = 1e-09,
   l = 1000,
-  bf = NULL,
+  bf = rep(0.25, 4),
   rootseq = NULL,
   node_time = 0.01
 )

@@ -10,14 +10,20 @@
 #' @return phyDat object
 #' @export
 sim_linked <- function(phy,
-                       Q = NULL, # nolint
+                       Q = rep(1, 6), # nolint
                        rate = 0.1,
                        node_mut_rate_double = 1e-9,
                        l = 1000,
-                       bf = NULL,
+                       bf = rep(0.25, 4),
                        rootseq = NULL,
                        node_time = 0.01) {
-  if (!is.null(rootseq) && length(rootseq) != l) {
+
+
+  levels <- c("a", "c", "g", "t")
+  if (is.null(rootseq)) {
+    rootseq <- sample(levels, l, replace = TRUE, prob = bf)
+  }
+  if (length(rootseq) != l) {
     stop(
       "'rootseq' must have the same length as 'l'. \n",
       "length 'rootseq': ", length(rootseq), " \n",
@@ -25,21 +31,14 @@ sim_linked <- function(phy,
     )
   }
 
-  levels <- c("a", "c", "g", "t")
-  lbf <- length(levels)
-
-  # default is c(0.25, 0.25, 0.25, 0.25)
-  if (is.null(bf)) bf <- rep(1 / lbf, lbf)
-  if (is.null(Q)) Q <- rep(1, lbf * (lbf - 1) / 2) # nolint
-
   # only extract the 6 important rates.
   if (is.matrix(Q)) Q <- Q[lower.tri(Q)]  # nolint
+  # capital Q is retained to conform to mathematical notation on wikipedia
+  # and in the literature
 
   eig_q <- phangorn::edQt(Q, bf) # eigen values
 
   m <- length(levels) # always 4 (bases)
-
-  if (is.null(rootseq)) rootseq <- sample(levels, l, replace = TRUE, prob = bf)
 
   phy <- stats::reorder(phy)
   edge <- phy$edge
@@ -55,9 +54,10 @@ sim_linked <- function(phy,
   parents <- sort(unique(as.integer(edge[, 1])))
 
   # the first parent should be the root, otherwise the algorithm doesn't work
-  testit::assert(parents[1] == root)
+  assertthat::assert_that(parents[1] == root)
 
-  testit::assert(node_mut_rate_double >= 0) # if mu < 0, the model is undefined
+  # if mu < 0, the model is undefined
+  assertthat::assert_that(node_mut_rate_double >= 0)
 
   node_transition_matrix <- make_transition_matrix(node_mut_rate_double)
   eigen_obj <- eigen(node_transition_matrix, FALSE)
@@ -86,9 +86,9 @@ sim_linked <- function(phy,
     for (i in 1:2) {
       branch_length <- phy$edge.length[indices[i]]
       P <- get_p_matrix(branch_length, eig_q, rate)  # nolint
+      # capital P is retained to conform to mathematical notation on wikipedia
+      # and in the literature
 
-      # avoid numerical problems for larger P and small t
-      if (any(P < 0)) P[P < 0] <- 0
       before_mut_seq <- result[[i]]
       after_mut_seq <- c()
       for (j in 1:m) {

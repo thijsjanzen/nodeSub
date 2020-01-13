@@ -43,6 +43,8 @@ sim_normal <- function(x,
     Q <- rep(1, lbf * (lbf - 1) / 2) # nolint
   }
   if (is.matrix(Q)) Q <- Q[lower.tri(Q)]  # nolint
+  # capital Q is retained to conform to mathematical notation on wikipedia
+  # and in the literature
 
   eig <- phangorn::edQt(Q, bf)
 
@@ -65,8 +67,9 @@ sim_normal <- function(x,
     from <- parent[i]
     to <- child[i]
     P <- get_p_matrix(tl[i], eig, rate)  # nolint
-    # avoid numerical problems for larger P and small t
-    if (any(P < 0)) P[P < 0] <- 0
+    # capital P is retained to conform to mathematical notation on wikipedia
+    # and in the literature
+
     for (j in 1:m) {
       ind <- res[, from] == levels[j]
       res[ind, to] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])

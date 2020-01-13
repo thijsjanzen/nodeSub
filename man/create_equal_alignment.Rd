@@ -20,7 +20,8 @@ create_equal_alignment(
 
 \item{node_time}{fraction of time spent on the nodes}
 
-\item{node_model}{model used to generate substitutions on the nodes (linked or unlinked)}
+\item{node_model}{model used to generate substitutions on the nodes
+(linked or unlinked)}
 
 \item{sub_rate}{substitution rate used in the original phylogeny}
 

@@ -13,12 +13,6 @@ calc_fraction(phy = NULL, node_time = 0, model = "unlinked")
 \item{node_time}{time spent at the node}
 
 \item{model}{node substitution model}
-
-\item{num_tips}{number of tips (optional)}
-
-\item{lambda}{the birth rate to generate the phylogenetic tree}
-
-\item{mu}{the death rate to generate the phylogenetic tree}
 }
 \value{
 expected fraction

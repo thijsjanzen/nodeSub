@@ -3,7 +3,7 @@ context("dual_linked")
 test_that("sim_dual_linked", {
   phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
 
-  sequences <- sim_dual_linked(phy)
+  sequences <- nodeSub::sim_dual_linked(phy)
   testthat::expect_true(class(sequences$alignment) == "phyDat")
 
   Q_JC <- matrix(1, nrow = 4, ncol = 4)  # nolint

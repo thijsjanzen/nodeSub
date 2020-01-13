@@ -4,11 +4,19 @@
 \alias{estimate_marginal_models}
 \title{infer the time calibrated phylogeny associated with the}
 \usage{
-estimate_marginal_models(fasta_filename, rng_seed = 42, verbose = FALSE)
+estimate_marginal_models(
+  fasta_filename,
+  use_yule_prior = FALSE,
+  rng_seed = 42,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{fasta_filename}{file name of fasta file holding alignment for which the
 marginal likelihood is to be estimated}
+
+\item{use_yule_prior}{by default, a birth-death prior is used as tree prior,
+but if use_yule_prior is set to TRUE, a pure-birth prior will be used.}
 
 \item{rng_seed}{seed of pseudo-random number generator}
 

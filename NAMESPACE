@@ -2,7 +2,6 @@
 
 export(calc_dist)
 export(calc_expected_hidden_nodes)
-export(calc_expected_hidden_nodes_per_branch)
 export(calc_fraction)
 export(calc_required_node_time)
 export(calc_sum_stats)

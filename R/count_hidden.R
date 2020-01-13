@@ -23,14 +23,14 @@ reduce_tree <- function(tree) {
                                          "children"))
 
     b <- desc[desc %in% extinct_species]
-    if (length(b) > 1) {
-      for (i in 2:length(b)) {
-        tree <- ape::drop.tip(tree, b[[i]])
-      }
+    if (n == root_node && length(b) == 1)  {
+      tree <- ape::drop.tip(tree, b[[1]])
       return(reduce_tree(tree))
     } else {
-      if (n == root_node && length(b) == 1)  {
-        tree <- ape::drop.tip(tree, b[[1]])
+      if (length(b) >= 2) {
+        for (i in 2:length(b)) {
+          tree <- ape::drop.tip(tree, b[[i]])
+        }
         return(reduce_tree(tree))
       }
     }

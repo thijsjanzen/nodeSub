@@ -3,11 +3,8 @@
 #' @description calculates the relative contribution of substitutions at
 #' the nodes
 #' @param phy phylogenetic tree (optional)
-#' @param num_tips number of tips (optional)
 #' @param node_time time spent at the node
 #' @param model node substitution model
-#' @param lambda the birth rate to generate the phylogenetic tree
-#' @param mu the death rate to generate the phylogenetic tree
 #' @return expected fraction
 #' @export
 calc_fraction <- function(phy = NULL,
@@ -64,22 +61,6 @@ calc_required_node_time <- function(phy = NULL,
   return(node_time)
 }
 
-#' calculate the number of expected hidden nodes along a branch
-#' @description calculate the number of expected hidden nodes by
-#' integrating over equation 1 in Maceau et al. 2019
-#' @param bl branch length
-#' @param lambda birth rate
-#' @param mu death rate
-#' @return expected number of hidden nodes
-#' @export
-calc_expected_hidden_nodes_per_branch <- function(bl, lambda, mu) {  # nolint
-  t0 <- bl
-  t1 <- 0
-  numerator <- 1 - lambda / (mu) * exp((lambda - mu) * t0)
-  denominator <- 1 - lambda / (mu) * exp((lambda - mu) * t1)
-  return(2 * lambda * (t0 - t1) - 2 * log(numerator / denominator))
-}
-
 #' calculate the number of expected hidden nodes in a phylogenetic tree
 #' @description calculate the number of expected hidden nodes
 #' using equation 1 in Maceau et al. 2019
@@ -99,10 +80,13 @@ calc_expected_hidden_nodes <- function(phy,
     stop("requires valid input for lambda and mu")
   }
 
-  if (sum(geiger::is.extinct(phy))) {
-    stop("can not calculate number of hidden nodes for a tree
-          with extinct branches")
+  if (length(geiger::is.extinct(phy)) > 0) {
+    warning("can not calculate number of hidden nodes for a tree
+          with extinct branches, removing extinct branches!")
+    phy <- geiger::drop.extinct(phy)
   }
+
+  if (mu == 0) return(0)
 
   bt <- ape::branching.times(phy)
   branches <- c()
@@ -122,13 +106,13 @@ calc_expected_hidden_nodes <- function(phy,
   }
 
   #now we integrate over each branch
-  calc_expected_hidden_nodes_per_dt <- function(t, lambda, mu) {  # nolint
+  calc_exp_hidden_nodes_per_dt <- function(t, lambda, mu) {
     t0 <- t[1]
     t1 <- t[2]
     numerator <- 1 - lambda / (mu) * exp((lambda - mu) * t0)
     denominator <- 1 - lambda / (mu) * exp((lambda - mu) * t1)
     return(2 * lambda * (t0 - t1) - 2 * log(numerator / denominator))
   }
-  exp_n <- apply(branches, 1, calc_expected_hidden_nodes_per_dt, lambda, mu)
+  exp_n <- apply(branches, 1, calc_exp_hidden_nodes_per_dt, lambda, mu)
   return(sum(exp_n))
 }
