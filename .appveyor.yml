@@ -9,8 +9,8 @@ init:
 install:
   ps: Bootstrap
 
-cache:
-  - C:\RLibrary
+#cache:
+#  - C:\RLibrary
 
 # Adapt as necessary starting from here
 
@@ -21,16 +21,9 @@ environment:
     USE_RTOOLS: true
 
 build_script:
+  - travis-tool.sh install_r babette
   - travis-tool.sh install_deps
-  - travis-tool.sh install_github ropensci/tracerer
-  - travis-tool.sh install_github ropensci/beautier
-  - travis-tool.sh install_github ropensci/beastier
-  - travis-tool.sh install_github ropensci/mauricer
-  - travis-tool.sh install_github ropensci/babette@develop
   - travis-tool.sh install_github richelbilderbeek/mcbette
-  - travis-tool.sh install_github jimhester/covr
-  - travis-tool.sh install_github jimhester/lintr
-  - travis-tool.sh install_github MangoTheCat/goodpractice
   - R -e "library(beastier); beastier::install_beast2()"
 
 test_script:
