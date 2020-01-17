@@ -1,7 +1,8 @@
 #' infer the time calibrated phylogeny associated with the
 #' @param alignment Phydat object containing the focal alignment
 #' @param treatment_name string to be appended to BEAST files
-#' @param tree_prior tree prior used
+#' @param tree_prior tree prior used, default = birth-death prior
+#' @param clock_prior clock prior used, default = strict clock
 #' @param mcmc_seed seed of the mcmc chain, default is the system time
 #' @param burnin burnin of posterior distribution
 #' @param working_dir beast2 working dir
@@ -12,6 +13,7 @@
 infer_phylogeny <- function(alignment,
                             treatment_name,
                             tree_prior = beautier::create_bd_tree_prior(),
+                            clock_prior = beautier::create_strict_clock_model(),
                             mcmc_seed = NULL,
                             burnin = 0.1,
                             working_dir = NULL,
@@ -29,10 +31,7 @@ infer_phylogeny <- function(alignment,
 
   inf_model <- beautier::create_inference_model(
     site_model = beautier::create_jc69_site_model(),
-    clock_model = beautier::create_strict_clock_model(
-      clock_rate_param = beautier::create_clock_rate_param(value = sub_rate),
-      clock_rate_distr = beautier::create_gamma_distr()
-    ),
+    clock_model = clock_prior,
     tree_prior = tree_prior,
     mcmc = beautier::create_mcmc(chain_length = 1e7,
                                  treelog = beautier::create_treelog(filename = output_trees_filenames,
