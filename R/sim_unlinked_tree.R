@@ -37,15 +37,6 @@ add_hidden_nodes <- function(phy,
     }
   }
 
-  calc_expected_hidden_nodes_per_dt <- function(t, lambda, mu) {  # nolint
-    t0 <- t[1]
-    t1 <- t[2]
-    numerator <- 1 - lambda / (mu) * exp((lambda - mu) * t0)
-    denominator <- 1 - lambda / (mu) * exp((lambda - mu) * t1)
-    mean_val <- 2 * lambda * (t0 - t1) - 2 * log(numerator / denominator)
-    return(mean_val)
-  }
-
   exp_hidden <- as.numeric(
     apply(branches[, c(3, 4)], 1,
           calc_expected_hidden_nodes_per_dt,

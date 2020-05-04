@@ -8,6 +8,7 @@ infer_phylogeny(
   alignment,
   treatment_name,
   tree_prior = beautier::create_bd_tree_prior(),
+  clock_prior = beautier::create_strict_clock_model(),
   mcmc_seed = NULL,
   burnin = 0.1,
   working_dir = NULL,
@@ -19,7 +20,9 @@ infer_phylogeny(
 
 \item{treatment_name}{string to be appended to BEAST files}
 
-\item{tree_prior}{tree prior used}
+\item{tree_prior}{tree prior used, default = birth-death prior}
+
+\item{clock_prior}{clock prior used, default = strict clock}
 
 \item{mcmc_seed}{seed of the mcmc chain, default is the system time}
 

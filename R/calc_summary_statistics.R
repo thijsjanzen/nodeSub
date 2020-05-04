@@ -12,7 +12,7 @@ calc_gamma <- function(focal_tree) {
 
 #' @keywords internal
 calc_tree_height <- function(focal_tree) {
-  return(max(ape::branching.times(focal_tree)))
+  return(beautier::get_crown_age(focal_tree))
 }
 
 #' @keywords internal

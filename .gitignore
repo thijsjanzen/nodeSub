@@ -20,3 +20,6 @@ src/getP.o
 *.pdf
 *.o
 *.trace
+*.txt
+*.png
+*.tree
