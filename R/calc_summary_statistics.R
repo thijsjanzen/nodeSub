@@ -58,8 +58,12 @@ calc_sum_stats <- function(trees,
   if (!verbose) sum_stats_trees <- lapply(trees, calc_all_stats)
   if (verbose) sum_stats_trees <-  pbapply::pblapply(trees, calc_all_stats)
 
-  all_sum_stats <- matrix(NA, nrow = length(trees), ncol = 4)
-  all_differences <- matrix(NA, nrow = length(trees), ncol = 7)
+  all_sum_stats <- matrix(NA,
+                          nrow = length(trees),
+                          ncol = length(sum_stats_true_tree))
+  all_differences <- matrix(NA,
+                            nrow = length(trees),
+                            ncol = sum_stats_true_tree + 3)
   if (verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)
   for (i in seq_along(sum_stats_trees)) {
     # this for loop could be optimized later.
@@ -83,7 +87,7 @@ calc_sum_stats <- function(trees,
   }
   colnames(all_sum_stats) <- c("beta", "gamma", "crown_age",
                                "mean_branch_length", "num_tips")
-  colnames(all_differences) <- c( colnames(all_sum_stats), "nLTT",
+  colnames(all_differences) <- c(colnames(all_sum_stats), "nLTT",
                                  "jsd", "topo_dist")
 
   all_sum_stats <- tibble::as_tibble(all_sum_stats)
