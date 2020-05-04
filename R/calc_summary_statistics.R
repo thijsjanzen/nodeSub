@@ -11,6 +11,11 @@ calc_gamma <- function(focal_tree) {
 }
 
 #' @keywords internal
+calc_num_tips <- function(focal_tree) {
+  return(length(focal_tree$tip.label))
+}
+
+#' @keywords internal
 calc_tree_height <- function(focal_tree) {
   return(beautier::get_crown_age(focal_tree))
 }
@@ -25,7 +30,8 @@ calc_all_stats <- function(focal_tree) {
   output <- c(calc_beta(focal_tree),
               calc_gamma(focal_tree),
               calc_tree_height(focal_tree),
-              calc_mean_branch_length(focal_tree))
+              calc_mean_branch_length(focal_tree),
+              calc_num_tips(focal_tree))
   return(output)
 }
 
@@ -76,9 +82,8 @@ calc_sum_stats <- function(trees,
     if (verbose) utils::setTxtProgressBar(pb, i)
   }
   colnames(all_sum_stats) <- c("beta", "gamma", "tree_height",
-                               "mean_branch_length")
-  colnames(all_differences) <- c("beta", "gamma", "tree_height",
-                                 "mean_branch_length", "nLTT",
+                               "mean_branch_length", "num_tips")
+  colnames(all_differences) <- c( colnames(all_sum_stats), "nLTT",
                                  "jsd", "topo_dist")
 
   all_sum_stats <- tibble::as_tibble(all_sum_stats)
