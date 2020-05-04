@@ -34,10 +34,13 @@ infer_phylogeny <- function(alignment,
     clock_model = clock_prior,
     tree_prior = tree_prior,
     mcmc = beautier::create_mcmc(chain_length = 1e7,
-                                 treelog = beautier::create_treelog(filename = output_trees_filenames,
-                                                                    log_every = 5000),
-                                 tracelog = beautier::create_tracelog(filename = output_log_filename,
-                                                                      log_every = 5000)
+                                 treelog =
+                                   beautier::create_treelog(
+                                              filename = output_trees_filenames,
+                                              log_every = 5000),
+                                 tracelog = beautier::create_tracelog(
+                                              filename = output_log_filename,
+                                              log_every = 5000)
     )
   )
 

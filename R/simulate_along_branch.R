@@ -39,18 +39,13 @@ simulate_along_branch <- function(t0,
   if (is.matrix(Q)) Q <- Q[lower.tri(Q)]  # nolint
   # capital Q is retained to conform to mathematical notation on wikipedia
   # and in the literature
- # cat(Q, "\n")
-#  cat(bf, "\n")
   eig <- phangorn::edQt(Q, bf)
 
   bl <- t1 - t0
-  root_seq = sample(levels, l, replace = TRUE, prob = bf)
+  root_seq <- sample(levels, l, replace = TRUE, prob = bf)
 
    P_b <- get_p_matrix(bl, eig, mut_rate)  # nolint
    P_n <- get_p_matrix(node_time, eig, node_rate)  # nolint
-
-  # P_b <- nodeSub::slow_matrix(eig, bl, mut_rate)
-  # P_n <- nodeSub::slow_matrix(eig, node_time ,node_rate)
 
   # first we simulate substitutions regularly along the branch:
   old_seq <- root_seq
@@ -63,15 +58,15 @@ simulate_along_branch <- function(t0,
   num_regular_sub <- sum(new_seq != old_seq)
 
   # then we do the same, using hidden nodes:
-  lambda_nodes = calc_expected_hidden_nodes_per_dt(t1, t0, lambda, mu)
+  lambda_nodes <- calc_expected_hidden_nodes_per_dt(t1, t0, lambda, mu)
 
   num_hidden_nodes <- 0
-  if(!is.nan(lambda_nodes)) num_hidden_nodes <- stats::rpois(1, lambda_nodes)
+  if (!is.nan(lambda_nodes)) num_hidden_nodes <- stats::rpois(1, lambda_nodes)
 
   total_bl <- t1 - t0
   focal_t <- 0
   bl <- c()
-  if(num_hidden_nodes > 0) {
+  if (num_hidden_nodes > 0) {
     for (j in 1:num_hidden_nodes) {
       dt <- stats::rexp(1, 1 / lambda_nodes)
       while (focal_t + dt >= total_bl) {
@@ -87,7 +82,6 @@ simulate_along_branch <- function(t0,
 
   # branch until first node:
   P_b <- get_p_matrix(bl[1], eig, mut_rate)  # nolint
-  #P_b <- slow_matrix(eig, bl[1], mut_rate)
   # avoid numerical problems for larger P and small t
   before_mut_seq <- root_seq
   after_mut_seq <- root_seq
@@ -99,7 +93,7 @@ simulate_along_branch <- function(t0,
 
   bl <- bl[-1]
 
-  if(num_hidden_nodes > 0) {
+  if (num_hidden_nodes > 0) {
     for (h in 1:num_hidden_nodes) {
       before_mut_seq <- after_mut_seq
       after_mut_seq <- before_mut_seq
@@ -111,7 +105,6 @@ simulate_along_branch <- function(t0,
 
       # and the subsequent branch
       P_b <- get_p_matrix(bl[1], eig, mut_rate)  # nolint
-      # P_b <- slow_matrix(eig, bl[1], mut_rate)
 
       before_mut_seq <- after_mut_seq
       after_mut_seq <- before_mut_seq

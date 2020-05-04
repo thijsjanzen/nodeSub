@@ -170,7 +170,3 @@ get_tree <- function(b,
   }
   return(result_tree)
 }
-
-
-
-

@@ -12,11 +12,9 @@ RoxygenNote: 7.0.2.9000
 LinkingTo: 
     Rcpp
 Imports: 
-    Rcpp,
     phangorn, 
     testit, 
     stringr,
-    testthat,
     beautier,
     beastier (>= 2.0.18),
     babette,
@@ -34,6 +32,7 @@ Imports:
     phylobase,
     RPANDA,
     assertthat,
+    phytools,
     TreeSim,
     dplyr,
-    phytools
+    testthat

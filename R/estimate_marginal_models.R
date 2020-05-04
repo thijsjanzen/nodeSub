@@ -4,8 +4,8 @@ get_marg_lik <- function(fasta_filename,
                          tree_prior,
                          rng_seed) {
 
-  beast2_input_filename = beastier::create_temp_input_filename()
-  beast2_output_state_filename = beastier::create_temp_state_filename()
+  beast2_input_filename <- beastier::create_temp_input_filename()
+  beast2_output_state_filename <- beastier::create_temp_state_filename()
 
   marg_lik <- babette::bbt_run(
     fasta_filename = fasta_filename,
