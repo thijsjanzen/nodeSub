@@ -23,7 +23,7 @@ environment:
 build_script:
   - travis-tool.sh install_r babette
   - travis-tool.sh install_deps
-  - travis-tool.sh install_github richelbilderbeek/mcbette
+ # - travis-tool.sh install_github richelbilderbeek/mcbette
   - R -e "library(beastier); beastier::install_beast2()"
 
 test_script:
