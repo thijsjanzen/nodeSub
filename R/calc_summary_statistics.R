@@ -63,7 +63,7 @@ calc_sum_stats <- function(trees,
                           ncol = length(sum_stats_true_tree))
   all_differences <- matrix(NA,
                             nrow = length(trees),
-                            ncol = sum_stats_true_tree + 3)
+                            ncol = length(sum_stats_true_tree) + 3)
   if (verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)
   for (i in seq_along(sum_stats_trees)) {
     # this for loop could be optimized later.
@@ -77,7 +77,10 @@ calc_sum_stats <- function(trees,
                                           meth = "standard")[1, 2],
                           error = NA)
 
-    local_topo <- ape::dist.topo(true_tree, trees[[i]], method = "PH85")
+    local_topo <- NA
+    if (calc_num_tips(true_tree) == calc_num_tips(trees[[i]])) {
+          local_topo <- ape::dist.topo(true_tree, trees[[i]], method = "PH85")
+    }
 
     local_diff <- c(local_diff, local_nltt, local_jsd, local_topo)
 
