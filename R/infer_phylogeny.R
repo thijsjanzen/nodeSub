@@ -15,6 +15,7 @@ infer_phylogeny <- function(alignment,
                             tree_prior = beautier::create_bd_tree_prior(),
                             clock_prior = beautier::create_strict_clock_model(),
                             mcmc_seed = NULL,
+                            chain_length = 1e7,
                             burnin = 0.1,
                             working_dir = NULL,
                             sub_rate = 1)  {
@@ -33,7 +34,7 @@ infer_phylogeny <- function(alignment,
     site_model = beautier::create_jc69_site_model(),
     clock_model = clock_prior,
     tree_prior = tree_prior,
-    mcmc = beautier::create_mcmc(chain_length = 1e7,
+    mcmc = beautier::create_mcmc(chain_length = chain_length,
                                  treelog =
                                    beautier::create_treelog(
                                               filename = output_trees_filenames,
