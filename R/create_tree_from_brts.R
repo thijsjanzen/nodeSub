@@ -3,6 +3,8 @@
 #' @return phylo phylo object
 #' @export
 create_unbalanced_tree <- function(brts) {
+  brts <- as.vector(sort(brts, decreasing = TRUE))
+
   ltab <- c()
   to_add1 <- c(brts[1], 0, -1, -1)
   to_add2 <- c(brts[1], -1, 2, -1)
@@ -49,6 +51,8 @@ create_unbalanced_tree <- function(brts) {
 #' @return phylo phylo object
 #' @export
 create_balanced_tree <- function(brts) {
+  brts <- as.vector(sort(brts, decreasing = TRUE))
+
   ltab <- c()
   to_add1 <- c(brts[1], 0, -1, -1)
   to_add2 <- c(brts[1], -1, 2, -1)
