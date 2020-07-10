@@ -73,9 +73,9 @@ calc_sum_stats <- function(trees,
 
     # this is rather inefficient off course,
     # RPANDA can do all pairwise in one go.
-    local_jsd <- NA #tryCatch(RPANDA::JSDtree(list(true_tree, trees[[i]]),
-                #                          meth = "standard")[1, 2],
-                #          error = NA)
+    local_jsd <- tryCatch(RPANDA::JSDtree(list(true_tree, trees[[i]]),
+                                          meth = "standard")[1, 2],
+                          error = NA)
 
     local_topo <- NA
     if (calc_num_tips(true_tree) == calc_num_tips(trees[[i]])) {
