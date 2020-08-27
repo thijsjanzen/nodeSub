@@ -36,4 +36,6 @@ Imports:
     phytools,
     TreeSim,
     dplyr,
-    DDD
+    DDD,
+    stringr,
+    testthat
