@@ -73,7 +73,7 @@ calc_sum_stats <- function(trees,
                           ncol = length(sum_stats_true_tree))
   all_differences <- matrix(NA,
                             nrow = length(trees),
-                            ncol = length(sum_stats_true_tree) + 3)
+                            ncol = length(sum_stats_true_tree) + 2)
 
   if (verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)
   for (i in seq_along(sum_stats_trees)) {
