@@ -16,12 +16,11 @@ test_that("required_node_time use", {
 
   testthat::expect_equal(obs_fraction, 0.1)
 
-  ali <- nodeSub::sim_dual_independent(focal_tree, rate1 = 0.001, rate2 = 0.001,
+  ali <- nodeSub::sim_unlinked(focal_tree, rate1 = 0.001, rate2 = 0.001,
                                        l = 10000, node_time = req_node_time)
 
   obs_fraction <- ali$total_node_substitutions /
           (ali$total_node_substitutions + ali$total_branch_substitutions)
 
   testthat::expect_equal(obs_fraction, chosen_fraction, tol = 0.01)
-
 })

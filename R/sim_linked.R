@@ -7,7 +7,13 @@
 #' @param bf base frequencies, default = c(0.25, 0.25, 0.25, 0.25)
 #' @param rootseq sequence at the root, simulated by default
 #' @param node_time time spent at the node
-#' @return phyDat object
+#' @return list with four items \enumerate{
+#' \item{alignment} Phydat object with the resulting alignment
+#' \item{rootseq} the rootsequence used
+#' \item{total_branch_substitutions} total number of substitutions accumulated
+#' on the branches
+#' \item{total_node_substitutions} total number of substitutions accumulated at
+#' the nodes}
 #' @export
 sim_linked <- function(phy,
                        Q = rep(1, 6), # nolint
@@ -109,5 +115,11 @@ sim_linked <- function(phy,
   colnames(res) <- label
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
-  return(alignment_phydat)
+
+  output <- list("alignment" = alignment_phydat,
+                 "root_seq" = rootseq,
+                 "total_branch_substitutions" = total_branch_subs,
+                 "total_node_substitutions" = total_node_subs)
+
+  return(output)
 }

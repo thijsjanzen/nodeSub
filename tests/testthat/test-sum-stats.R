@@ -1,20 +1,44 @@
 context("calc_sum_stats")
 
 test_that("calc_sum_stats", {
-  skip_on_cran()
-  phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
 
-  seq_node_sub <- sim_normal(x = phy, l = 100,  rate = 0.1)
+  phy1 <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0)[[1]]
+  brts <- ape::branching.times(phy1)
 
-  skip("Not now, @thijsjanzen")
-  all_trees <- infer_phylogeny(seq_node_sub$alignment,
-                               treatment_name = "test",
-                               burnin = 0.1)
+  phy <- nodeSub::create_balanced_tree(brts)
 
-  stats <- nodeSub::calc_sum_stats(all_trees$all_trees,
-                                   phy, verbose = FALSE)
+  input <- list(phy, phy)
+  class(input) <- "multiPhylo"
 
-  testthat::expect_equal(length(stats$stats$beta), length(all_trees$all_trees))
-  testthat::expect_equal(length(colnames(stats$stats)), 4)
-  testthat::expect_equal(length(colnames(stats$differences)), 5)
+  stats1 <- nodeSub::calc_sum_stats(input, phy)
+
+  testthat::expect_true(stats1$stats$beta[[1]] >= 9.9)
+  testthat::expect_true(stats1$stats$beta[[2]] >= 9.9)
+
+  testthat::expect_true(sum(stats1$differences) == 0)
+
+  stats2 <- nodeSub::calc_sum_stats(input, phy1)
+  testthat::expect_true(stats2$stats$beta[[1]] >= 9.9)
+  testthat::expect_true(stats2$stats$beta[[2]] >= 9.9)
+
+  testthat::expect_true(sum(stats2$differences) != 0)
+
+  testthat::expect_true(all.equal(stats1$stats, stats2$stats))
+  vx <- all.equal(stats1$differences, stats2$differences)
+  testthat::expect_true(length(vx) > 1) # if length = 1, all are true (ish)
+
+
+  phy <- nodeSub::create_unbalanced_tree(brts)
+
+  stats1 <- nodeSub::calc_sum_stats(phy, phy)
+
+  testthat::expect_true(stats1$stats$beta[[1]] < 0.0)
+
+  testthat::expect_true(sum(stats1$differences) == 0)
+})
+
+test_that("calc_sum_stats abuse", {
+  phy1 <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0)
+
+  testthat::expect_error(nodeSub::calc_sum_stats(phy1, phy1))
 })

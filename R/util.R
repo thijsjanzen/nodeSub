@@ -142,31 +142,109 @@ slow_matrix <- function(eig,
   return(P)
 }
 
-#' generate a tree conditional on n and t
-#' @description generates a tree, conditional on number of tips and crown age
-#' @param b birth rate (speciation rate)
-#' @param m death rate (extinction rate)
-#' @param focal_num_tips total number of tips to be conditioned on
-#' @param focal_crown_age crown age to be conditioned on
-#' @return phylo tree
-#' @export
-get_tree <- function(b,
-                     m,
-                     focal_num_tips,
-                     focal_crown_age) {
-  result_tree <-  phytools::pbtree(b = b, d = m,
-                                   n = focal_num_tips,
-                                   t = focal_crown_age,
-                                   nsim = 1, quiet = FALSE)
 
-  no_extinct_tree <- geiger::drop.extinct(result_tree)
-
-  while (beautier::get_crown_age(no_extinct_tree) != focal_crown_age) {
-    result_tree <- phytools::pbtree(b = b, d = m,
-                                    n = focal_num_tips,
-                                    t = focal_crown_age,
-                                    nsim = 1, quiet = FALSE)
-    no_extinct_tree <- geiger::drop.extinct(result_tree)
-  }
-  return(result_tree)
+#' @keywords internal
+#' check if tip is extinct
+check_to_extinct_tip <- function(number, phy, phy_no_extinct) {
+  if (number > length(phy$tip.label)) return(TRUE)
+  if (number <= length(phy_no_extinct$tip.label)) return(TRUE)
+  return(FALSE)
 }
+
+#' @keywords internal
+draw_bases <- function(focal_base, trans_matrix) {
+  bases <- c("a", "t", "c", "g")
+
+  focus <- which(focal_base == bases)
+  picked_index <- sample(1:10, 1, prob = trans_matrix[focus, ], replace = TRUE)
+
+  output <- switch(picked_index,
+                   c("a", "a"),
+                   c("t", "t"),
+                   c("c", "c"),
+                   c("g", "g"),
+                   c("a", "c"),
+                   c("a", "t"),
+                   c("a", "g"),
+                   c("t", "c"),
+                   c("t", "g"),
+                   c("c", "g"))
+
+  if (stats::runif(1, 0, 1) < 0.5) return(rev(output))
+
+  return(output)
+}
+
+#' @keywords internal
+pick_rate <- function(matching_bases, double_rate, focal_target) {
+  output <- NA
+
+  if (matching_bases == 2) {
+    output <- NA  # e.g. A -> AA, to be filled in later
+  }
+  if (matching_bases == 1) {
+    output <- 1 # e.g. A -> AT, one mutation
+  }
+  if (matching_bases == 0) { # double mutation!
+    a <- substr(focal_target, 1, 1)
+    b <- substr(focal_target, 2, 2)
+    if (a != b) {
+      output <- double_rate  # e.g. A -> TG
+    } else {
+      output <- 0            # e.g. A -> TT, impossible by definition
+    }
+    # if a == b, use default output = 0
+  }
+  return(output)
+}
+
+#' @keywords internal
+make_transition_matrix <- function(mut_double) {
+
+  output <- matrix(NA, nrow = 4, ncol = 10)
+
+
+
+  order_events <- c("aa", "tt", "cc", "gg",
+                    "ac", "at", "ag",
+                    "tc", "tg",
+                    "cg")
+
+  bases <- c("a", "t", "c", "g")
+  for (j in 1:4) {
+    focal <- bases[j]
+    to_add <- c()
+    for (i in seq_along(order_events)) {
+      focal_target <- order_events[i]
+      matching_bases <- stringr::str_count(focal_target, focal)
+
+      to_add[i] <- pick_rate(matching_bases, mut_double, focal_target)
+    }
+    output[j, ] <- to_add
+  }
+
+  for (i in 1:4) {
+    output[i, ] <- output[i, ] / sum(output[i, ], na.rm = TRUE)
+  }
+
+  for (i in 1:4) {
+    output[i, i] <-  - sum(output[i, ], na.rm = TRUE)
+  }
+  for (j in 1:6) {
+    output <- rbind(output, rep(0, length(output[1, ])))
+  }
+
+  return(output)
+}
+
+#' @keywords internal
+get_mutated_sequences <- function(parent_seq, trans_matrix) {
+
+  vx <- sapply(parent_seq, draw_bases, trans_matrix)
+
+  child1_seq <- vx[1, ]
+  child2_seq <- vx[2, ]
+
+  return(list(child1_seq, child2_seq))
+}
+

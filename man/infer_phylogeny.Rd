@@ -10,6 +10,8 @@ infer_phylogeny(
   tree_prior = beautier::create_bd_tree_prior(),
   clock_prior = beautier::create_strict_clock_model(),
   mcmc_seed = NULL,
+  chain_length = 1e+07,
+  sample_interval = 5000,
   burnin = 0.1,
   working_dir = NULL,
   sub_rate = 1
@@ -25,6 +27,10 @@ infer_phylogeny(
 \item{clock_prior}{clock prior used, default = strict clock}
 
 \item{mcmc_seed}{seed of the mcmc chain, default is the system time}
+
+\item{chain_length}{length of the mcmc chain, default is 1e7.}
+
+\item{sample_interval}{interval of sampling, default is 5000}
 
 \item{burnin}{burnin of posterior distribution}
 

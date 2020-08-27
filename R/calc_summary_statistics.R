@@ -49,6 +49,16 @@ calc_sum_stats <- function(trees,
                            true_tree,
                            verbose = FALSE) {
 
+  if (class(trees) != "multiPhylo") {
+    if (class(trees) == "phylo") {
+      trees <- list(trees)
+      class(trees) <- "multiPhylo"
+    } else {
+      stop("input needs to be correct phylo object or multiPhylo")
+    }
+  }
+
+
   if (length(geiger::is.extinct(true_tree) > 0)) {
     warning("Found extinct lineages, removed these from tree\n")
     true_tree <- geiger::drop.extinct(true_tree)
@@ -64,6 +74,7 @@ calc_sum_stats <- function(trees,
   all_differences <- matrix(NA,
                             nrow = length(trees),
                             ncol = length(sum_stats_true_tree) + 3)
+
   if (verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)
   for (i in seq_along(sum_stats_trees)) {
     # this for loop could be optimized later.
@@ -77,12 +88,8 @@ calc_sum_stats <- function(trees,
                                           meth = "standard")[1, 2],
                           error = NA)
 
-    local_topo <- NA
-    if (calc_num_tips(true_tree) == calc_num_tips(trees[[i]])) {
-          local_topo <- ape::dist.topo(true_tree, trees[[i]], method = "PH85")
-    }
 
-    local_diff <- c(local_diff, local_nltt, local_jsd, local_topo)
+    local_diff <- c(local_diff, local_nltt, local_jsd)
 
     all_differences[i, ] <- local_diff
     all_sum_stats[i, ] <- to_add
@@ -90,8 +97,8 @@ calc_sum_stats <- function(trees,
   }
   colnames(all_sum_stats) <- c("beta", "gamma", "crown_age",
                                "mean_branch_length", "num_tips")
-  colnames(all_differences) <- c(colnames(all_sum_stats), "nLTT",
-                                 "jsd", "topo_dist")
+  colnames(all_differences) <- c( colnames(all_sum_stats), "nLTT",
+                                 "jsd")
 
   all_sum_stats <- tibble::as_tibble(all_sum_stats)
   all_differences <- tibble::as_tibble(all_differences)
