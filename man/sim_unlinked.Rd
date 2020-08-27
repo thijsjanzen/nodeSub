@@ -37,7 +37,11 @@ sim_unlinked(
 \item{node_time}{amount of time spent at the nodes}
 }
 \value{
-list with 4 object
+list with four items \item{alignment} Phydat object with the
+resulting alignment, \item{rootseq} the rootsequence used,
+\item{total_branch_substitutions} total number of substitutions accumulated
+on the branches, \item{total_node_substitutions} total number of
+substitutions accumulated at the nodes
 }
 \description{
 simulate a sequence assuming node substitutions

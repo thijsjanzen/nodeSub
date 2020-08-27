@@ -9,7 +9,11 @@
 #' @param bf base frequencies, default = c(0.25, 0.25, 0.25, 0.25)
 #' @param rootseq sequence at the root, simulated by default
 #' @param node_time amount of time spent at the nodes
-#' @return list with 4 object
+#' @return list with four items \item{alignment} Phydat object with the
+#' resulting alignment, \item{rootseq} the rootsequence used,
+#' \item{total_branch_substitutions} total number of substitutions accumulated
+#' on the branches, \item{total_node_substitutions} total number of
+#' substitutions accumulated at the nodes
 #' @export
 sim_unlinked <- function(phy,
                          Q1 = rep(1, 6),   # nolint
