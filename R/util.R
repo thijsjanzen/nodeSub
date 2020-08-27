@@ -142,34 +142,6 @@ slow_matrix <- function(eig,
   return(P)
 }
 
-#' generate a tree conditional on n and t
-#' @description generates a tree, conditional on number of tips and crown age
-#' @param b birth rate (speciation rate)
-#' @param m death rate (extinction rate)
-#' @param focal_num_tips total number of tips to be conditioned on
-#' @param focal_crown_age crown age to be conditioned on
-#' @return phylo tree
-#' @export
-get_tree <- function(b,
-                     m,
-                     focal_num_tips,
-                     focal_crown_age) {
-  result_tree <-  phytools::pbtree(b = b, d = m,
-                                   n = focal_num_tips,
-                                   t = focal_crown_age,
-                                   nsim = 1, quiet = FALSE)
-
-  no_extinct_tree <- geiger::drop.extinct(result_tree)
-
-  while (beautier::get_crown_age(no_extinct_tree) != focal_crown_age) {
-    result_tree <- phytools::pbtree(b = b, d = m,
-                                    n = focal_num_tips,
-                                    t = focal_crown_age,
-                                    nsim = 1, quiet = FALSE)
-    no_extinct_tree <- geiger::drop.extinct(result_tree)
-  }
-  return(result_tree)
-}
 
 #' @keywords internal
 #' check if tip is extinct
@@ -177,15 +149,6 @@ check_to_extinct_tip <- function(number, phy, phy_no_extinct) {
   if (number > length(phy$tip.label)) return(TRUE)
   if (number <= length(phy_no_extinct$tip.label)) return(TRUE)
   return(FALSE)
-}
-
-#' @keywords internal
-get_index <- function(local_matrix, parent, offspring) {
-  candidate_indices <- which(local_matrix[, 1] == parent)
-  for (i in candidate_indices) {
-    if (local_matrix[i, 2] == offspring) return(i)
-  }
-  return(-1)
 }
 
 #' @keywords internal
