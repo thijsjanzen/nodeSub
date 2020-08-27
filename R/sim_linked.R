@@ -109,5 +109,11 @@ sim_linked <- function(phy,
   colnames(res) <- label
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
-  return(alignment_phydat)
+
+  output <- list("alignment" = alignment_phydat,
+                 "root_seq" = rootseq,
+                 "total_branch_substitutions" = total_branch_subs,
+                 "total_node_substitutions" = total_node_subs)
+
+  return(output)
 }

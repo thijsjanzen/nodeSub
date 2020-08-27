@@ -9,7 +9,7 @@
 #' @param bf base frequencies, default = c(0.25, 0.25, 0.25, 0.25)
 #' @param rootseq sequence at the root, simulated by default
 #' @param node_time amount of time spent at the nodes
-#' @return phyDat object
+#' @return list with 4 object
 #' @export
 sim_unlinked <- function(phy,
                          Q1 = rep(1, 6),   # nolint
@@ -104,5 +104,10 @@ sim_unlinked <- function(phy,
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
-  return(alignment_phydat)
+  output <- list("alignment" = alignment_phydat,
+                 "root_seq" = rootseq,
+                 "total_branch_substitutions" = total_branch_subs,
+                 "total_node_substitutions" = total_node_subs)
+
+  return(output)
 }

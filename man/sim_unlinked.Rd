@@ -37,7 +37,7 @@ sim_unlinked(
 \item{node_time}{amount of time spent at the nodes}
 }
 \value{
-phyDat object
+list with 4 object
 }
 \description{
 simulate a sequence assuming node substitutions
