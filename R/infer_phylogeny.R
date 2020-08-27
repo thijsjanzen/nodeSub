@@ -4,6 +4,8 @@
 #' @param tree_prior tree prior used, default = birth-death prior
 #' @param clock_prior clock prior used, default = strict clock
 #' @param mcmc_seed seed of the mcmc chain, default is the system time
+#' @param chain_length length of the mcmc chain, default is 1e7.
+#' @param sample_interval interval of sampling, default is 5000
 #' @param burnin burnin of posterior distribution
 #' @param working_dir beast2 working dir
 #' @param sub_rate substitution rate used to generate the original
@@ -15,6 +17,8 @@ infer_phylogeny <- function(alignment,
                             tree_prior = beautier::create_bd_tree_prior(),
                             clock_prior = beautier::create_strict_clock_model(),
                             mcmc_seed = NULL,
+                            chain_length = 1e7,
+                            sample_interval = 5000,
                             burnin = 0.1,
                             working_dir = NULL,
                             sub_rate = 1)  {
@@ -33,14 +37,14 @@ infer_phylogeny <- function(alignment,
     site_model = beautier::create_jc69_site_model(),
     clock_model = clock_prior,
     tree_prior = tree_prior,
-    mcmc = beautier::create_mcmc(chain_length = 1e7,
+    mcmc = beautier::create_mcmc(chain_length = chain_length,
                                  treelog =
                                    beautier::create_treelog(
                                               filename = output_trees_filenames,
-                                              log_every = 5000),
+                                              log_every = sample_interval),
                                  tracelog = beautier::create_tracelog(
                                               filename = output_log_filename,
-                                              log_every = 5000)
+                                              log_every = sample_interval)
     )
   )
 
@@ -59,7 +63,7 @@ infer_phylogeny <- function(alignment,
     burn_in_fraction = burnin
   )
 
-  esses <- tracerer::calc_esses(beast_log, sample_interval = 5000)
+  esses <- tracerer::calc_esses(beast_log, sample_interval = sample_interval)
   if (min(esses) < 200) {
     warning("WARNING! MCMC chain not converged!\n")
   }
