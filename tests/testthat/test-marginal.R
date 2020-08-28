@@ -7,7 +7,7 @@ test_that("marginal", {
 
   seq_normal <- sim_normal(x = phy, l = 1000,  rate = 0.01)
 
-  # skip("Not now, @thijsjanzen")
+  skip("Takes too long")
   skip_on_cran()
   phangorn::write.phyDat(seq_normal$alignment, file = "test.fasta", format = "fasta")
   ww <- nodeSub::estimate_marginal_models(fasta_filename = "test.fasta",
