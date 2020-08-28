@@ -6,7 +6,7 @@ test_that("infer_phylogeny", {
 
   seq_node_sub <- sim_normal(x = phy, l = 100,  rate = 0.1)
 
-  skip("Not now, @thijsjanzen")
+  # skip("Not now, @thijsjanzen")
   skip_on_cran()
   all_trees <- infer_phylogeny(seq_node_sub$alignment,
                                treatment_name = "test",
