@@ -33,8 +33,7 @@ Imports:
     stringr,
     tracerer,
     geiger,
-    ape
-Suggests:
+    ape,
     phytools,
     testthat,
     TreeSim,
