@@ -52,5 +52,4 @@ test_that("abuse", {
     ),
     "'rootseq' must have the same length as 'l'"
   )
-
 })
