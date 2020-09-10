@@ -2,7 +2,7 @@ language: r
 cache: packages
 
 os: 
-  - osx
+ # - osx
   - linux
 
 r_github_packages:
@@ -19,6 +19,7 @@ r_github_packages:
 
 before_install:
     # ImageMagick
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install r-cran-rjava; fi  
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo add-apt-repository -y ppa:opencpu/imagemagick; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install -y libmagick++-dev; fi
