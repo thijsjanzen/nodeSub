@@ -12,6 +12,7 @@ r_github_packages:
   - MangoTheCat/goodpractice
   - richelbilderbeek/beautier
   - richelbilderbeek/beastier
+  - richelbilderbeek/mauricer
   - richelbilderbeek/mcbette
   - thijsjanzen/nLTT
   - rsetienne/PBD/PBD
@@ -29,6 +30,17 @@ before_install:
   # Java
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then R CMD javareconf; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then R --quiet -e 'install.packages("rJava", type="source", repos="http://cran.us.r-project.org")'; fi
+
+before_script:
+  - Rscript -e "beastier::install_beast2()"
+  - Rscript -e "beastier::is_beast2_installed()"
+  - Rscript -e 'mauricer::install_beast2_pkg("NS")'
+  - Rscript -e 'mauricer::is_beast2_ns_pkg_installed()'
+  - beast2_installed_before=$(Rscript -e "beastier::is_beast2_installed()")
+  - beast2_ns_pkg_installed_before=$(Rscript -e 'mauricer::is_beast2_ns_pkg_installed()')
+  - echo $beast2_installed_before
+  - echo $beast2_ns_pkg_installed_before
+
 
 script:
   - travis_wait 60 R CMD build .
