@@ -97,7 +97,7 @@ calc_sum_stats <- function(trees,
   }
   colnames(all_sum_stats) <- c("beta", "gamma", "crown_age",
                                "mean_branch_length", "num_tips")
-  colnames(all_differences) <- c( colnames(all_sum_stats), "nLTT",
+  colnames(all_differences) <- c(colnames(all_sum_stats), "nLTT",
                                  "jsd")
 
   all_sum_stats <- tibble::as_tibble(all_sum_stats)

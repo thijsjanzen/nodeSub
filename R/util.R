@@ -247,4 +247,3 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
 
   return(list(child1_seq, child2_seq))
 }
-

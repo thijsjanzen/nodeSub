@@ -116,7 +116,7 @@ estimate_marginal_models <- function(fasta_filename,
   marg_liks <- exp(Rmpfr::mpfr(marg_log_liks, 256))
   weights <- rep(Rmpfr::mpfr(0, 256), length(marg_liks))
   if (sum(marg_liks) != Rmpfr::mpfr(0, 256)) {
-    weights <- marg_liks/sum(marg_liks)
+    weights <- marg_liks / sum(marg_liks)
   }
 
   df <- data.frame(site_model_name = site_model_names,
