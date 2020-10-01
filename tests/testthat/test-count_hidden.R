@@ -9,7 +9,7 @@ test_that("count_hidden use", {
 
     reduced_tree <- nodeSub::reduce_tree(test_tree)
 
-    num_hidden <- nodeSub::count_hidden(test_tree)
+    num_hidden <- nodeSub::count_hidden(test_tree)s
 
     num_extinct <- length(geiger::is.extinct(reduced_tree))
     cat(mu, "\n")

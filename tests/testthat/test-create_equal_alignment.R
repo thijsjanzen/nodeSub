@@ -27,6 +27,4 @@ test_that("create_equal_alignment", {
   num_diff_alt  <- calc_dist(seq_alt$alignment, seq_node_sub$root_seq)
 
   testthat::expect_equal(sum(num_diff_base), sum(num_diff_alt))
-
-
 })
