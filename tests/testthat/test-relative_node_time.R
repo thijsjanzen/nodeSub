@@ -51,3 +51,4 @@ test_that("required_node_time abuse", {
                                         mu = 0)
 
   )
+})
