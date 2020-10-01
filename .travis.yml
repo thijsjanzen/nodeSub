@@ -1,5 +1,6 @@
 language: r
 cache: packages
+# dist: bionic
 
 os: 
  # - osx
@@ -22,26 +23,21 @@ r_github_packages:
   - richelbilderbeek/becosys
 
 before_install:
-    # ImageMagick
+  # From https://stackoverflow.com/a/20042195
+  - Rscript -e "update.packages(checkBuilt = TRUE, ask = FALSE)"
+  # ImageMagick
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo add-apt-repository -y ppa:opencpu/imagemagick; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install -y libmagick++-dev; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install imagemagick; fi
   # Rmpfr
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt install -qq libmpfr-dev; fi
   # Java
-  # - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install r-cran-rjava; fi  
-  
-  before_install:
- - export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre
- - export PATH=$PATH:$JAVA_HOME/bin
- - export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-oracle/lib/amd64:/usr/lib/jvm/java-8-oracle/jre/lib/amd64/server
- - sudo R CMD javareconf 
-  
-  
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then R CMD javareconf; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then R --quiet -e 'install.packages("rJava", type="source", repos="http://cran.us.r-project.org")'; fi
-
+  # PDF
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sudo tlmgr update --self; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sudo tlmgr install inconsolata; fi
+  
 before_script:
   - Rscript -e "beastier::install_beast2()"
   - Rscript -e "beastier::is_beast2_installed()"
