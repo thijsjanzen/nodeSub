@@ -124,7 +124,7 @@ estimate_marginal_models <- function(fasta_filename,
                    tree_prior_name = tree_prior_names,
                    marg_log_lik = marg_log_liks,
                    marg_log_lik_sd = marg_log_lik_sds,
-                   weight = weights)
+                   weight = as.numeric(weights))
 
   file.remove("marg.trace")
   file.remove("marg.trees")
