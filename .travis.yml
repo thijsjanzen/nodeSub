@@ -23,6 +23,8 @@ r_github_packages:
   - richelbilderbeek/becosys
 
 before_install:
+  # Fix rJava error, from https://travis-ci.community/t/cannot-connect-to-java-from-r/9754/8
+  - sudo $(which R) CMD javareconf
   # From https://stackoverflow.com/a/20042195
   - Rscript -e "update.packages(checkBuilt = TRUE, ask = FALSE)"
   # ImageMagick
