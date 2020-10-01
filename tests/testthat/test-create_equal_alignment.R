@@ -18,7 +18,7 @@ test_that("create_equal_alignment", {
                                     root_sequence = seq_node_sub$root_seq,
                                     alt_model = sim_regular,
                                     sub_rate = sub_rate,
-                                    verbose = FALSE)
+                                    verbose = TRUE)
 
   testthat::expect_equal(length(seq_alt$alignment),
                          length(seq_node_sub$alignment))
@@ -27,4 +27,6 @@ test_that("create_equal_alignment", {
   num_diff_alt  <- calc_dist(seq_alt$alignment, seq_node_sub$root_seq)
 
   testthat::expect_equal(sum(num_diff_base), sum(num_diff_alt))
+
+
 })

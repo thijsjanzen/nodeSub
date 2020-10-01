@@ -27,6 +27,7 @@ calc_mean_branch_length <- function(focal_tree) {
 
 #' @keywords internal
 calc_all_stats <- function(focal_tree) {
+  focal_tree <- ape::multi2di(focal_tree)
   output <- c(calc_beta(focal_tree),
               calc_gamma(focal_tree),
               calc_tree_height(focal_tree),
@@ -57,6 +58,9 @@ calc_sum_stats <- function(trees,
       stop("input needs to be correct phylo object or multiPhylo")
     }
   }
+
+  true_tree <- ape::multi2di(true_tree)
+
 
 
   if (length(geiger::is.extinct(true_tree) > 0)) {

@@ -24,3 +24,30 @@ test_that("required_node_time use", {
 
   testthat::expect_equal(obs_fraction, chosen_fraction, tol = 0.01)
 })
+
+test_that("required_node_time abuse", {
+  set.seed(1)
+  focal_tree <- TreeSim::sim.bd.taxa(n = 100,
+                                     numbsim = 1,
+                                     lambda = 1,
+                                     mu = 0,
+                                     complete = FALSE)
+
+  chosen_fraction <- 0.1
+
+  testthat::expect_error(
+    req_node_time <- nodeSub::calc_required_node_time(focal_tree,
+                                                    s = chosen_fraction)
+  )
+
+  testthat::expect_error(
+    obs_fraction <- nodeSub::calc_fraction(focal_tree,
+                                           node_time = req_node_time)
+  )
+
+  testthat::expect_error(
+    nodeSub::calc_expected_hidden_nodes(focal_tree,
+                                        lambda = 1,
+                                        mu = 0)
+
+  )
