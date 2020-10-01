@@ -10,6 +10,10 @@ test_that("marginal", {
   skip_on_cran()
   test_file_name <- "test.fasta"
 
+  if (!mauricer::is_beast2_pkg_installed("NS")) {
+    mauricer::install_beast2_pkg("NS")
+  }
+
   phangorn::write.phyDat(seq_normal$alignment,
                          file = test_file_name,
                          format = "fasta")
