@@ -18,7 +18,8 @@ test_that("marginal", {
                          file = test_file_name,
                          format = "fasta")
   ww <- nodeSub::estimate_marginal_models(fasta_filename = test_file_name,
-                                          use_yule_prior = TRUE)
+                                          use_yule_prior = TRUE,
+                                          verbose = TRUE)
 
   testthat::expect_true(length(ww$site_model_name) == 2)
   testthat::expect_true(sum(
