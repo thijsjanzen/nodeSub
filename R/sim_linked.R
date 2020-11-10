@@ -72,6 +72,8 @@ sim_linked <- function(phy,
   total_node_subs <- 0
   total_branch_subs <- 0
 
+  daughter_subs <- rep(0, length(parents))
+
   for (focal_parent in parents) {
     # given parent alignment
     # generate two children aligments
@@ -86,6 +88,7 @@ sim_linked <- function(phy,
 
     node_subs_1 <- sum(res[, focal_parent] != result[[1]])
     node_subs_2 <- sum(res[, focal_parent] != result[[2]])
+    all_node_subs <- c(node_subs_1, node_subs_2)
     total_node_subs <- total_node_subs + node_subs_1 + node_subs_2
 
     indices <- which(parent == focal_parent)
@@ -105,9 +108,11 @@ sim_linked <- function(phy,
       res[, offspring[i]] <- after_mut_seq
       branch_subs <- sum(after_mut_seq != before_mut_seq)
       total_branch_subs <- total_branch_subs + branch_subs
+      daughter_subs[offspring[i]] <- branch_subs + all_node_subs[i]
     }
   }
 
+  total_accumulated_mutations <- calc_accumulated_substitutions(phy, daughter_subs)
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   k <- length(phy$tip.label)
@@ -116,10 +121,14 @@ sim_linked <- function(phy,
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
+  total_inferred_substitutions <- sum(calc_dist(alignment_phydat, rootseq))
+
   output <- list("alignment" = alignment_phydat,
                  "root_seq" = rootseq,
                  "total_branch_substitutions" = total_branch_subs,
-                 "total_node_substitutions" = total_node_subs)
+                 "total_node_substitutions" = total_node_subs,
+                 "total_inferred_substitutions" = total_inferred_substitutions,
+                 "total_accumulated_substitutions" = total_accumulated_mutations)
 
   return(output)
 }

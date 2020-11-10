@@ -4,32 +4,14 @@
 \alias{create_equal_alignment}
 \title{function create an alignment with highly similar information content}
 \usage{
-create_equal_alignment(
-  input_tree,
-  node_time,
-  node_model = "unlinked",
-  sub_rate,
-  focal_alignment,
-  root_sequence,
-  alt_model,
-  verbose = FALSE
-)
+create_equal_alignment(input_tree, sub_rate, alignment_result, verbose = FALSE)
 }
 \arguments{
 \item{input_tree}{phylogeny for which to generate alignment}
 
-\item{node_time}{fraction of time spent on the nodes}
-
-\item{node_model}{model used to generate substitutions on the nodes
-(linked or unlinked)}
-
 \item{sub_rate}{substitution rate used in the original phylogeny}
 
-\item{focal_alignment}{alignment to match information content with}
-
-\item{root_sequence}{root sequence}
-
-\item{alt_model}{alternative substitution model}
+\item{alignment_result}{result of sim_normal, sim_linked or sim_unlinked}
 
 \item{verbose}{provide intermediate output}
 }

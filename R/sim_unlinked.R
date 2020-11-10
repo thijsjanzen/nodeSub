@@ -65,6 +65,8 @@ sim_unlinked <- function(phy,
   total_node_subs <- 0
   total_branch_subs <- 0
 
+  daughter_subs <- rep(0, length(parent))
+
   for (i in seq_along(tl)) {
     from <- parent[i]
     to <- child[i]
@@ -100,7 +102,10 @@ sim_unlinked <- function(phy,
     total_branch_subs <- total_branch_subs + branch_subs
 
     res[, to] <- after_mut_seq
+    daughter_subs[i] <- branch_subs + node_subs
   }
+
+  total_accumulated_mutations <- calc_accumulated_substitutions(phy, daughter_subs)
 
   phy_no_extinct <- geiger::drop.extinct(phy)
 
@@ -110,10 +115,14 @@ sim_unlinked <- function(phy,
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
+  total_inferred_substitutions <- sum(calc_dist(alignment_phydat, rootseq))
+
   output <- list("alignment" = alignment_phydat,
                  "root_seq" = rootseq,
                  "total_branch_substitutions" = total_branch_subs,
-                 "total_node_substitutions" = total_node_subs)
+                 "total_node_substitutions" = total_node_subs,
+                 "total_inferred_substitutions" = total_inferred_substitutions,
+                 "total_accumulated_substitutions" = total_accumulated_mutations)
 
   return(output)
 }

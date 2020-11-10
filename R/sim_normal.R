@@ -62,6 +62,7 @@ sim_normal <- function(x,
   tl <- x$edge.length
 
   total_branch_subs <- 0
+  daughter_subs <- rep(0, length(parent))
 
   for (i in seq_along(tl)) {
     from <- parent[i]
@@ -77,7 +78,13 @@ sim_normal <- function(x,
 
     branch_subs <- sum(res[, from] != res[, to])
     total_branch_subs <- total_branch_subs + branch_subs
+    daughter_subs[i] <- branch_subs
   }
+
+  # now, given the daughter subs string, we need to calculate the total
+  # accumulated divergence
+  total_accumulated_mutations <- calc_accumulated_substitutions(x, daughter_subs)
+
   phy_no_extinct <- geiger::drop.extinct(x)
 
   k <- length(x$tip.label)
@@ -86,9 +93,13 @@ sim_normal <- function(x,
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
+  total_inferred_substitutions <- sum(calc_dist(alignment_phydat, rootseq))
+
   output <- list("alignment" = alignment_phydat,
                 "root_seq" = rootseq,
                 "total_branch_substitutions" = total_branch_subs,
-                "total_node_substitutions" = 0)
+                "total_node_substitutions" = 0,
+                "total_inferred_substitutions" = total_inferred_substitutions,
+                "total_accumulated_substitutions" = total_accumulated_mutations)
  return(output)
 }
