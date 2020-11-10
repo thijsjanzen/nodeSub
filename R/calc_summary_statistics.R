@@ -58,11 +58,7 @@ calc_sum_stats <- function(trees,
     }
   }
 
-<<<<<<< Updated upstream
-=======
   true_tree <- ape::multi2di(true_tree)
-
->>>>>>> Stashed changes
 
   if (length(geiger::is.extinct(true_tree) > 0)) {
     warning("Found extinct lineages, removed these from tree\n")

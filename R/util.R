@@ -249,8 +249,6 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
   return(list(child1_seq, child2_seq))
 }
 
-<<<<<<< Updated upstream
-=======
 calc_accumulated_substitutions_oversum <- function(phy, daughter_subs) {
   edge <- phy$edge
   k <- length(phy$tip.label)
@@ -301,4 +299,3 @@ calc_accumulated_substitutions <- function(phy, daughter_subs) {
   }
   return(sum(daughter_subs * edge[, 3]))
 }
->>>>>>> Stashed changes
