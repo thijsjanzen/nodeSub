@@ -25,17 +25,37 @@ create_equal_alignment <- function(input_tree,
                                    rootseq = alignment_result$root_seq,
                                    rate = adjusted_rate)
 
-  proposed_subs <- proposed_alignment$total_accumulated_substitutions
-
-  while (proposed_subs != num_emp_subs) {
-    proposed_alignment <- sim_normal(x = input_tree,
-                                     l = seqlen,
-                                     rootseq = alignment_result$root_seq,
-                                     rate = adjusted_rate)
-
-    proposed_subs <- proposed_alignment$total_accumulated_substitutions
-    if (verbose) cat(proposed_subs, "\n")
+  propose_alignments <- function(buffer) {
+    sim_normal(x = input_tree,
+               l = seqlen,
+               rootseq = alignment_result$root_seq,
+               rate = adjusted_rate)
   }
+
+  calc_subs <- function(local_alignment) {
+     return(local_alignment$total_accumulated_substitutions)
+  }
+
+  proposed_subs <- proposed_alignment$total_accumulated_substitutions
+  cnt <- 1
+  while (proposed_subs != num_emp_subs) {
+
+    alignments <- vector("list", 10)
+    alignments <- lapply(alignments, propose_alignments)
+
+    all_subs <- unlist(lapply(alignments, calc_subs))
+    num_matches <- length(which(all_subs == num_emp_subs))
+
+    if (num_matches > 0) {
+      a <- which(all_subs == num_emp_subs)[[1]]
+      output_alignment <- alignments[[a]]
+      output_alignment$adjusted_rate <- adjusted_rate
+      return(output_alignment)
+    }
+    cnt <- cnt + length(all_subs)
+    if (verbose) cat(cnt, adjusted_rate, mean(all_subs, na.rm = TRUE), "\n")
+  }
+
   proposed_alignment$adjusted_rate <- adjusted_rate
 
   return(proposed_alignment)
