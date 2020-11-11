@@ -16,7 +16,7 @@ create_equal_alignment(input_tree, sub_rate, alignment_result, verbose = FALSE)
 \item{verbose}{provide intermediate output}
 }
 \value{
-list with alignment and inferred rate
+new alignment, with added property "adjusted rate"
 }
 \description{
 function create an alignment with highly similar information content
