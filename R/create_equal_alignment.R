@@ -53,7 +53,8 @@ create_equal_alignment <- function(input_tree,
     if (num_matches > 0) {
       a <- which(all_subs == num_emp_subs)[[1]]
       return(list("alignment" = alignments[[a]],
-                  "rate" = adjusted_rate))
+                  "rate" = adjusted_rate,
+                  "initial_rate" = initial_guesss))
     } else {
       avg_sub <- mean(all_subs, na.rm = TRUE)
       factor <- num_emp_subs / avg_sub
