@@ -7,7 +7,7 @@
 #' @export
 create_equal_alignment <- function(input_tree,
                                    sub_rate,
-                                   alignment_result,s
+                                   alignment_result,
                                    verbose = FALSE) {
 
   num_emp_subs <- alignment_result$total_accumulated_substitutions
