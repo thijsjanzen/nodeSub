@@ -13,8 +13,10 @@ create_equal_alignment <- function(input_tree,
   num_emp_subs <- alignment_result$total_accumulated_substitutions
 
   adjusted_rate <- sub_rate +
-              sub_rate * alignment_result$total_node_substitutions/
+              sub_rate * alignment_result$total_node_substitutions /
                          alignment_result$total_branch_substitutions
+
+  initial_guess <- adjusted_rate
 
   seqlen <- length(alignment_result$root_seq)
 
@@ -65,5 +67,6 @@ create_equal_alignment <- function(input_tree,
   }
 
   return(list("alignment" = proposed_alignment,
-              "rate" = adjusted_rate))
+              "rate" = adjusted_rate,
+              "initial_rate" = initial_guess))
 }
