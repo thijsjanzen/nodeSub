@@ -18,7 +18,6 @@ create_unbalanced_tree <- function(brts) {
     focal_brt <- brts[i]
 
     left <- 1
-
     parent <- 0
     daughter <- 0
 

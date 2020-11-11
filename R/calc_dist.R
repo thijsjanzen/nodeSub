@@ -9,7 +9,9 @@ calc_dist <- function(alignment_phydat,
     stop("can not calculate distance from root sequence without root sequence")
   }
 
-  testit::assert(class(alignment_phydat) == "phyDat")
+  if (class(alignment_phydat) != "phyDat") {
+    stop("input alignment has to be of type phyDat")
+  }
 
   alignment_rawer <- phangorn::phyDat2alignment(alignment_phydat)
 

@@ -1,4 +1,4 @@
-# nodeSub
+# nodeSub <img src="pics/nodesub_sticker.png" align="right" width="200" />
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/GenomeAdmixR)](https://cran.r-project.org/package=nodeSub)
 

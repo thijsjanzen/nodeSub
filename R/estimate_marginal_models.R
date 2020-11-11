@@ -112,15 +112,19 @@ estimate_marginal_models <- function(fasta_filename,
     }
   }
 
-  weights <- as.numeric(mcbette::calc_weights(
-    marg_liks = exp(Rmpfr::mpfr(marg_log_liks, 256))))
+  # following code was ripped from mcbette, but mcbette is not on CRAN yet.
+  marg_liks <- exp(Rmpfr::mpfr(marg_log_liks, 256))
+  weights <- rep(Rmpfr::mpfr(0, 256), length(marg_liks))
+  if (sum(marg_liks) != Rmpfr::mpfr(0, 256)) {
+    weights <- marg_liks / sum(marg_liks)
+  }
 
   df <- data.frame(site_model_name = site_model_names,
                    clock_model_name = clock_model_names,
                    tree_prior_name = tree_prior_names,
                    marg_log_lik = marg_log_liks,
                    marg_log_lik_sd = marg_log_lik_sds,
-                   weight = weights)
+                   weight = as.numeric(weights))
 
   file.remove("marg.trace")
   file.remove("marg.trees")

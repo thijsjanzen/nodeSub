@@ -23,7 +23,7 @@ test_that("create_equal_alignment", {
                                     alignment_result = seq_node_sub,
                                     alt_model = sim_regular,
                                     sub_rate = sub_rate,
-                                    verbose = FALSE)
+                                    verbose = TRUE)
 
   testthat::expect_equal(length(seq_alt$alignment$alignment),
                          length(seq_node_sub$alignment))

@@ -5,7 +5,7 @@ Version: 1.0
 Author: Thijs Janzen
 Maintainer: Thijs Janzen <thijsjanzen@gmail.com>
 Description: Simulate DNA sequences under different models.
-Url: https://github.com/thijsjanzen/nodeSub
+URL: https://github.com/thijsjanzen/nodeSub
 BugReports: https://github.com/thijsjanzen/nodeSub
 License: GPL-3
 Encoding: UTF-8
@@ -26,17 +26,16 @@ Imports:
     beastier,
     beautier,
     mauricer,
-    mcbette,
     pbapply,
     phylobase,
     rappdirs,
     stringr,
     tracerer,
     geiger,
-    ape
+    ape,
+    testit
 Suggests:
     phytools,
     testthat,
     TreeSim,
-    dplyr,
-    testit
+    dplyr
