@@ -121,7 +121,8 @@ sim_unlinked <- function(phy,
                  "total_branch_substitutions" = updated_subs$total_branch_subs,
                  "total_node_substitutions" = updated_subs$total_node_subs,
                  "total_inferred_substitutions" = total_inferred_substitutions,
-                 "total_accumulated_substitutions" = updated_subs$total_accumulated_substitutions)
+                 "total_accumulated_substitutions" =
+                    updated_subs$total_accumulated_substitutions)
 
   return(output)
 }

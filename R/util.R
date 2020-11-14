@@ -95,8 +95,8 @@ phyDat.DNA <- function(data) {  # nolint
 #' @param rate rate
 #' @return p matrix
 get_p_matrix <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
-  #res <- get_p_m_rcpp(eig, branch_length, rate)
-  res <- slow_matrix(eig, branch_length, rate)
+  res <- get_p_m_rcpp(eig, branch_length, rate)
+  # res <- slow_matrix(eig, branch_length, rate)
   if (any(res < 0)) res[res < 0] <- 0
   return(res)
 }
@@ -249,31 +249,6 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
   return(list(child1_seq, child2_seq))
 }
 
-#' @keywords internal
-calc_accumulated_substitutions_oversum <- function(phy, daughter_subs) {
-  edge <- phy$edge
-  k <- length(phy$tip.label)
-  num_nodes <- max(edge)
-  label <- c(phy$tip.label, as.character((k + 1):num_nodes))
-  no_extinct_phy <- geiger::drop.extinct(phy)
-  tips_to_check <- no_extinct_phy$tip.label
-  final_dist <- c()
-  # not used:
-  num_extant <- length(tips_to_check)
-  root_parent <- edge[1, 1]
-  for(i in 1:num_extant) {
-    final_dist[i] <- 0
-    parent_index <- which(edge[, 2] == i)
-    parent <- edge[parent_index, 1]
-    final_dist <- final_dist + daughter_subs[parent_index]
-    while(parent != root_parent) {
-      parent_index <- which(edge[, 2] == parent)
-      final_dist <- final_dist + daughter_subs[parent_index]
-      parent = edge[parent_index, 1]
-    }
-  }
-  return(sum(final_dist))
-}
 
 #' @keywords internal
 calc_accumulated_substitutions <- function(phy, branch_subs, node_subs = NULL) {
@@ -281,12 +256,8 @@ calc_accumulated_substitutions <- function(phy, branch_subs, node_subs = NULL) {
     node_subs <- rep(0, length(branch_subs))
   }
   edge <- phy$edge
-  k <- length(phy$tip.label)
-  num_nodes <- max(edge)
-  label <- c(phy$tip.label, as.character((k + 1):num_nodes))
   no_extinct_phy <- geiger::drop.extinct(phy)
   tips_to_check <- no_extinct_phy$tip.label
-  final_dist <- c()
   # not used:
   num_extant <- length(tips_to_check)
   root_parent <- edge[1, 1]
@@ -295,14 +266,14 @@ calc_accumulated_substitutions <- function(phy, branch_subs, node_subs = NULL) {
   # we start at each extant tip
   # and then traverse the tree to the root and mark each edge as being connected
   # to an extant tip. Only those should be taken into account.
-  for(i in 1:num_extant) {
+  for (i in 1:num_extant) {
     parent_index <- which(edge[, 2] == i)
     parent <- edge[parent_index, 1]
     edge[parent_index, 3] <- 1
-    while(parent != root_parent) {
+    while (parent != root_parent) {
       parent_index <- which(edge[, 2] == parent)
       edge[parent_index, 3] <- 1
-      parent = edge[parent_index, 1]
+      parent <- edge[parent_index, 1]
     }
   }
 
@@ -312,5 +283,6 @@ calc_accumulated_substitutions <- function(phy, branch_subs, node_subs = NULL) {
 
   return(list("total_branch_subs" = total_branch_subs,
               "total_node_subs" = total_node_subs,
-              "total_accumulated_substitutions" = total_accumulated_substitutions))
+              "total_accumulated_substitutions" =
+                   total_accumulated_substitutions))
 }

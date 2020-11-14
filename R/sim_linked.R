@@ -106,8 +106,10 @@ sim_linked <- function(phy,
       res[, offspring[i]] <- after_mut_seq
       branch_subs <- sum(after_mut_seq != before_mut_seq)
 
-      branch_subs_all[offspring[i]] <- branch_subs_all[offspring[i]] + branch_subs
-      node_subs_all[offspring[i]] <- node_subs_all[offspring[i]] + all_node_subs[i]
+      branch_subs_all[offspring[i]] <-
+              branch_subs_all[offspring[i]] + branch_subs
+      node_subs_all[offspring[i]] <-
+              node_subs_all[offspring[i]] + all_node_subs[i]
 
     }
   }
@@ -130,7 +132,8 @@ sim_linked <- function(phy,
                  "total_branch_substitutions" = updated_subs$total_branch_subs,
                  "total_node_substitutions" = updated_subs$total_node_subs,
                  "total_inferred_substitutions" = total_inferred_substitutions,
-                 "total_accumulated_substitutions" = updated_subs$total_accumulated_substitutions)
+                 "total_accumulated_substitutions" =
+                                  updated_subs$total_accumulated_substitutions)
 
   return(output)
 }

@@ -4,10 +4,6 @@ test_that("create_equal_alignment", {
   phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
   set.seed(666)
 
-  # manual testing:
-  # phy <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0)[[1]]
-
-
   sub_rate <- 1e-2
   seqlen <- 1000
 

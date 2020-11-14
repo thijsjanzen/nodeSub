@@ -6,7 +6,6 @@ test_that("marginal", {
 
   seq_normal <- sim_normal(x = phy, l = 100,  rate = 0.1)
 
- # skip("Takes too long")
   skip_on_cran()
   test_file_name <- "test.fasta"
 

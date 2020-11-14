@@ -16,8 +16,6 @@ create_equal_alignment <- function(input_tree,
               sub_rate * alignment_result$total_node_substitutions /
                          alignment_result$total_branch_substitutions
 
-  initial_guess <- adjusted_rate
-
   seqlen <- length(alignment_result$root_seq)
 
   proposed_alignment <- sim_normal(x = input_tree,
