@@ -69,10 +69,9 @@ sim_linked <- function(phy,
   eigen_obj <- eigen(node_transition_matrix, FALSE)
   eigen_obj$inv <- solve.default(eigen_obj$vec)
 
-  total_node_subs <- 0
-  total_branch_subs <- 0
 
-  daughter_subs <- rep(0, length(parents))
+  branch_subs_all <- rep(0, length(parents))
+  node_subs_all   <- rep(0, length(parents))
 
   for (focal_parent in parents) {
     # given parent alignment
@@ -89,7 +88,6 @@ sim_linked <- function(phy,
     node_subs_1 <- sum(res[, focal_parent] != result[[1]])
     node_subs_2 <- sum(res[, focal_parent] != result[[2]])
     all_node_subs <- c(node_subs_1, node_subs_2)
-    total_node_subs <- total_node_subs + node_subs_1 + node_subs_2
 
     indices <- which(parent == focal_parent)
     for (i in 1:2) {
@@ -107,12 +105,16 @@ sim_linked <- function(phy,
       }
       res[, offspring[i]] <- after_mut_seq
       branch_subs <- sum(after_mut_seq != before_mut_seq)
-      total_branch_subs <- total_branch_subs + branch_subs
-      daughter_subs[offspring[i]] <- branch_subs + all_node_subs[i]
+
+      branch_subs_all[offspring[i]] <- branch_subs_all[offspring[i]] + branch_subs
+      node_subs_all[offspring[i]] <- node_subs_all[offspring[i]] + all_node_subs[i]
+
     }
   }
 
-  total_accumulated_mutations <- calc_accumulated_substitutions(phy, daughter_subs)
+  updated_subs <- calc_accumulated_substitutions(phy,
+                                                 branch_subs_all,
+                                                 node_subs_all)
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   k <- length(phy$tip.label)
@@ -125,10 +127,10 @@ sim_linked <- function(phy,
 
   output <- list("alignment" = alignment_phydat,
                  "root_seq" = rootseq,
-                 "total_branch_substitutions" = total_branch_subs,
-                 "total_node_substitutions" = total_node_subs,
+                 "total_branch_substitutions" = updated_subs$total_branch_subs,
+                 "total_node_substitutions" = updated_subs$total_node_subs,
                  "total_inferred_substitutions" = total_inferred_substitutions,
-                 "total_accumulated_substitutions" = total_accumulated_mutations)
+                 "total_accumulated_substitutions" = updated_subs$total_accumulated_substitutions)
 
   return(output)
 }

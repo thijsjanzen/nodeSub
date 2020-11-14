@@ -95,8 +95,8 @@ phyDat.DNA <- function(data) {  # nolint
 #' @param rate rate
 #' @return p matrix
 get_p_matrix <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
-  res <- get_p_m_rcpp(eig, branch_length, rate)
-  #res <- slow_matrix(eig, branch_length, rate)
+  #res <- get_p_m_rcpp(eig, branch_length, rate)
+  res <- slow_matrix(eig, branch_length, rate)
   if (any(res < 0)) res[res < 0] <- 0
   return(res)
 }
@@ -249,6 +249,7 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
   return(list(child1_seq, child2_seq))
 }
 
+#' @keywords internal
 calc_accumulated_substitutions_oversum <- function(phy, daughter_subs) {
   edge <- phy$edge
   k <- length(phy$tip.label)
@@ -274,7 +275,11 @@ calc_accumulated_substitutions_oversum <- function(phy, daughter_subs) {
   return(sum(final_dist))
 }
 
-calc_accumulated_substitutions <- function(phy, daughter_subs) {
+#' @keywords internal
+calc_accumulated_substitutions <- function(phy, branch_subs, node_subs = NULL) {
+  if (is.null(node_subs)) {
+    node_subs <- rep(0, length(branch_subs))
+  }
   edge <- phy$edge
   k <- length(phy$tip.label)
   num_nodes <- max(edge)
@@ -287,6 +292,9 @@ calc_accumulated_substitutions <- function(phy, daughter_subs) {
   root_parent <- edge[1, 1]
   edge <- cbind(edge, 0)
 
+  # we start at each extant tip
+  # and then traverse the tree to the root and mark each edge as being connected
+  # to an extant tip. Only those should be taken into account.
   for(i in 1:num_extant) {
     parent_index <- which(edge[, 2] == i)
     parent <- edge[parent_index, 1]
@@ -297,5 +305,12 @@ calc_accumulated_substitutions <- function(phy, daughter_subs) {
       parent = edge[parent_index, 1]
     }
   }
-  return(sum(daughter_subs * edge[, 3]))
+
+  total_branch_subs <- sum(branch_subs * edge[, 3])
+  total_node_subs   <- sum(node_subs * edge[, 3])
+  total_accumulated_substitutions <- sum(total_branch_subs, total_node_subs)
+
+  return(list("total_branch_subs" = total_branch_subs,
+              "total_node_subs" = total_node_subs,
+              "total_accumulated_substitutions" = total_accumulated_substitutions))
 }

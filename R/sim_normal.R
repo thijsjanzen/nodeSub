@@ -83,7 +83,7 @@ sim_normal <- function(x,
 
   # now, given the daughter subs string, we need to calculate the total
   # accumulated divergence
-  total_accumulated_mutations <- calc_accumulated_substitutions(x, daughter_subs)
+  updated_subs <- calc_accumulated_substitutions(x, daughter_subs)
 
   phy_no_extinct <- geiger::drop.extinct(x)
 
@@ -96,10 +96,11 @@ sim_normal <- function(x,
   total_inferred_substitutions <- sum(calc_dist(alignment_phydat, rootseq))
 
   output <- list("alignment" = alignment_phydat,
-                "root_seq" = rootseq,
-                "total_branch_substitutions" = total_branch_subs,
-                "total_node_substitutions" = 0,
-                "total_inferred_substitutions" = total_inferred_substitutions,
-                "total_accumulated_substitutions" = total_accumulated_mutations)
+                 "root_seq" = rootseq,
+                 "total_branch_substitutions" = updated_subs$total_branch_subs,
+                 "total_node_substitutions" = updated_subs$total_node_subs,
+                 "total_inferred_substitutions" = total_inferred_substitutions,
+                 "total_accumulated_substitutions" = updated_subs$total_accumulated_substitutions)
+
  return(output)
 }

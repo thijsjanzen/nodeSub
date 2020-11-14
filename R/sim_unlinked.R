@@ -62,10 +62,8 @@ sim_unlinked <- function(phy,
   res[, root] <- rootseq
   tl <- phy$edge.length
 
-  total_node_subs <- 0
-  total_branch_subs <- 0
-
-  daughter_subs <- rep(0, length(parent))
+  branch_subs_all <- rep(0, length(parent))
+  node_subs_all   <- rep(0, length(parent))
 
   for (i in seq_along(tl)) {
     from <- parent[i]
@@ -82,7 +80,6 @@ sim_unlinked <- function(phy,
     }
 
     node_subs <- sum(res[, to] != res[, from])
-    total_node_subs <- total_node_subs + node_subs
 
     # and then we add extra substitutions
     from <- to # the parent is now the individual again
@@ -99,13 +96,15 @@ sim_unlinked <- function(phy,
     }
 
     branch_subs <- sum(after_mut_seq != before_mut_seq)
-    total_branch_subs <- total_branch_subs + branch_subs
 
     res[, to] <- after_mut_seq
-    daughter_subs[i] <- branch_subs + node_subs
+
+    branch_subs_all[i] <- branch_subs_all[i] + branch_subs
+    node_subs_all[i]   <- node_subs_all[i] + node_subs
   }
 
-  total_accumulated_mutations <- calc_accumulated_substitutions(phy, daughter_subs)
+  updated_subs <- calc_accumulated_substitutions(phy, branch_subs_all,
+                                                 node_subs_all)
 
   phy_no_extinct <- geiger::drop.extinct(phy)
 
@@ -119,10 +118,10 @@ sim_unlinked <- function(phy,
 
   output <- list("alignment" = alignment_phydat,
                  "root_seq" = rootseq,
-                 "total_branch_substitutions" = total_branch_subs,
-                 "total_node_substitutions" = total_node_subs,
+                 "total_branch_substitutions" = updated_subs$total_branch_subs,
+                 "total_node_substitutions" = updated_subs$total_node_subs,
                  "total_inferred_substitutions" = total_inferred_substitutions,
-                 "total_accumulated_substitutions" = total_accumulated_mutations)
+                 "total_accumulated_substitutions" = updated_subs$total_accumulated_substitutions)
 
   return(output)
 }
