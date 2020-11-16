@@ -112,7 +112,7 @@ sim_normal_explicit <- function(x,
   daughter_subs <- rep(0, length(parent))
   daughter_subs2 <- rep(0, length(parent))
 
-  utils::pb <- txtProgressBar(max = length(tl), style = 3)
+  pb <- utils::txtProgressBar(max = length(tl), style = 3)
   for (i in seq_along(tl)) {
     from <- parent[i]
     to <- child[i]

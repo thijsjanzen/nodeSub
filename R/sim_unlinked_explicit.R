@@ -65,6 +65,7 @@ sim_unlinked_explicit <- function(phy,
   branch_subs_all <- rep(0, length(parent))
   node_subs_all   <- rep(0, length(parent))
 
+  pb <- utils::txtProgressBar(max = length(tl), style = 3)
   for (i in seq_along(tl)) {
     from <- parent[i]
     to <- child[i]
@@ -94,6 +95,7 @@ sim_unlinked_explicit <- function(phy,
 
     branch_subs_all[i] <- branch_subs_all[i] + branch_subs
     node_subs_all[i]   <- node_subs_all[i] + node_subs
+    utils::setTxtProgressBar(pb, i)
   }
 
   updated_subs <- calc_accumulated_substitutions(phy, branch_subs_all,
