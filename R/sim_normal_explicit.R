@@ -127,7 +127,6 @@ sim_normal_explicit <- function(x,
   daughter_subs <- rep(0, length(parent))
   daughter_subs2 <- rep(0, length(parent))
 
-  pb <- utils::txtProgressBar(max = length(tl), style = 3)
   for (i in seq_along(tl)) {
     from <- parent[i]
     to <- child[i]
@@ -144,7 +143,6 @@ sim_normal_explicit <- function(x,
     total_branch_subs <- total_branch_subs + branch_subs
   #  daughter_subs[i] <- branch_subs
     daughter_subs2[i] <- seq_after_mut$num_mut
-    utils::setTxtProgressBar(pb, i)
   }
 
   # now, given the daughter subs string, we need to calculate the total
