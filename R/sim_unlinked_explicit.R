@@ -45,8 +45,8 @@ sim_unlinked_explicit <- function(phy,
   # capital Q is retained to conform to mathematical notation on wikipedia
   # and in the literature
 
-  eig_q1 <- phangorn::edQt(Q1, bf) # eigen values
-  eig_q2 <- phangorn::edQt(Q2, bf) # eigen values
+  # eig_q1 <- phangorn::edQt(Q1, bf) # eigen values
+  # eig_q2 <- phangorn::edQt(Q2, bf) # eigen values
 
   m <- length(levels) # always 4 (bases)
 
@@ -65,7 +65,7 @@ sim_unlinked_explicit <- function(phy,
   branch_subs_all <- rep(0, length(parent))
   node_subs_all   <- rep(0, length(parent))
 
-  pb <- utils::txtProgressBar(max = length(tl), style = 3)
+ # pb <- utils::txtProgressBar(max = length(tl), style = 3)
   for (i in seq_along(tl)) {
     from <- parent[i]
     to <- child[i]
@@ -77,7 +77,7 @@ sim_unlinked_explicit <- function(phy,
     # and in the literature
 
     seq_before_mut <- res[, from]
-    seq_after_mut <- mutate_seq(seq_before_mut, P)
+    seq_after_mut <- mutate_seq_explicit(seq_before_mut, P)
     node_subs <- seq_after_mut$num_mut
     res[, to] <- seq_after_mut$seq
 
@@ -89,13 +89,13 @@ sim_unlinked_explicit <- function(phy,
     # and in the literature
 
     seq_before_mut <- res[, from]
-    seq_after_mut <- mutate_seq(seq_before_mut, P)
-    branch_subs <- seq_after_mut$mut
+    seq_after_mut <- mutate_seq_explicit(seq_before_mut, P)
+    branch_subs <- seq_after_mut$num_mut
     res[, to] <- seq_after_mut$seq
 
     branch_subs_all[i] <- branch_subs_all[i] + branch_subs
     node_subs_all[i]   <- node_subs_all[i] + node_subs
-    utils::setTxtProgressBar(pb, i)
+   # utils::setTxtProgressBar(pb, i)
   }
 
   updated_subs <- calc_accumulated_substitutions(phy, branch_subs_all,
