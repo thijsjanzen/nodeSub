@@ -28,19 +28,34 @@ P_n <- function(N, mu, t) {
 }
 
 #' @keywords internal
-mutate_base <- function(base, Pn) {
+mutate_seq_explicit <- function(local_sequence, Pn) {
   bases <- c("a", "c", "g", "t")
-  index <- sample(x = 1:2, size = 1, prob = colSums(Pn))
-  if (index == 1) {
-    num_mut <- sample(x = 0:(-1 + length(Pn[, 1])), size = 1, prob = Pn[, 1])
-    return(c(base, num_mut))
+  seq_before_mut <- local_sequence
+  seq_after_mut  <- seq_before_mut
+  num_mut <- 0
+  for(j in 1:4) {
+    ind <- which(seq_before_mut == bases[j])
+    a <- sample(x = 1:length(Pn),
+                size = length(ind),
+                replace = T,
+                prob = Pn)
+
+    chosen_col <- rep(1, length(a))
+    chosen_col[a > nrow(Pn)] <- 2
+    b <- which(chosen_col == 1)
+    num_mut <- num_mut + sum(a[b]-1)
+    b <- which(chosen_col == 2)
+    num_mut <- num_mut + sum((a[b] - nrow(Pn) - 1), na.rm = T)
+
+    if (length(b) > 0) {
+        other_bases <- bases[ -which(bases == bases[j])]
+        chosen_bases <- sample(other_bases, size = length(b), replace = T)
+        mutated_bases <- ind[b]
+        seq_after_mut[mutated_bases] <- chosen_bases
+    }
   }
-  if (index == 2) {
-    num_mut <- sample(x = 0:(-1 + length(Pn[, 2])), size = 1, prob = Pn[, 2])
-    other_bases <- bases[-which(bases == base)]
-    chosen_base <- sample(other_bases, size = 1)
-    return(c(chosen_base, num_mut))
-  }
+  return(list("seq" = seq_after_mut,
+              "num_mut" = num_mut))
 }
 
 
@@ -121,14 +136,14 @@ sim_normal_explicit <- function(x,
     # and in the literature
 
     seq_before_mut <- res[, from]
-    seq_after_mut <- t(sapply(seq_before_mut, mutate_base, P))
-    num_mut <- sum(as.numeric(seq_after_mut[, 2]))
-    res[, to] <- seq_after_mut[, 1]
+    seq_after_mut <- mutate_seq_explicit(seq_before_mut, P)
+
+    res[, to] <- seq_after_mut$seq
 
     branch_subs <- sum(res[, from] != res[, to])
     total_branch_subs <- total_branch_subs + branch_subs
   #  daughter_subs[i] <- branch_subs
-    daughter_subs2[i] <- num_mut
+    daughter_subs2[i] <- seq_after_mut$num_mut
     utils::setTxtProgressBar(pb, i)
   }
 

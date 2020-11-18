@@ -77,9 +77,9 @@ sim_unlinked_explicit <- function(phy,
     # and in the literature
 
     seq_before_mut <- res[, from]
-    seq_after_mut <- t(sapply(seq_before_mut, mutate_base, P))
-    node_subs <- sum(as.numeric(seq_after_mut[, 2]))
-    res[, to] <- seq_after_mut[, 1]
+    seq_after_mut <- mutate_seq(seq_before_mut, P)
+    node_subs <- seq_after_mut$num_mut
+    res[, to] <- seq_after_mut$seq
 
     # and then we add extra substitutions
     from <- to # the parent is now the individual again
@@ -89,9 +89,9 @@ sim_unlinked_explicit <- function(phy,
     # and in the literature
 
     seq_before_mut <- res[, from]
-    seq_after_mut <- t(sapply(seq_before_mut, mutate_base, P))
-    branch_subs <- sum(as.numeric(seq_after_mut[, 2]))
-    res[, to] <- seq_after_mut[, 1]
+    seq_after_mut <- mutate_seq(seq_before_mut, P)
+    branch_subs <- seq_after_mut$mut
+    res[, to] <- seq_after_mut$seq
 
     branch_subs_all[i] <- branch_subs_all[i] + branch_subs
     node_subs_all[i]   <- node_subs_all[i] + node_subs
