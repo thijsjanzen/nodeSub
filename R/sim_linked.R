@@ -133,7 +133,6 @@ sim_linked <- function(phy,
                  "total_node_substitutions" = updated_subs$total_node_subs,
                  "total_inferred_substitutions" = total_inferred_substitutions,
                  "total_accumulated_substitutions" =
-                                  updated_subs$total_accumulated_substitutions)
-
+                   updated_subs$total_accumulated_substitutions)
   return(output)
 }

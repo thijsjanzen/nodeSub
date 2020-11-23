@@ -4,7 +4,13 @@
 \alias{create_equal_alignment}
 \title{function create an alignment with highly similar information content}
 \usage{
-create_equal_alignment(input_tree, sub_rate, alignment_result, verbose = FALSE)
+create_equal_alignment(
+  input_tree,
+  sub_rate,
+  alignment_result,
+  sim_function = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{input_tree}{phylogeny for which to generate alignment}
@@ -12,6 +18,9 @@ create_equal_alignment(input_tree, sub_rate, alignment_result, verbose = FALSE)
 \item{sub_rate}{substitution rate used in the original phylogeny}
 
 \item{alignment_result}{result of sim_normal, sim_linked or sim_unlinked}
+
+\item{sim_function}{function that accepts a tree, sequence length,
+rootsequence and substitution rate (in that order). Default is sim_normal}
 
 \item{verbose}{provide intermediate output}
 }
