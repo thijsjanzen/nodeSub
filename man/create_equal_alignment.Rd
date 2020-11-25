@@ -9,7 +9,8 @@ create_equal_alignment(
   sub_rate,
   alignment_result,
   sim_function = NULL,
-  verbose = FALSE
+  verbose = FALSE,
+  input_alignment_type = "nodesub"
 )
 }
 \arguments{
@@ -23,6 +24,10 @@ create_equal_alignment(
 rootsequence and substitution rate (in that order). Default is sim_normal}
 
 \item{verbose}{provide intermediate output}
+
+\item{input_alignment_type}{was the input alignment simulated with a nodesub
+model or a normal substitution model? Used to calculate the twin mutation
+rate.}
 }
 \value{
 new alignment, with added property "adjusted rate"

@@ -5,19 +5,29 @@
 #' @param sim_function function that accepts a tree, sequence length,
 #' rootsequence and substitution rate (in that order). Default is sim_normal
 #' @param verbose provide intermediate output
+#' @param input_alignment_type was the input alignment simulated with a nodesub
+#' model or a normal substitution model? Used to calculate the twin mutation
+#' rate.
 #' @return new alignment, with added property "adjusted rate"
 #' @export
 create_equal_alignment <- function(input_tree,
                                    sub_rate,
                                    alignment_result,
                                    sim_function = NULL,
-                                   verbose = FALSE) {
+                                   verbose = FALSE,
+                                   input_alignment_type = "nodesub") {
 
   num_emp_subs <- alignment_result$total_accumulated_substitutions
 
   adjusted_rate <- sub_rate +
               sub_rate * alignment_result$total_node_substitutions /
                          alignment_result$total_branch_substitutions
+
+  if (input_alignment_type == "normal") {
+    frac <- 1 + alignment_result$total_node_substitutions /
+                        alignment_result$total_branch_substitutions
+    adjusted_rate <- sub_rate / frac
+  }
 
   seqlen <- length(alignment_result$root_seq)
 
