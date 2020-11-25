@@ -28,7 +28,8 @@ create_equal_alignment_explicit <- function(input_tree,
   while (proposed_subs != num_emp_subs) {
     proposed_alignment <- sim_normal_explicit(x = input_tree,
                                               l = seqlen,
-                                              rootseq = alignment_result$root_seq,
+                                              rootseq =
+                                                   alignment_result$root_seq,
                                               rate = adjusted_rate)
 
     proposed_subs <- proposed_alignment$total_accumulated_substitutions

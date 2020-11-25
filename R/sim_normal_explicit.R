@@ -1,55 +1,55 @@
 #' @keywords internal
 ab_n <- function(ab_nmin1, n) {
-  if(n == 0) {
+  if (n == 0) {
     ab_n <- c(1, 0)
   } else {
-    ab_n <- c( 3 * ab_nmin1[2] / n, (2 * ab_nmin1[2] + ab_nmin1[1]) / n )
+    ab_n <- c(3 * ab_nmin1[2] / n, (2 * ab_nmin1[2] + ab_nmin1[1]) / n)
   }
   return(ab_n)
 }
 
 #' @keywords internal
-ab <- function(N) {
+ab <- function(n) {
   ab_mat <- matrix(0,
-                   nrow = N + 1,
+                   nrow = n + 1,
                    ncol = 2)
-  ab_mat[1,] <- c(1, 0)
-  for(i in 2:(N + 1)) {
+  ab_mat[1, ] <- c(1, 0)
+  for (i in 2:(n + 1)) {
     ab_mat[i, ] <- ab_n(ab_mat[i - 1, ], i - 1)
   }
   return(ab_mat)
 }
 
 #' @keywords internal
-P_n <- function(N, mu, t) {
-  ab_mat <- ab(N)
-  P <- ab_mat * (mu * t) ^ (0:N) * exp(-3 * mu * t)
-  return(P)
+p_n <- function(n, mu, t) {
+  ab_mat <- ab(n)
+  p <- ab_mat * (mu * t) ^ (0:n) * exp(-3 * mu * t)
+  return(p)
 }
 
 #' @keywords internal
-mutate_seq_explicit <- function(local_sequence, Pn) {
+mutate_seq_explicit <- function(local_sequence, pn) {
   bases <- c("a", "c", "g", "t")
   seq_before_mut <- local_sequence
   seq_after_mut  <- seq_before_mut
   num_mut <- 0
-  for(j in 1:4) {
+  for (j in 1:4) {
     ind <- which(seq_before_mut == bases[j])
-    a <- sample(x = 1:length(Pn),
+    a <- sample(x = 1:length(pn),
                 size = length(ind),
                 replace = T,
-                prob = Pn)
+                prob = pn)
 
     chosen_col <- rep(1, length(a))
-    chosen_col[a > nrow(Pn)] <- 2
+    chosen_col[a > nrow(pn)] <- 2
     b <- which(chosen_col == 1)
-    num_mut <- num_mut + sum(a[b]-1)
+    num_mut <- num_mut + sum(a[b] - 1)
     b <- which(chosen_col == 2)
-    num_mut <- num_mut + sum((a[b] - nrow(Pn) - 1), na.rm = T)
+    num_mut <- num_mut + sum((a[b] - nrow(pn) - 1), na.rm = TRUE)
 
     if (length(b) > 0) {
-        other_bases <- bases[ -which(bases == bases[j])]
-        chosen_bases <- sample(other_bases, size = length(b), replace = T)
+        other_bases <- bases[-which(bases == bases[j])]
+        chosen_bases <- sample(other_bases, size = length(b), replace = TRUE)
         mutated_bases <- ind[b]
         seq_after_mut[mutated_bases] <- chosen_bases
     }
@@ -108,10 +108,6 @@ sim_normal_explicit <- function(x,
   # capital Q is retained to conform to mathematical notation on wikipedia
   # and in the literature
 
-  eig <- phangorn::edQt(Q, bf)
-
-  m <- length(levels)
-
   if (is.null(rootseq)) rootseq <- sample(levels, l, replace = TRUE, prob = bf)
   x <- stats::reorder(x)
   edge <- x$edge
@@ -125,12 +121,11 @@ sim_normal_explicit <- function(x,
 
   total_branch_subs <- 0
   daughter_subs <- rep(0, length(parent))
-  daughter_subs2 <- rep(0, length(parent))
 
   for (i in seq_along(tl)) {
     from <- parent[i]
     to <- child[i]
-    P <-  P_n(100, rate, tl[i])  # get_p_matrix(tl[i], eig, rate)  # nolint
+    P <-  p_n(100, rate, tl[i])  # get_p_matrix(tl[i], eig, rate)  # nolint
     # capital P is retained to conform to mathematical notation on wikipedia
     # and in the literature
 
@@ -141,14 +136,12 @@ sim_normal_explicit <- function(x,
 
     branch_subs <- sum(res[, from] != res[, to])
     total_branch_subs <- total_branch_subs + branch_subs
-  #  daughter_subs[i] <- branch_subs
-    daughter_subs2[i] <- seq_after_mut$num_mut
+    daughter_subs[i] <- seq_after_mut$num_mut
   }
 
   # now, given the daughter subs string, we need to calculate the total
   # accumulated divergence
-  updated_subs <- calc_accumulated_substitutions(x, daughter_subs2)
- # reverse_subs <- calc_accumulated_substitutions(x, daughter_subs2)
+  updated_subs <- calc_accumulated_substitutions(x, daughter_subs)
 
   phy_no_extinct <- geiger::drop.extinct(x)
 
@@ -167,11 +160,7 @@ sim_normal_explicit <- function(x,
                  "total_inferred_substitutions" = total_inferred_substitutions,
                  "total_accumulated_substitutions" =
                    updated_subs$total_accumulated_substitutions)
-                 #"incl_reverse_subs" = reverse_subs$total_accumulated_substitutions)
+          #"incl_reverse_subs" = reverse_subs$total_accumulated_substitutions)
 
   return(output)
 }
-
-
-
-

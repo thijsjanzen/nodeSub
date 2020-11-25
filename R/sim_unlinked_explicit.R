@@ -45,11 +45,6 @@ sim_unlinked_explicit <- function(phy,
   # capital Q is retained to conform to mathematical notation on wikipedia
   # and in the literature
 
-  # eig_q1 <- phangorn::edQt(Q1, bf) # eigen values
-  # eig_q2 <- phangorn::edQt(Q2, bf) # eigen values
-
-  m <- length(levels) # always 4 (bases)
-
   phy <- stats::reorder(phy)
   edge <- phy$edge
   num_nodes <- max(edge)
@@ -65,13 +60,12 @@ sim_unlinked_explicit <- function(phy,
   branch_subs_all <- rep(0, length(parent))
   node_subs_all   <- rep(0, length(parent))
 
- # pb <- utils::txtProgressBar(max = length(tl), style = 3)
   for (i in seq_along(tl)) {
     from <- parent[i]
     to <- child[i]
 
     # first we do substitutions due to the node model:
-    P <-  P_n(100, rate2, node_time)  # get_p_matrix(tl[i], eig, rate)  # nolint
+    P <-  p_n(100, rate2, node_time)  # get_p_matrix(tl[i], eig, rate)  # nolint
 
     # capital P is retained to conform to mathematical notation on wikipedia
     # and in the literature
@@ -83,8 +77,7 @@ sim_unlinked_explicit <- function(phy,
 
     # and then we add extra substitutions
     from <- to # the parent is now the individual again
-   # P <- get_p_matrix(tl[i], eig_q1, rate1)  # nolint
-    P <-  P_n(100, rate1, tl[i])
+    P <-  p_n(100, rate1, tl[i]) # nolint
     # capital P is retained to conform to mathematical notation on wikipedia
     # and in the literature
 
@@ -95,7 +88,6 @@ sim_unlinked_explicit <- function(phy,
 
     branch_subs_all[i] <- branch_subs_all[i] + branch_subs
     node_subs_all[i]   <- node_subs_all[i] + node_subs
-   # utils::setTxtProgressBar(pb, i)
   }
 
   updated_subs <- calc_accumulated_substitutions(phy, branch_subs_all,

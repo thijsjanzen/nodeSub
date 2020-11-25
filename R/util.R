@@ -96,7 +96,6 @@ phyDat.DNA <- function(data) {  # nolint
 #' @return p matrix
 get_p_matrix <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
   res <- get_p_m_rcpp(eig, branch_length, rate)
-  # res <- slow_matrix(eig, branch_length, rate)
   if (any(res < 0)) res[res < 0] <- 0
   return(res)
 }
@@ -279,10 +278,10 @@ calc_accumulated_substitutions <- function(phy, branch_subs, node_subs = NULL) {
 
   total_branch_subs <- sum(branch_subs * edge[, 3])
   total_node_subs   <- sum(node_subs * edge[, 3])
-  total_accumulated_substitutions <- sum(total_branch_subs, total_node_subs)
+  total_accum_substitutions <- sum(total_branch_subs, total_node_subs)
 
   return(list("total_branch_subs" = total_branch_subs,
               "total_node_subs" = total_node_subs,
               "total_accumulated_substitutions" =
-                   total_accumulated_substitutions))
+                total_accum_substitutions))
 }
