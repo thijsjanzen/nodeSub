@@ -10,6 +10,7 @@ create_equal_alignment(
   alignment_result,
   sim_function = NULL,
   verbose = FALSE,
+  node_time = NULL,
   input_alignment_type = "nodesub"
 )
 }
@@ -24,6 +25,8 @@ create_equal_alignment(
 rootsequence and substitution rate (in that order). Default is sim_normal}
 
 \item{verbose}{provide intermediate output}
+
+\item{node_time}{node time}
 
 \item{input_alignment_type}{was the input alignment simulated with a nodesub
 model or a normal substitution model? Used to calculate the twin mutation

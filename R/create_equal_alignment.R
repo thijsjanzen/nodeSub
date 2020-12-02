@@ -5,6 +5,7 @@
 #' @param sim_function function that accepts a tree, sequence length,
 #' rootsequence and substitution rate (in that order). Default is sim_normal
 #' @param verbose provide intermediate output
+#' @param node_time node time
 #' @param input_alignment_type was the input alignment simulated with a nodesub
 #' model or a normal substitution model? Used to calculate the twin mutation
 #' rate.
