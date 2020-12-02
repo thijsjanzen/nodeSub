@@ -15,6 +15,7 @@ create_equal_alignment <- function(input_tree,
                                    alignment_result,
                                    sim_function = NULL,
                                    verbose = FALSE,
+                                   node_time = NULL,
                                    input_alignment_type = "nodesub") {
 
   num_emp_subs <- alignment_result$total_accumulated_substitutions
@@ -24,8 +25,13 @@ create_equal_alignment <- function(input_tree,
                          alignment_result$total_branch_substitutions
 
   if (input_alignment_type == "normal") {
-    frac <- 1 + alignment_result$total_node_substitutions /
-                        alignment_result$total_branch_substitutions
+    if(is.null(node_time)) {
+      stop("Node time needs to be provided")
+    }
+    total_node_sub <- node_time * 2 * input_tree$Nnode
+    total_branch_time <- sum(input_tree$edge.length)
+    frac <- 1 + total_node_sub /
+      total_branch_time
     adjusted_rate <- sub_rate / frac
   }
 
