@@ -29,6 +29,10 @@ create_equal_alignment <- function(input_tree,
     adjusted_rate <- sub_rate / frac
   }
 
+  if (input_alignment_type == "fix_sub_rate") {
+    adjusted_rate <- sub_rate
+  }
+
   seqlen <- length(alignment_result$root_seq)
 
   if (is.null(sim_function)) {
@@ -50,7 +54,7 @@ create_equal_alignment <- function(input_tree,
                                        alignment_result$root_seq, adjusted_rate)
 
     proposed_subs <- proposed_alignment$total_accumulated_substitutions
-    if (verbose) cat(proposed_subs, "\n")
+    if (verbose) cat(proposed_subs, " " , num_emp_subs, " ", sub_rate, " ", adjusted_rate, "\n")
   }
   proposed_alignment$adjusted_rate <- adjusted_rate
 
