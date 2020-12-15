@@ -68,6 +68,15 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
+          remotes::install_github("richelbilderbeek/mcbette")
+          remotes::install_github("thijsjanzen/nLTT")
+          remotes::install_github("rsetienne/PBD/PBD")
+          remotes::install_github("richelbilderbeek/becosys")
+          beastier::install_beast2()
+          beastier::is_beast2_installed()
+          mauricer::install_beast2_pkg("NS")
+          mauricer::is_beast2_ns_pkg_installed()
+          
         shell: Rscript {0}
 
       - name: Check
