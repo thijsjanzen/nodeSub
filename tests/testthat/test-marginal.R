@@ -8,6 +8,7 @@ test_that("marginal", {
 
  # skip("Takes too long")
   skip_on_cran()
+  skip_on_ci()
   test_file_name <- "test.fasta"
 
   if (!mauricer::is_beast2_pkg_installed("NS")) {
