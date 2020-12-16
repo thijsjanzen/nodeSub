@@ -8,6 +8,7 @@ test_that("infer_phylogeny", {
 
 #  skip("Takes too long")
   skip_on_cran()
+  skip_on_ci()
   all_trees <- infer_phylogeny(seq_node_sub$alignment,
                                treatment_name = "test",
                                chain_length = 1e5,
