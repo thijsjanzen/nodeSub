@@ -1,82 +1,69 @@
 #' function create an alignment with highly similar information content
 #' @param input_tree phylogeny for which to generate alignment
-#' @param node_time fraction of time spent on the nodes
-#' @param node_model model used to generate substitutions on the nodes
-#'                   (linked or unlinked)
 #' @param sub_rate substitution rate used in the original phylogeny
-#' @param focal_alignment alignment to match information content with
-#' @param alt_model alternative substitution model
-#' @param root_sequence root sequence
+#' @param alignment_result result of sim_normal, sim_linked or sim_unlinked
+#' @param sim_function function that accepts a tree, sequence length,
+#' rootsequence and substitution rate (in that order). Default is sim_normal
 #' @param verbose provide intermediate output
-#' @return list with alignment and inferred rate
+#' @param node_time node time
+#' @param input_alignment_type was the input alignment simulated with a nodesub
+#' model or a normal substitution model? Used to calculate the twin mutation
+#' rate.
+#' @return new alignment, with added property "adjusted rate"
 #' @export
 create_equal_alignment <- function(input_tree,
-                                   node_time,
-                                   node_model = "unlinked",
                                    sub_rate,
-                                   focal_alignment,
-                                   root_sequence,
-                                   alt_model,
-                                   verbose = FALSE) {
+                                   alignment_result,
+                                   sim_function = NULL,
+                                   verbose = FALSE,
+                                   node_time = NULL,
+                                   input_alignment_type = "nodesub") {
 
-  num_emp_subs <- sum(calc_dist(focal_alignment, root_sequence))
+  num_emp_subs <- alignment_result$total_accumulated_substitutions
 
-  # make an educated guess
-  num_nodes <- geiger::drop.extinct(input_tree)$Nnode
-  num_hidden_nodes <- count_hidden(input_tree)
+  adjusted_rate <- sub_rate +
+              sub_rate * alignment_result$total_node_substitutions /
+                         alignment_result$total_branch_substitutions
 
-  factor <- 1
-  if (node_model == "unlinked") factor <- 2
-
-  total_on_nodes <- (factor * num_nodes + num_hidden_nodes) * node_time
-  total_bl <- sum(geiger::drop.extinct(input_tree)$edge.length)
-
-  adjusted_rate <-  sub_rate + sub_rate * total_on_nodes / total_bl
-
-  proposed_alignment <- alt_model(input_tree,
-                                  adjusted_rate,
-                                  root_sequence)$alignment
-
-  proposed_subs <- sum(calc_dist(proposed_alignment, root_sequence))
-  cnt <- 1
-
-  propose_alignments <- function(buffer, focal_rate) {
-    proposed_alignment <- alt_model(phy = input_tree,
-                                    rate = focal_rate,
-                                    rootseq = root_sequence)$alignment
-    return(proposed_alignment)
-  }
-
-  calc_subs <- function(local_alignment) {
-    sum(calc_dist(local_alignment, root_sequence))
-  }
-
-  stored_factor <- 0
-  while (proposed_subs != num_emp_subs) {
-
-    alignments <- vector("list", 10)
-    if (abs(stored_factor - 1) < 0.01) alignments <- vector("list", 100)
-    alignments <- lapply(alignments, propose_alignments, adjusted_rate)
-    all_subs <- unlist(lapply(alignments, calc_subs))
-
-    num_matches <- length(which(all_subs == num_emp_subs))
-
-    if (num_matches > 0) {
-      a <- which(all_subs == num_emp_subs)[[1]]
-      return(list("alignment" = alignments[[a]],
-                  "rate" = adjusted_rate))
-    } else {
-      avg_sub <- mean(all_subs, na.rm = TRUE)
-      factor <- num_emp_subs / avg_sub
-      stored_factor <- factor
-      adjusted_rate <- adjusted_rate * factor
+  if (input_alignment_type == "normal") {
+    if(is.null(node_time)) {
+      stop("Node time needs to be provided")
     }
-
-    cnt <- cnt + length(all_subs)
-    if (verbose) cat(cnt, adjusted_rate, mean(all_subs, na.rm = TRUE),
-                     num_emp_subs, factor, "\n")
+    total_node_sub <- node_time * 2 * input_tree$Nnode
+    total_branch_time <- sum(input_tree$edge.length)
+    frac <- 1 + total_node_sub /
+      total_branch_time
+    adjusted_rate <- sub_rate / frac
   }
 
-  return(list("alignment" = proposed_alignment,
-              "rate" = adjusted_rate))
+  if (input_alignment_type == "fix_sub_rate") {
+    adjusted_rate <- sub_rate
+  }
+
+  seqlen <- length(alignment_result$root_seq)
+
+  if (is.null(sim_function)) {
+    sim_function <- function(input_tree, seqlen, rootseq, rate) {
+      sim_normal(x = input_tree,
+                 l = seqlen,
+                 rootseq = rootseq,
+                 rate = rate)
+    }
+  }
+
+  proposed_alignment <- sim_function(input_tree, seqlen,
+                                     alignment_result$root_seq, adjusted_rate)
+
+  proposed_subs <- proposed_alignment$total_accumulated_substitutions
+
+  while (proposed_subs != num_emp_subs) {
+    proposed_alignment <- sim_function(input_tree, seqlen,
+                                       alignment_result$root_seq, adjusted_rate)
+
+    proposed_subs <- proposed_alignment$total_accumulated_substitutions
+    if (verbose) cat(proposed_subs, " " , num_emp_subs, " ", sub_rate, " ", adjusted_rate, "\n")
+  }
+  proposed_alignment$adjusted_rate <- adjusted_rate
+
+  return(proposed_alignment)
 }

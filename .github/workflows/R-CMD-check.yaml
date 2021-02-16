@@ -77,7 +77,7 @@ jobs:
           beastier::is_beast2_installed()
           mauricer::install_beast2_pkg("NS")
           mauricer::is_beast2_ns_pkg_installed()
-          
+
         shell: Rscript {0}
 
       - name: Check

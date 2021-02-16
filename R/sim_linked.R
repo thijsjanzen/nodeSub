@@ -66,15 +66,19 @@ sim_linked <- function(phy,
   assertthat::assert_that(node_mut_rate_double >= 0)
 
   node_transition_matrix <- make_transition_matrix(node_mut_rate_double)
+
   eigen_obj <- eigen(node_transition_matrix, FALSE)
   eigen_obj$inv <- solve.default(eigen_obj$vec)
 
-  total_node_subs <- 0
-  total_branch_subs <- 0
+
+  branch_subs_all <- cbind(0, 0, rep(0, max(parents)))
+  node_subs_all   <- cbind(0, 0, rep(0, max(parents)))
+
+  chosen_indices <- c()
 
   for (focal_parent in parents) {
     # given parent alignment
-    # generate two children aligments
+    # generate two children alignments
     offspring <- edge[which(parent == focal_parent), 2]
     # first we do substitutions due to the node model:
     p_matrix <- get_p_matrix(node_time,
@@ -86,7 +90,7 @@ sim_linked <- function(phy,
 
     node_subs_1 <- sum(res[, focal_parent] != result[[1]])
     node_subs_2 <- sum(res[, focal_parent] != result[[2]])
-    total_node_subs <- total_node_subs + node_subs_1 + node_subs_2
+    all_node_subs <- c(node_subs_1, node_subs_2)
 
     indices <- which(parent == focal_parent)
     for (i in 1:2) {
@@ -95,19 +99,35 @@ sim_linked <- function(phy,
       # capital P is retained to conform to mathematical notation on wikipedia
       # and in the literature
 
-      before_mut_seq <- result[[i]]
+      before_mut_seq <- result[[i]] # sequence 1 after node substitutions
       after_mut_seq <- c()
       for (j in 1:m) {
         ind <- before_mut_seq == levels[j]
         after_mut_seq[ind] <- sample(levels, sum(ind), replace = TRUE,
                                      prob = P[, j])
       }
-      res[, offspring[i]] <- after_mut_seq
+      res[, offspring[i] ] <- after_mut_seq
       branch_subs <- sum(after_mut_seq != before_mut_seq)
-      total_branch_subs <- total_branch_subs + branch_subs
+
+
+      from <- focal_parent
+      to   <- offspring[i]
+      a <- which(edge[, 1] == from & edge[, 2] == to)
+
+
+      offspring_index <- a
+      branch_subs_all[a, ] <- c(focal_parent, offspring[i], branch_subs)
+
+      node_subs_all[a, ] <- c(focal_parent, offspring[i], all_node_subs[i])
     }
   }
 
+  branch_subs_all <- branch_subs_all[-which(branch_subs_all[, 1] == 0), ]
+  node_subs_all   <- node_subs_all[-which(node_subs_all[, 1] == 0), ]
+
+  updated_subs <- calc_accumulated_substitutions(phy,
+                                                 branch_subs_all[, 3],
+                                                 node_subs_all[, 3])
   phy_no_extinct <- geiger::drop.extinct(phy)
 
   k <- length(phy$tip.label)
@@ -116,10 +136,14 @@ sim_linked <- function(phy,
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
+  total_inferred_substitutions <- sum(calc_dist(alignment_phydat, rootseq))
+
   output <- list("alignment" = alignment_phydat,
                  "root_seq" = rootseq,
-                 "total_branch_substitutions" = total_branch_subs,
-                 "total_node_substitutions" = total_node_subs)
-
+                 "total_branch_substitutions" = updated_subs$total_branch_subs,
+                 "total_node_substitutions" = updated_subs$total_node_subs,
+                 "total_inferred_substitutions" = total_inferred_substitutions,
+                 "total_accumulated_substitutions" =
+                   updated_subs$total_accumulated_substitutions)
   return(output)
 }

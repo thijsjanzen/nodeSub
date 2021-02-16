@@ -17,7 +17,7 @@
 #' \item{total_node_substitutions} total number of substitutions accumulated at
 #' the nodes}
 #' @export
-sim_unlinked <- function(phy,
+sim_unlinked_explicit <- function(phy,
                          Q1 = rep(1, 6),   # nolint
                          Q2 = rep(1, 6),   # nolint
                          rate1 = 0.1,
@@ -45,11 +45,6 @@ sim_unlinked <- function(phy,
   # capital Q is retained to conform to mathematical notation on wikipedia
   # and in the literature
 
-  eig_q1 <- phangorn::edQt(Q1, bf) # eigen values
-  eig_q2 <- phangorn::edQt(Q2, bf) # eigen values
-
-  m <- length(levels) # always 4 (bases)
-
   phy <- stats::reorder(phy)
   edge <- phy$edge
   num_nodes <- max(edge)
@@ -70,34 +65,26 @@ sim_unlinked <- function(phy,
     to <- child[i]
 
     # first we do substitutions due to the node model:
-    P <- get_p_matrix(node_time, eig_q2, rate2)  # nolint
+    P <-  p_n(100, rate2, node_time)  # get_p_matrix(tl[i], eig, rate)  # nolint
+
     # capital P is retained to conform to mathematical notation on wikipedia
     # and in the literature
 
-    for (j in 1:m) {
-      ind <- res[, from] == levels[j]
-      res[ind, to] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
-    }
-
-    node_subs <- sum(res[, to] != res[, from])
+    seq_before_mut <- res[, from]
+    seq_after_mut <- mutate_seq_explicit(seq_before_mut, P)
+    node_subs <- seq_after_mut$num_mut
+    res[, to] <- seq_after_mut$seq
 
     # and then we add extra substitutions
     from <- to # the parent is now the individual again
-    P <- get_p_matrix(tl[i], eig_q1, rate1)  # nolint
+    P <-  p_n(100, rate1, tl[i]) # nolint
     # capital P is retained to conform to mathematical notation on wikipedia
     # and in the literature
 
-    before_mut_seq <- res[, from]
-    after_mut_seq <- before_mut_seq
-    for (j in 1:m) {
-      ind <- before_mut_seq == levels[j]
-      after_mut_seq[ind] <- sample(levels, sum(ind), replace = TRUE,
-                                   prob = P[, j])
-    }
-
-    branch_subs <- sum(after_mut_seq != before_mut_seq)
-
-    res[, to] <- after_mut_seq
+    seq_before_mut <- res[, from]
+    seq_after_mut <- mutate_seq_explicit(seq_before_mut, P)
+    branch_subs <- seq_after_mut$num_mut
+    res[, to] <- seq_after_mut$seq
 
     branch_subs_all[i] <- branch_subs_all[i] + branch_subs
     node_subs_all[i]   <- node_subs_all[i] + node_subs
@@ -122,7 +109,7 @@ sim_unlinked <- function(phy,
                  "total_node_substitutions" = updated_subs$total_node_subs,
                  "total_inferred_substitutions" = total_inferred_substitutions,
                  "total_accumulated_substitutions" =
-                    updated_subs$total_accumulated_substitutions)
+                   updated_subs$total_accumulated_substitutions)
 
   return(output)
 }
