@@ -20,7 +20,7 @@ test_that("create_equal_alignment", {
   seq_alt <- create_equal_alignment(input_tree = phy,
                                     alignment_result = seq_node_sub,
                                     sub_rate = sub_rate,
-                                    verbose = TRUE)
+                                    verbose = FALSE)
 
   testthat::expect_equal(length(seq_alt$alignment),
                          length(seq_node_sub$alignment))
