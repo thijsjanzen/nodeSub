@@ -1,4 +1,2 @@
 CC=clang
 CXX=clang++
-PKG_CFLAGS=-g -O2
-PKG_CXXFLAGS=-g -O2

@@ -126,10 +126,14 @@ estimate_marginal_models <- function(fasta_filename,
                    marg_log_lik_sd = marg_log_lik_sds,
                    weight = as.numeric(weights))
 
-  file.remove("marg.trace")
-  file.remove("marg.trees")
-  file.remove("marg.posterior.trace")
-  file.remove("marg.posterior.trees")
+  if (file.exists("marg.trace")) {
+    file.remove("marg.trace") }
+  if (file.exists("marg.trees")) {
+    file.remove("marg.trees") }
+  if (file.exists("marg.posterior.trace")) {
+    file.remove("marg.posterior.trace") }
+  if (file.exists("marg.posterior.trees")) {
+    file.remove("marg.posterior.trees") }
 
   return(df)
 }
