@@ -1,7 +1,7 @@
 Package: nodeSub
 Type: Package
 Title: Simulate DNA Alingments Using Node Substitutions
-Version: 1.0
+Version: 1.1
 Author: Thijs Janzen
 Maintainer: Thijs Janzen <thijsjanzen@gmail.com>
 Description: Simulate DNA sequences under different models.
@@ -12,6 +12,8 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 LinkingTo: 
+    Rcpp
+Depends:
     Rcpp
 Imports: 
     nLTT,

@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // get_p_m_rcpp
 Rcpp::NumericMatrix get_p_m_rcpp(Rcpp::List eig, double branch_length, double rate);
 RcppExport SEXP _nodeSub_get_p_m_rcpp(SEXP eigSEXP, SEXP branch_lengthSEXP, SEXP rateSEXP) {

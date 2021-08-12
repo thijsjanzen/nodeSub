@@ -88,6 +88,7 @@ phyDat.DNA <- function(data) {  # nolint
 }
 
 #' calculate p matrix
+#' @rawNamespace import(Rcpp)
 #' @rawNamespace useDynLib(nodeSub)
 #' @description calculates the p matrix
 #' @param branch_length branch length
