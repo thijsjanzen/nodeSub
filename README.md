@@ -44,16 +44,16 @@ input_tree <- TreeSim::sim.bd.taxa(n = 100,
                                    complete = TRUE)[[1]]
                                      
 target_alignment <- sim_unlinked(phy = input_tree,
-                                          rate1 = 1e-3,
-                                          rate2 = 1e-3,
-                                          l = 10000,
-                                          node_time = 0.3)   
+                                 rate1 = 1e-3,
+                                 rate2 = 1e-3,
+                                 l = 10000,
+                                 node_time = 0.3)   
 ```
 We can then proceed to create a Twin alignment (e.g. an alignment with the exact same number of accumulated substitutions, given the same tree, but using a 'normal' substitution model)
 ```
 comp_alignment <- create_equal_alignment(input_tree = geiger::drop.extinct(input_tree),  # can only work on trees without extinct branches
-                                                  sub_rate = 1e-3,
-                                                  alignment_result = target_alignment)
+                                         sub_rate = 1e-3,
+                                         alignment_result = target_alignment)
 ```
 Now we have two alignments, one generated using the Node Substitution model, and one using standard strict clock model. For both we can perform phylogenetic inference to get the resulting tree. The aim is to compare the posterior distribution of trees with the true tree that we started with 'input_tree', and estimate the error invoked by the node substitution model.
 
@@ -65,17 +65,17 @@ node_posterior <- infer_phylogeny(target_alignment$alignment,
                                   working_dir = get_wd(),
                                   sub_rate = 1e-3)
                                   
- reference_posterior <- infer_phylogeny(comp_alignment$alignment,
-                                        "reference_posterior",
-                                        burnin = 0.1,
-                                        clock_prior = beautier::create_strict_clock_model(clock_rate_param = beautier::create_clock_rate_param(value = comp_alignment$adjusted_rate)),
-                                        working_dir = work_dir,
-                                        sub_rate = branch_rate)                               
+reference_posterior <- infer_phylogeny(comp_alignment$alignment,
+                                       "reference_posterior",
+                                       burnin = 0.1,
+                                       clock_prior = beautier::create_strict_clock_model(clock_rate_param = beautier::create_clock_rate_param(value = comp_alignment$adjusted_rate)),
+                                       working_dir = work_dir,
+                                       sub_rate = branch_rate)                               
 ```
 Having two posterior distributions of trees, we can compare them based on summary statistics.
 ```
 node_stats <- calc_sum_stats(node_posterior$all_trees,
                              input_tree)
-ref_stats <- calc_sum_stats(reference_posterior$all_trees,
+ref_stats  <- calc_sum_stats(reference_posterior$all_trees,
                             input_tree)
 ```                                      
