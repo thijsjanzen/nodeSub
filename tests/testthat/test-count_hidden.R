@@ -12,7 +12,6 @@ test_that("count_hidden use", {
     num_hidden <- nodeSub::count_hidden(test_tree)
 
     num_extinct <- length(geiger::is.extinct(reduced_tree))
-    cat(mu, "\n")
     testthat::expect_equal(num_hidden, num_extinct)
   }
 })
@@ -37,7 +36,6 @@ test_that("count_hidden expectation", {
 
     avg_exp_hidden <- mean(unlist(exp_hidden))
 
-    cat(mu, avg_num_hidden, avg_exp_hidden, "\n")
     testthat::expect_equal(avg_num_hidden, avg_exp_hidden, tolerance = 2)
   }
 })
