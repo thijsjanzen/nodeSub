@@ -1,7 +1,7 @@
 Package: nodeSub
 Type: Package
 Title: Simulate DNA Alingments Using Node Substitutions
-Version: 1.1
+Version: 1.1.1
 Author: Thijs Janzen
 Maintainer: Thijs Janzen <thijsjanzen@gmail.com>
 Description: Simulate DNA sequences under different models.
@@ -24,15 +24,10 @@ Imports:
     DDD,
     Rmpfr,
     assertthat,
-    babette,
-    beastier,
-    beautier,
-    mauricer,
     pbapply,
     phylobase,
     rappdirs,
     stringr,
-    tracerer,
     geiger,
     ape,
     testit
@@ -41,3 +36,10 @@ Suggests:
     testthat,
     TreeSim,
     dplyr
+Remotes: 
+    ropensci/babette,
+    ropensci/beastier,
+    ropensci/beautier,
+    ropensci/mauricer,
+    ropensci/mcbette,
+    ropensci/tracerer
