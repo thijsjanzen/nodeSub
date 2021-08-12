@@ -35,7 +35,8 @@ Suggests:
     phytools,
     testthat,
     TreeSim,
-    dplyr
+    dplyr,
+    alignfigR
 Remotes: 
     ropensci/babette,
     ropensci/beastier,

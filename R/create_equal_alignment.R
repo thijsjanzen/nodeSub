@@ -26,7 +26,7 @@ create_equal_alignment <- function(input_tree,
                          alignment_result$total_branch_substitutions
 
   if (input_alignment_type == "normal") {
-    if(is.null(node_time)) {
+    if (is.null(node_time)) {
       stop("Node time needs to be provided")
     }
     total_node_sub <- node_time * 2 * input_tree$Nnode
