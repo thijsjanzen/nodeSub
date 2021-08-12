@@ -69,8 +69,8 @@ reference_posterior <- infer_phylogeny(comp_alignment$alignment,
                                        "reference_posterior",
                                        burnin = 0.1,
                                        clock_prior = beautier::create_strict_clock_model(clock_rate_param = beautier::create_clock_rate_param(value = comp_alignment$adjusted_rate)),
-                                       working_dir = work_dir,
-                                       sub_rate = branch_rate)                               
+                                       working_dir = getwd(),
+                                       sub_rate = 1e-3)                               
 ```
 Having two posterior distributions of trees, we can compare them based on summary statistics.
 ```
