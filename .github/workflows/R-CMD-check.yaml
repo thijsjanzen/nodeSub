@@ -65,24 +65,22 @@ jobs:
 
       - name: Install dependencies
         run: |
-          remotes::install_cran("rcmdcheck")
-          remotes::install_github("ropensci/babette")
           remotes::install_github("ropensci/beastier")
           remotes::install_github("ropensci/beautier")
           remotes::install_github("ropensci/mauricer")
           remotes::install_github("ropensci/tracerer")
           remotes::install_github("ropensci/mcbette")
-          remotes::install_github("Giappo/mbd")
+          remotes::install_github("ropensci/babette")
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("rcmdcheck")
           remotes::install_github("thijsjanzen/nLTT")
-          remotes::install_github("rsetienne/PBD/PBD")
-          remotes::install_github("richelbilderbeek/becosys")
           remotes::install_github("richelbilderbeek/beastierinstall") 
           beastierinstall::install_beast2() 
           beastier::is_beast2_installed()
           remotes::install_github("richelbilderbeek/mauricerinstall") 
           mauricerinstall::install_beast2_pkg("NS")
           mauricer::is_beast2_ns_pkg_installed()
-          remotes::install_deps(dependencies = TRUE)
+
 
         shell: Rscript {0}
 
