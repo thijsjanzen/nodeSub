@@ -8,6 +8,7 @@ estimate_marginal_models(
   fasta_filename,
   use_yule_prior = FALSE,
   rng_seed = 42,
+  sub_rate = 1,
   verbose = FALSE
 )
 }
@@ -19,6 +20,8 @@ marginal likelihood is to be estimated}
 but if use_yule_prior is set to TRUE, a pure-birth prior will be used.}
 
 \item{rng_seed}{seed of pseudo-random number generator}
+
+\item{sub_rate}{substitution rate}
 
 \item{verbose}{boolean indicating if verbose intermediate output is to be
 generated}

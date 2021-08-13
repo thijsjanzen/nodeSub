@@ -35,6 +35,7 @@ get_marg_lik <- function(fasta_filename,
 #' @param use_yule_prior by default, a birth-death prior is used as tree prior,
 #' but if use_yule_prior is set to TRUE, a pure-birth prior will be used.
 #' @param rng_seed seed of pseudo-random number generator
+#' @param sub_rate substitution rate
 #' @param verbose boolean indicating if verbose intermediate output is to be
 #' generated
 #' @return data frame
