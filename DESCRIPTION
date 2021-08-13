@@ -11,6 +11,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
+VignetteBuilder: knitr
 LinkingTo: 
     Rcpp
 Depends:
@@ -30,17 +31,16 @@ Imports:
     stringr,
     geiger,
     ape,
-    testit
+    testit,
+    babette,
+    beautier,
+    beastier,
+    mauricer,
+    tracerer
 Suggests:
     phytools,
     testthat,
     TreeSim,
     dplyr,
-    alignfigR
-Remotes: 
-    ropensci/babette,
-    ropensci/beastier,
-    ropensci/beautier,
-    ropensci/mauricer,
-    ropensci/tracerer,
-    ropensci/mcbette
+    knitr,
+    rmarkdown

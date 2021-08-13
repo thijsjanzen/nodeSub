@@ -2,7 +2,11 @@
 title: "substitution_models"
 author: "Thijs Janzen"
 date: "8/12/2021"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{substitution_models}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 ```{r setup, include=FALSE}
