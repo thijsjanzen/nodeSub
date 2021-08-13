@@ -48,7 +48,7 @@ estimate_marginal_models <- function(fasta_filename,
   site_models <- list(beautier::create_jc69_site_model())
   # clock_models <- beautier::create_clock_models()
   clock_models <- list()
-  clock_models[[1]] <- beautier::create_rln_clock_model(mean_clock_rate = sub_rate,
+  clock_models[[1]] <- beautier::create_rln_clock_model(mean_clock_rate = beautier::create_clock_rate_param(value = sub_rate),
                                                         mean_rate_prior_distr = beautier::create_distr_log_normal())
   clock_models[[2]] <- beautier::create_strict_clock_model(clock_rate_param = beautier::create_clock_rate_param(value = sub_rate),
                                                            clock_rate_distr = beautier::create_distr_log_normal())
