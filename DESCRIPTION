@@ -43,4 +43,7 @@ Suggests:
     TreeSim,
     dplyr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    ggplot2,
+    magrittr,
+    tidyr
