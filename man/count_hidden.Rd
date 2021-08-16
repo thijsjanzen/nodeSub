@@ -2,7 +2,7 @@
 % Please edit documentation in R/count_hidden.R
 \name{count_hidden}
 \alias{count_hidden}
-\title{function to calculate the number of hidden speication events}
+\title{function to calculate the number of hidden speciation events}
 \usage{
 count_hidden(tree)
 }
@@ -10,8 +10,8 @@ count_hidden(tree)
 \item{tree}{phylo object}
 }
 \value{
-number of hidden speciation eventsß
+number of hidden speciation events
 }
 \description{
-function to calculate the number of hidden speication events
+function to calculate the number of hidden speciation events
 }

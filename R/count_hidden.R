@@ -38,9 +38,9 @@ reduce_tree <- function(tree) {
   return(tree)
 }
 
-#' function to calculate the number of hidden speication events
+#' function to calculate the number of hidden speciation events
 #' @param tree phylo object
-#' @return number of hidden speciation eventsß
+#' @return number of hidden speciation events
 #' @export
 count_hidden <- function(tree) {
   reduced_tree <- reduce_tree(tree)
