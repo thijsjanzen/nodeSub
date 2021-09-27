@@ -1,6 +1,6 @@
 Package: nodeSub
 Type: Package
-Title: Simulate DNA Alingments Using Node Substitutions
+Title: Simulate DNA Alignments Using Node Substitutions
 Version: 1.1.1
 Author: Thijs Janzen
 Maintainer: Thijs Janzen <thijsjanzen@gmail.com>
