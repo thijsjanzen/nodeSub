@@ -101,14 +101,8 @@ get_p_matrix <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
   return(res)
 }
 
-#' this function calculates the p matrix within R
-#' this is slower than the C++ implementation
-#' but provides a way to debug
-#' @param eig eigen object
-#' @param branch_length branch length
-#' @param rate substitution rate
-#' @return p matrix
-#' @export
+
+#' @keywords internal
 slow_matrix <- function(eig,
                         branch_length,
                         rate) {
@@ -203,8 +197,6 @@ pick_rate <- function(matching_bases, double_rate, focal_target) {
 make_transition_matrix <- function(mut_double) {
 
   output <- matrix(NA, nrow = 4, ncol = 10)
-
-
 
   order_events <- c("aa", "tt", "cc", "gg",
                     "ac", "at", "ag",

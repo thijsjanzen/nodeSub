@@ -14,6 +14,7 @@ library(ggplot2)
 library(magrittr)
 library(tidyr)
 library(nodeSub)
+
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -48,6 +49,9 @@ comp_alignment <- create_equal_alignment(input_tree = geiger::drop.extinct(input
 Now we have two alignments, one generated using the Node Substitution model, and one using standard strict clock model. For both we can perform phylogenetic inference to get the resulting tree. The aim is to compare the posterior distribution of trees with the true tree that we started with 'input_tree', and estimate the error invoked by the node substitution model.
 
 ```{r infer_phylogeny}
+
+if (beastier::is_beast2_installed()) {
+
 node_posterior <- infer_phylogeny(target_alignment$alignment,
                                   "node_posterior",
                                   clock_prior = beautier::create_strict_clock_model(clock_rate_param = beautier::create_clock_rate_param(value = sub_rate)),
@@ -63,6 +67,7 @@ reference_posterior <- infer_phylogeny(comp_alignment$alignment,
                                        chain_length = 1e5,
                                        working_dir = getwd,
                                        sub_rate = sub_rate) 
+}
 ```
 
 Having two posterior distributions of trees, we can compare them based on summary statistics.

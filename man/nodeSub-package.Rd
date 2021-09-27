@@ -9,19 +9,12 @@
 	This package provides functions to simulate sequences under different DNA evolution models
 
 }
-\details{
-\tabular{ll}{
-Package: \tab nodeSub\cr
-Type: \tab Package\cr
-Version: \tab 0.01 \cr
-Date: \tab 2019-11-04\cr
-License: GPL 2.0
-}
-
-}
 
 \author{
 Thijs Janzen
-
 Maintainer: Thijs Janzen <t.janzen@rug.nl>
+}
+
+\references {
+Janzen, T., Bokma, F. and Etienne, R.S. Nucleotide substitutions during speciation may explain substitution rate variation (2021) bioRxiv 2020.08.19.256891
 }
