@@ -1,6 +1,6 @@
 # nodeSub <img src="pics/nodesub_sticker.png" align="right" width="200" />
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/GenomeAdmixR)](https://cran.r-project.org/package=nodeSub)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/nodeSub)](https://cran.r-project.org/package=nodeSub)
 [![R-CMD-check](https://github.com/thijsjanzen/nodeSub/workflows/R-CMD-check/badge.svg)](https://github.com/thijsjanzen/nodeSub/actions)
 
 Branch |[![Travis CI logo](pics/TravisCI.png)](https://travis-ci.org)                                                             |[![AppVeyor logo](pics/AppVeyor.png)](https://www.appveyor.com)                                                                              |[![Codecov logo](pics/Codecov.png)](https://www.codecov.io)
