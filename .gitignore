@@ -24,3 +24,4 @@ src/getP.o
 *.png
 *.tree
 *.xml
+.appveyor.yml
