@@ -52,27 +52,28 @@ Now we have two alignments, one generated using the Node Substitution model, and
 
 if (beastier::is_beast2_installed()) {
 
-node_posterior <- infer_phylogeny(target_alignment$alignment,
-                                  "node_posterior",
-                                  clock_prior = beautier::create_strict_clock_model(clock_rate_param = beautier::create_clock_rate_param(value = sub_rate)),
-                                  chain_length = 1e5,
-                                  burnin = 0.1,
-                                  working_dir = getwd(),
-                                  sub_rate = sub_rate)
-                                  
-reference_posterior <- infer_phylogeny(comp_alignment$alignment,
-                                       "reference_posterior",
-                                       burnin = 0.1,
-                                       clock_prior = beautier::create_strict_clock_model(clock_rate_param = beautier::create_clock_rate_param(value = comp_alignment$adjusted_rate)),
-                                       chain_length = 1e5,
-                                       working_dir = getwd,
-                                       sub_rate = sub_rate) 
+  node_posterior <- infer_phylogeny(target_alignment$alignment,
+                                    "node_posterior",
+                                    clock_prior = beautier::create_strict_clock_model(clock_rate_param = beautier::create_clock_rate_param(value = sub_rate)),
+                                    chain_length = 1e5,
+                                    burnin = 0.1,
+                                    working_dir = getwd(),
+                                    sub_rate = sub_rate)
+  
+  reference_posterior <- infer_phylogeny(comp_alignment$alignment,
+                                         "reference_posterior",
+                                         burnin = 0.1,
+                                         clock_prior = beautier::create_strict_clock_model(clock_rate_param = beautier::create_clock_rate_param(value = comp_alignment$adjusted_rate)),
+                                         chain_length = 1e5,
+                                         working_dir = getwd,
+                                         sub_rate = sub_rate) 
 }
 ```
 
 Having two posterior distributions of trees, we can compare them based on summary statistics.
 
 ```{r stats}
+if (beastier::is_beast2_installed()) {
 node_stats <- calc_sum_stats(node_posterior$all_trees,
                              input_tree)
 ref_stats  <- calc_sum_stats(reference_posterior$all_trees,
@@ -83,17 +84,19 @@ ref_stats$differences$method  <- "reference"
 
 results <- rbind(node_stats$differences,
                  ref_stats$differences)
-
+}
 ```
 
 We can now visualize the differences. 
 ```{r plot results}
-results %>%
+if (beastier::is_beast2_installed()) {
+  results %>%
   tidyr::gather(key = "statistic", value = "val", -method) %>%
   dplyr::filter(statistic != "num_tips") %>%  
   ggplot(aes(x = method , y = val)) +
     geom_boxplot() +
     facet_wrap(~statistic, scales = "free")
+}
 ```
 
 We find that the beta, gamma and nLTT statistic yield very similar results. 

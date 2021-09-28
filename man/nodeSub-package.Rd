@@ -15,6 +15,6 @@ Thijs Janzen
 Maintainer: Thijs Janzen <t.janzen@rug.nl>
 }
 
-\references {
+\references{
 Janzen, T., Bokma, F. and Etienne, R.S. Nucleotide substitutions during speciation may explain substitution rate variation (2021) bioRxiv 2020.08.19.256891
 }
