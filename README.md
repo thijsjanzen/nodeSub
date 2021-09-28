@@ -3,11 +3,11 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/nodeSub)](https://cran.r-project.org/package=nodeSub)
 [![R-CMD-check](https://github.com/thijsjanzen/nodeSub/workflows/R-CMD-check/badge.svg)](https://github.com/thijsjanzen/nodeSub/actions)
 
-Branch |[![Codecov logo](pics/Codecov.png)](https://www.codecov.io)
+Branch |[![Codecov logo](pics/Codecov.png)]
 ---|---
-master |[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/master/graph/badge.svg)](https://codecov.io/gh/thijsjanzen/nodeSub)
-develop|[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/develop/graph/badge.svg)](https://codecov.io/gh/thijsjanzen/nodeSub)
-richel |[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/richel/graph/badge.svg)](https://codecov.io/gh/thijsjanzen/nodeSub)
+master |[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/master/graph/badge.svg)](https://codecov.io/gh/thijsjanzen/nodeSub/)
+develop|[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/develop/graph/badge.svg)](https://codecov.io/gh/thijsjanzen/nodeSub/)
+richel |[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/richel/graph/badge.svg)](https://codecov.io/gh/thijsjanzen/nodeSub/)
 
 NodeSub is an R package that can be used to generate alignments under the node substitution model.
 
