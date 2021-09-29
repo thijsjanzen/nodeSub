@@ -83,7 +83,7 @@ test_that("calc_expected_hidden_nodes, abuse", {
     nodeSub::calc_expected_hidden_nodes(geiger::drop.extinct(focal_tree))
   )
 
-  testthat::expect_error(
+  testthat::expect_warning(
     nodeSub::calc_expected_hidden_nodes(focal_tree, lambda = 1, mu = 0.3)
   )
 })
