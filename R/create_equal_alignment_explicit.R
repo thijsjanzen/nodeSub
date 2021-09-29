@@ -39,7 +39,7 @@ create_equal_alignment_explicit <- function(input_tree,
                                               rate = adjusted_rate)
 
     proposed_subs <- proposed_alignment$total_accumulated_substitutions
-    if (verbose) cat(proposed_subs, "\n")
+    if (verbose) cat(proposed_subs, num_emp_subs, "\n")
   }
   proposed_alignment$adjusted_rate <- adjusted_rate
 

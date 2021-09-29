@@ -3,7 +3,7 @@
 \name{slow_matrix}
 \alias{slow_matrix}
 \title{this function calculates the p matrix within R
-this is slower than the C++ implementation in \item{get_p_matrix}
+this is slower than the C++ implementation in \code{get_p_matrix}
 but provides a way to debug and verify}
 \usage{
 slow_matrix(eig, branch_length, rate)
@@ -20,6 +20,6 @@ p matrix
 }
 \description{
 this function calculates the p matrix within R
-this is slower than the C++ implementation in \item{get_p_matrix}
+this is slower than the C++ implementation in \code{get_p_matrix}
 but provides a way to debug and verify
 }

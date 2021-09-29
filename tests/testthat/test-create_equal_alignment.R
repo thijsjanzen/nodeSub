@@ -35,3 +35,35 @@ test_that("create_equal_alignment", {
 
   testthat::expect_equal(sum(subs_normal), sum(subs_alt))
 })
+
+test_that("create_equal_alignment_explicit", {
+  phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
+  set.seed(666)
+
+  sub_rate <- 1e-2
+  seqlen <- 1000
+
+  tau <- beautier::get_crown_age(phy) * 0.1
+  seq_node_sub <- sim_unlinked_explicit(phy = phy, l = seqlen,
+                                       rate1 = sub_rate,
+                                       rate2 = sub_rate,
+                                       node_time = tau)
+
+  seq_alt <- create_equal_alignment_explicit(input_tree = phy,
+                                              alignment_result = seq_node_sub,
+                                              sub_rate = sub_rate,
+                                              verbose = TRUE)
+
+  testthat::expect_equal(length(seq_alt$alignment),
+                         length(seq_node_sub$alignment))
+
+  subs_normal <- seq_node_sub$total_accumulated_substitutions
+  subs_alt    <- seq_alt$total_accumulated_substitutions
+
+  expected_rate <- sub_rate * (1 +  nodeSub::calc_fraction(phy = phy,
+                                                           node_time = tau))
+
+  testthat::expect_equal(expected_rate, seq_alt$adjusted_rate, tolerance = 0.01)
+
+  testthat::expect_equal(sum(subs_normal), sum(subs_alt))
+})

@@ -103,7 +103,7 @@ get_p_matrix <- function(branch_length, eig = phangorn::edQt(), rate = 1.0) {
 
 
 #' this function calculates the p matrix within R
-#' this is slower than the C++ implementation in \item{get_p_matrix}
+#' this is slower than the C++ implementation in \code{get_p_matrix}
 #' but provides a way to debug and verify
 #' @param eig eigen object
 #' @param branch_length branch length
@@ -248,6 +248,29 @@ get_mutated_sequences <- function(parent_seq, trans_matrix) {
   return(list(child1_seq, child2_seq))
 }
 
+#' @keywords internal
+calc_dist <- function(alignment_phydat,
+                      root_sequence = NULL) {
+
+  if (is.null(root_sequence)) {
+    stop("can not calculate distance from root sequence without root sequence")
+  }
+
+  if (class(alignment_phydat) != "phyDat") {
+    stop("input alignment has to be of type phyDat")
+  }
+
+  alignment_rawer <- phangorn::phyDat2alignment(alignment_phydat)
+
+  alignment_matrix <- alignment_rawer$seq
+
+  n_mutations <- rep(NA, length(alignment_matrix))
+  for (i in seq_along(alignment_matrix)) {
+    sequence_vector <- strsplit(alignment_matrix[i], split = "")[[1]]
+    n_mutations[i] <- sum(root_sequence != sequence_vector)
+  }
+  return(n_mutations)
+}
 
 #' @keywords internal
 calc_accumulated_substitutions <- function(phy, branch_subs, node_subs = NULL) {
