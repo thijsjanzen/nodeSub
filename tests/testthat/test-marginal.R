@@ -10,22 +10,22 @@ test_that("marginal", {
   skip_on_ci()
   test_file_name <- "test.fasta"
 
-  if (!mauricer::is_beast2_pkg_installed("NS")) {
-    mauricer::install_beast2_pkg("NS")
-  }
+  if (mauricer::is_beast2_ns_pkg_installed()) {
 
-  phangorn::write.phyDat(seq_normal$alignment,
+    phangorn::write.phyDat(seq_normal$alignment,
                          file = test_file_name,
                          format = "fasta")
 
-  ww <- nodeSub::estimate_marginal_models(fasta_filename = test_file_name,
+    ww <- nodeSub::estimate_marginal_models(fasta_filename = test_file_name,
                                           use_yule_prior = TRUE,
                                           verbose = FALSE)
 
-  testthat::expect_true(length(ww$site_model_name) == 2)
-  testthat::expect_true(sum(
-      unique(ww$clock_model_name) %in% c("relaxed_log_normal", "strict")) == 2)
+    testthat::expect_true(length(ww$site_model_name) == 2)
+    testthat::expect_true(sum(
+        unique(ww$clock_model_name) %in% c("relaxed_log_normal",
+                                           "strict")) == 2)
 
 
-  file.remove(test_file_name)
+    file.remove(test_file_name)
+  }
 })

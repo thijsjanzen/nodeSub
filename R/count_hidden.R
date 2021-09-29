@@ -1,4 +1,4 @@
-#' function to remove speciation events occuring after an extinction event.
+#' Function to remove speciation events occuring after an extinction event.
 #' Extinct species are pruned randomly, such that only a single extinct species
 #' per branching event (if any extinct species) remains.
 #' @param tree phylo object
@@ -38,7 +38,10 @@ reduce_tree <- function(tree) {
   return(tree)
 }
 
-#' function to calculate the number of hidden speciation events
+#' Function to calculate the number of hidden speciation events, e.g. speciation
+#' events that have lead to an extinct species. Thus, these hidden speciation
+#' events can only be detected in complete trees (as opposed to reconstructed
+#' trees).
 #' @param tree phylo object
 #' @return number of hidden speciation events
 #' @export

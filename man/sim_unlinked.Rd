@@ -2,8 +2,9 @@
 % Please edit documentation in R/sim_unlinked.R
 \name{sim_unlinked}
 \alias{sim_unlinked}
-\title{simulate a sequence assuming node substitutions
-are shared among the offspring}
+\title{Simulate a sequence assuming node substitutions are not shared amongst
+offspring, given two substitution matrices: one for substitutions occuring
+on the nodes, and one for substitutions occuring along the branches.}
 \usage{
 sim_unlinked(
   phy,
@@ -46,6 +47,7 @@ on the branches
 the nodes}
 }
 \description{
-simulate a sequence assuming node substitutions
-are shared among the offspring
+Simulate a sequence assuming node substitutions are not shared amongst
+offspring, given two substitution matrices: one for substitutions occuring
+on the nodes, and one for substitutions occuring along the branches.
 }

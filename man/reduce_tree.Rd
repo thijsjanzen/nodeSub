@@ -2,7 +2,7 @@
 % Please edit documentation in R/count_hidden.R
 \name{reduce_tree}
 \alias{reduce_tree}
-\title{function to remove speciation events occuring after an extinction event.
+\title{Function to remove speciation events occuring after an extinction event.
 Extinct species are pruned randomly, such that only a single extinct species
 per branching event (if any extinct species) remains.}
 \usage{
@@ -15,7 +15,7 @@ reduce_tree(tree)
 pruned tree
 }
 \description{
-function to remove speciation events occuring after an extinction event.
+Function to remove speciation events occuring after an extinction event.
 Extinct species are pruned randomly, such that only a single extinct species
 per branching event (if any extinct species) remains.
 }

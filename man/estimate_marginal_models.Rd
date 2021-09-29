@@ -2,7 +2,8 @@
 % Please edit documentation in R/estimate_marginal_models.R
 \name{estimate_marginal_models}
 \alias{estimate_marginal_models}
-\title{infer the time calibrated phylogeny associated with the}
+\title{estimate the marginal likelihood of the relaxed and strict clock model for
+a provided alignment}
 \usage{
 estimate_marginal_models(
   fasta_filename,
@@ -27,8 +28,14 @@ but if use_yule_prior is set to TRUE, a pure-birth prior will be used.}
 generated}
 }
 \value{
-data frame
+data frame with marginal likelihoods and relative weights per clock
+model.
 }
 \description{
-infer the time calibrated phylogeny associated with the
+estimate_marginal_models estimates the marginal likelihood of
+both the strict and the relaxed clock model, given the JC69 substitution
+model, using the NS package in BEAST, made available via the babette R
+package. The NS package performs nested sampling, and uses an MCMC approach
+to estimate the marginal likelihood. Sampling is performed until convergence
+of the MCMC chain.
 }

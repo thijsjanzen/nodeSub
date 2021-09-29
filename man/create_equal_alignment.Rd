@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_equal_alignment.R
 \name{create_equal_alignment}
 \alias{create_equal_alignment}
-\title{function create an alignment with highly similar information content}
+\title{function create an alignment with identical information content}
 \usage{
 create_equal_alignment(
   input_tree,
@@ -28,13 +28,18 @@ rootsequence and substitution rate (in that order). Default is sim_normal}
 
 \item{node_time}{node time}
 
-\item{input_alignment_type}{was the input alignment simulated with a nodesub
-model or a normal substitution model? Used to calculate the twin mutation
-rate.}
+\item{input_alignment_type}{was the input alignment simulated with a node
+substitution model or a normal substitution model? Used to calculate the
+twin mutation rate.}
 }
 \value{
-new alignment, with added property "adjusted rate"
+list with four properties: 1) alignment: the alignment itself,
+2) adjusted rate: the substitution rate used to obtain identical information
+content 3) total_accumulated_substitutions: the total number of
+substitutions accumulated. 4) total_node_substitutions: total number of
+substitutions accumulated on the nodes 5) total_branch_substitutions: total
+number of substitutions accumulated on the branches.
 }
 \description{
-function create an alignment with highly similar information content
+function create an alignment with identical information content
 }

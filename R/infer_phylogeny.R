@@ -1,4 +1,5 @@
-#' infer the time calibrated phylogeny associated with the
+#' infer the time calibrated phylogeny associated with the provided alignment.
+#' This function uses the R package babette to infer the phylogeny using BEAST2.
 #' @param alignment Phydat object containing the focal alignment
 #' @param treatment_name string to be appended to BEAST files
 #' @param tree_prior tree prior used, default = birth-death prior

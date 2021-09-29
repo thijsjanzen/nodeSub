@@ -37,7 +37,7 @@ mutate_seq_explicit <- function(local_sequence, pn) {
     ind <- which(seq_before_mut == bases[j])
     a <- sample(x = 1:length(pn),
                 size = length(ind),
-                replace = T,
+                replace = TRUE,
                 prob = pn)
 
     chosen_col <- rep(1, length(a))
@@ -58,23 +58,9 @@ mutate_seq_explicit <- function(local_sequence, pn) {
               "num_mut" = num_mut))
 }
 
-
-
-#' Simulate sequences.
-#'
-#' Simulate sequences for a given evolutionary tree.
-#'
-#' \code{simSeq} is now a generic function to simulate sequence alignments to
-#' along a phylogeny. It
-#' is quite flexible and allows to generate DNA, RNA, amino acids, codon  or
-#' binary sequences.  It is possible to give a \code{pml} object as input simSeq
-#' return a \code{phyDat} from these model.  There is also a more low level
-#' version, which lacks rate variation, but one can combine different
-#' alignments having their own rate (see example). The rate parameter acts like
-#' a scaler for the edge lengths.
-#'
-#' can be supplied.
-#'
+#' simulate a sequence assuming substitutions are only accumulated along the
+#' branches, using the explicit simulation method (e.g. reverse substitutions
+#' are modeled explicitly)
 #' @param x a phylogenetic tree \code{tree}, i.e. an object of class
 #' \code{phylo} or and object of class \code{pml}.
 #' @param l length of the sequence to simulate.
@@ -84,9 +70,13 @@ mutate_seq_explicit <- function(local_sequence, pn) {
 #' sequence is randomly generated.
 #' @param rate mutation rate or scaler for the edge length, a numerical value
 #' greater than zero.
-#' @return \code{simSeq} returns an object of class phyDat.
-#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @keywords cluster
+#' @return list with four items \enumerate{
+#' \item{alignment} Phydat object with the resulting alignment
+#' \item{rootseq} the rootsequence used
+#' \item{total_branch_substitutions} total number of substitutions accumulated
+#' on the branches
+#' \item{total_node_substitutions} total number of substitutions accumulated at
+#' the nodes}
 #' @export
 sim_normal_explicit <- function(x,
                                 l = 1000,
@@ -94,7 +84,6 @@ sim_normal_explicit <- function(x,
                                 bf = NULL,
                                 rootseq = NULL,
                                 rate = 1) {
-
 
   levels <- c("a", "c", "g", "t")
 
@@ -151,16 +140,12 @@ sim_normal_explicit <- function(x,
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
-  total_inferred_substitutions <- sum(calc_dist(alignment_phydat, rootseq))
-
   output <- list("alignment" = alignment_phydat,
                  "root_seq" = rootseq,
                  "total_branch_substitutions" = updated_subs$total_branch_subs,
                  "total_node_substitutions" = updated_subs$total_node_subs,
-                 "total_inferred_substitutions" = total_inferred_substitutions,
                  "total_accumulated_substitutions" =
                    updated_subs$total_accumulated_substitutions)
-          #"incl_reverse_subs" = reverse_subs$total_accumulated_substitutions)
 
   return(output)
 }

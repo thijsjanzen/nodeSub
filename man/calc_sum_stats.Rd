@@ -2,7 +2,8 @@
 % Please edit documentation in R/calc_summary_statistics.R
 \name{calc_sum_stats}
 \alias{calc_sum_stats}
-\title{calculate summary statistics compared with a reference tree}
+\title{calculate summary statistics of a phylogenetic tree,
+compared with a reference tree}
 \usage{
 calc_sum_stats(trees, true_tree, verbose = FALSE)
 }
@@ -21,5 +22,6 @@ list with two tibbles
 2) containing the difference with the true tree
 }
 \description{
-calculate summary statistics compared with a reference tree
+calculate summary statistics of a phylogenetic tree,
+compared with a reference tree
 }

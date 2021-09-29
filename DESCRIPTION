@@ -1,10 +1,16 @@
 Package: nodeSub
 Type: Package
 Title: Simulate DNA Alignments Using Node Substitutions
-Version: 1.1.1
+Version: 1.2
 Author: Thijs Janzen
 Maintainer: Thijs Janzen <thijsjanzen@gmail.com>
-Description: Simulate DNA sequences under different models.
+Description: Simulate DNA sequences for the node substitution model.
+    In the node substitution model, substitutions accumulate additionally 
+    during a speciation event, providing a potential mechanistic explanation for 
+    substitution rate variation. The nodeSub package provides tools to simulate
+    such a process, simulate a reference process with only substitutions along
+    the branches, and provides tools to infer phylogenies from alignments. More
+    information can be found in Janzen (2021) <doi:10.1101/2020.08.19.256891>.
 URL: https://github.com/thijsjanzen/nodeSub
 BugReports: https://github.com/thijsjanzen/nodeSub
 License: GPL-3

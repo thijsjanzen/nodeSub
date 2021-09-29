@@ -2,8 +2,8 @@
 % Please edit documentation in R/calc_rel_contr_node_time.R
 \name{calc_required_node_time}
 \alias{calc_required_node_time}
-\title{calculate the required node time to obtain a desired fraction of substitions
-at the node}
+\title{Calculate the required node time to obtain a desired fraction of
+substitutions at the node}
 \usage{
 calc_required_node_time(phy = NULL, s = 0.5, model = "unlinked")
 }
@@ -12,12 +12,12 @@ calc_required_node_time(phy = NULL, s = 0.5, model = "unlinked")
 
 \item{s}{desired fraction}
 
-\item{model}{node substitution model}
+\item{model}{node substitution model, either "linked" or "unlinked".}
 }
 \value{
 expected fraction
 }
 \description{
 calculates the required node time to obtain a desired fraction
-of susbstitutions at the node
+of substitutions at the node
 }

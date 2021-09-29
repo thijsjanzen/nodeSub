@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_rel_contr_node_time.R
 \name{calc_expected_hidden_nodes}
 \alias{calc_expected_hidden_nodes}
-\title{calculate the number of expected hidden nodes in a phylogenetic tree}
+\title{Calculate the number of expected hidden nodes in a phylogenetic tree}
 \usage{
 calc_expected_hidden_nodes(phy, lambda = NULL, mu = NULL)
 }
@@ -17,6 +17,11 @@ calc_expected_hidden_nodes(phy, lambda = NULL, mu = NULL)
 expected number of hidden nodes
 }
 \description{
-calculate the number of expected hidden nodes
-using equation 1 in Maceau et al. 2019
+Calculate the number of expected hidden nodes
+using equation 1 in Manceau et al. 2020
+}
+\references{
+Manceau, M., Marin, J., Morlon, H., & Lambert, A. (2020).
+Model-based inference of punctuated molecular evolution.
+Molecular Biology and Evolution, 37(11), 3308-3323.
 }

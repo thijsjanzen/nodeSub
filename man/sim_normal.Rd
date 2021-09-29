@@ -2,13 +2,15 @@
 % Please edit documentation in R/sim_normal.R
 \name{sim_normal}
 \alias{sim_normal}
-\title{Simulate sequences.}
+\title{Simulate sequences for a given evolutionary tree, using a standard model
+of sequence evolution along the branches. Code for this function was heavily
+inspired by the function \code{simSeq} from the phangorn package.}
 \usage{
 sim_normal(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL, rate = 1)
 }
 \arguments{
 \item{x}{a phylogenetic tree \code{tree}, i.e. an object of class
-\code{phylo} or and object of class \code{pml}.}
+\code{phylo}}
 
 \item{l}{length of the sequence to simulate.}
 
@@ -19,28 +21,22 @@ sim_normal(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL, rate = 1)
 \item{rootseq}{a vector of length l containing the root sequence, other root
 sequence is randomly generated.}
 
-\item{rate}{mutation rate or scaler for the edge length, a numerical value
-greater than zero.}
+\item{rate}{mutation rate}
 }
 \value{
-\code{simSeq} returns an object of class phyDat.
+list with four items \enumerate{
+\item{alignment} Phydat object with the resulting alignment
+\item{rootseq} the rootsequence used
+\item{total_branch_substitutions} total number of substitutions accumulated
+on the branches
+\item{total_node_substitutions} total number of substitutions accumulated at
+the nodes}
 }
 \description{
-Simulate sequences for a given evolutionary tree.
-}
-\details{
-\code{simSeq} is now a generic function to simulate sequence alignments to
-along a phylogeny. It
-is quite flexible and allows to generate DNA, RNA, amino acids, codon  or
-binary sequences.  It is possible to give a \code{pml} object as input simSeq
-return a \code{phyDat} from these model.  There is also a more low level
-version, which lacks rate variation, but one can combine different
-alignments having their own rate (see example). The rate parameter acts like
-a scaler for the edge lengths.
-
-can be supplied.
+Simulate sequences for a given evolutionary tree, using a standard model
+of sequence evolution along the branches. Code for this function was heavily
+inspired by the function \code{simSeq} from the phangorn package.
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
-\keyword{cluster}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_rel_contr_node_time.R
 \name{calc_fraction}
 \alias{calc_fraction}
-\title{calculate the expected fraction of substitutions at the nodes,
+\title{Calculate the expected fraction of substitutions at the nodes,
 relative to the fraction at the branches}
 \usage{
 calc_fraction(phy = NULL, node_time = 0, model = "unlinked")

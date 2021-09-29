@@ -2,8 +2,9 @@
 % Please edit documentation in R/sim_unlinked_explicit.R
 \name{sim_unlinked_explicit}
 \alias{sim_unlinked_explicit}
-\title{simulate a sequence assuming node substitutions
-are shared among the offspring}
+\title{Simulate a sequence assuming node substitutions are not shared amongst
+offspring, using the explicit simulation method (e.g. reverse substitutions
+are modeled explicitly)}
 \usage{
 sim_unlinked_explicit(
   phy,
@@ -18,7 +19,7 @@ sim_unlinked_explicit(
 )
 }
 \arguments{
-\item{phy}{tree for which to simulate sequences}
+\item{phy}{phylogenetic tree for which to simulate sequences}
 
 \item{Q1}{substitution matrix along the branches, default = JC}
 
@@ -46,6 +47,7 @@ on the branches
 the nodes}
 }
 \description{
-simulate a sequence assuming node substitutions
-are shared among the offspring
+Simulate a sequence assuming node substitutions are not shared amongst
+offspring, using the explicit simulation method (e.g. reverse substitutions
+are modeled explicitly)
 }

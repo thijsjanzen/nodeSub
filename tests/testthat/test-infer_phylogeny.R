@@ -13,7 +13,7 @@ test_that("infer_phylogeny", {
                                treatment_name = "test",
                                chain_length = 1e5,
                                burnin = 0.1,
-                               mcmc_seed = 42) )
+                               mcmc_seed = 42))
   mcc_tree <- all_trees$mcc_tree
 
   phangorn_dist <- phangorn::RF.dist(mcc_tree, phy)[[1]]
@@ -21,4 +21,4 @@ test_that("infer_phylogeny", {
 
   testthat::expect_equal(length(all_trees$all_trees), 1e5 / 5000)
   testthat::expect_true(class(all_trees$mcc_tree) == "phylo")
-  })
+})

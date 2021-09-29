@@ -36,7 +36,8 @@ calc_all_stats <- function(focal_tree) {
   return(output)
 }
 
-#' calculate summary statistics compared with a reference tree
+#' calculate summary statistics of a phylogenetic tree,
+#' compared with a reference tree
 #' @param trees a phyloList object containing multiple trees
 #' @param true_tree a phylo object containing the reference tree, preferably
 #'                  without extinct lineages. If extinct lineages are found,

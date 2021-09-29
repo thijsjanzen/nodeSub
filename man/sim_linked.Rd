@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_linked.R
 \name{sim_linked}
 \alias{sim_linked}
-\title{simulate a sequence assuming conditional substitutions on the node}
+\title{simulate a sequence assuming conditional substitutions on the node.}
 \usage{
 sim_linked(
   phy,
@@ -42,5 +42,5 @@ on the branches
 the nodes}
 }
 \description{
-simulate a sequence assuming conditional substitutions on the node
+simulate a sequence assuming conditional substitutions on the node.
 }

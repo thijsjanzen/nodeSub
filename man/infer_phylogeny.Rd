@@ -2,7 +2,8 @@
 % Please edit documentation in R/infer_phylogeny.R
 \name{infer_phylogeny}
 \alias{infer_phylogeny}
-\title{infer the time calibrated phylogeny associated with the}
+\title{infer the time calibrated phylogeny associated with the provided alignment.
+This function uses the R package babette to infer the phylogeny using BEAST2.}
 \usage{
 infer_phylogeny(
   alignment,
@@ -43,5 +44,6 @@ alignment (if available), default is 1}
 list with all trees, and the consensus tree
 }
 \description{
-infer the time calibrated phylogeny associated with the
+infer the time calibrated phylogeny associated with the provided alignment.
+This function uses the R package babette to infer the phylogeny using BEAST2.
 }

@@ -2,7 +2,9 @@
 % Please edit documentation in R/sim_normal_explicit.R
 \name{sim_normal_explicit}
 \alias{sim_normal_explicit}
-\title{Simulate sequences.}
+\title{simulate a sequence assuming substitutions are only accumulated along the
+branches, using the explicit simulation method (e.g. reverse substitutions
+are modeled explicitly)}
 \usage{
 sim_normal_explicit(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL, rate = 1)
 }
@@ -23,24 +25,16 @@ sequence is randomly generated.}
 greater than zero.}
 }
 \value{
-\code{simSeq} returns an object of class phyDat.
+list with four items \enumerate{
+\item{alignment} Phydat object with the resulting alignment
+\item{rootseq} the rootsequence used
+\item{total_branch_substitutions} total number of substitutions accumulated
+on the branches
+\item{total_node_substitutions} total number of substitutions accumulated at
+the nodes}
 }
 \description{
-Simulate sequences for a given evolutionary tree.
+simulate a sequence assuming substitutions are only accumulated along the
+branches, using the explicit simulation method (e.g. reverse substitutions
+are modeled explicitly)
 }
-\details{
-\code{simSeq} is now a generic function to simulate sequence alignments to
-along a phylogeny. It
-is quite flexible and allows to generate DNA, RNA, amino acids, codon  or
-binary sequences.  It is possible to give a \code{pml} object as input simSeq
-return a \code{phyDat} from these model.  There is also a more low level
-version, which lacks rate variation, but one can combine different
-alignments having their own rate (see example). The rate parameter acts like
-a scaler for the edge lengths.
-
-can be supplied.
-}
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
-\keyword{cluster}

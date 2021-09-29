@@ -29,7 +29,14 @@ get_marg_lik <- function(fasta_filename,
   return(marg_lik)
 }
 
-#' infer the time calibrated phylogeny associated with the
+#' estimate the marginal likelihood of the relaxed and strict clock model for
+#' a provided alignment
+#' @description estimate_marginal_models estimates the marginal likelihood of
+#' both the strict and the relaxed clock model, given the JC69 substitution
+#' model, using the NS package in BEAST, made available via the babette R
+#' package. The NS package performs nested sampling, and uses an MCMC approach
+#' to estimate the marginal likelihood. Sampling is performed until convergence
+#' of the MCMC chain.
 #' @param fasta_filename file name of fasta file holding alignment for which the
 #' marginal likelihood is to be estimated
 #' @param use_yule_prior by default, a birth-death prior is used as tree prior,
@@ -38,7 +45,8 @@ get_marg_lik <- function(fasta_filename,
 #' @param sub_rate substitution rate
 #' @param verbose boolean indicating if verbose intermediate output is to be
 #' generated
-#' @return data frame
+#' @return data frame with marginal likelihoods and relative weights per clock
+#' model.
 #' @export
 estimate_marginal_models <- function(fasta_filename,
                                      use_yule_prior = FALSE,
@@ -47,12 +55,16 @@ estimate_marginal_models <- function(fasta_filename,
                                      verbose = FALSE) {
 
   site_models <- list(beautier::create_jc69_site_model())
-  # clock_models <- beautier::create_clock_models()
   clock_models <- list()
-  clock_models[[1]] <- beautier::create_rln_clock_model(mean_clock_rate = sub_rate,
-                                                        mean_rate_prior_distr = beautier::create_distr_log_normal())
-  clock_models[[2]] <- beautier::create_strict_clock_model(clock_rate_param = beautier::create_clock_rate_param(value = sub_rate),
-                                                           clock_rate_distr = beautier::create_distr_log_normal())
+  clock_models[[1]] <- beautier::create_rln_clock_model(
+                          mean_clock_rate = sub_rate,
+                          mean_rate_prior_distr =
+                                beautier::create_distr_log_normal())
+  clock_models[[2]] <- beautier::create_strict_clock_model(
+                          clock_rate_param =
+                            beautier::create_clock_rate_param(value = sub_rate),
+                          clock_rate_distr =
+                            beautier::create_distr_log_normal())
   tree_priors <- list(beautier::create_bd_tree_prior())
   if (use_yule_prior) {
     tree_priors <- list(beautier::create_yule_tree_prior())
@@ -134,13 +146,17 @@ estimate_marginal_models <- function(fasta_filename,
                    weight = as.numeric(weights))
 
   if (file.exists("marg.trace")) {
-    file.remove("marg.trace") }
+    file.remove("marg.trace")
+  }
   if (file.exists("marg.trees")) {
-    file.remove("marg.trees") }
+    file.remove("marg.trees")
+  }
   if (file.exists("marg.posterior.trace")) {
-    file.remove("marg.posterior.trace") }
+    file.remove("marg.posterior.trace")
+  }
   if (file.exists("marg.posterior.trees")) {
-    file.remove("marg.posterior.trees") }
+    file.remove("marg.posterior.trees")
+  }
 
   return(df)
 }

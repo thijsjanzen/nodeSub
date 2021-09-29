@@ -1,4 +1,4 @@
-#' calculate the expected fraction of substitutions at the nodes,
+#' Calculate the expected fraction of substitutions at the nodes,
 #' relative to the fraction at the branches
 #' @description calculates the relative contribution of substitutions at
 #' the nodes
@@ -31,13 +31,13 @@ calc_fraction <- function(phy = NULL,
 }
 
 
-#' calculate the required node time to obtain a desired fraction of substitions
-#' at the node
+#' Calculate the required node time to obtain a desired fraction of
+#' substitutions at the node
 #' @description calculates the required node time to obtain a desired fraction
-#' of susbstitutions at the node
+#' of substitutions at the node
 #' @param phy phylogenetic tree
 #' @param s desired fraction
-#' @param model node substitution model
+#' @param model node substitution model, either "linked" or "unlinked".
 #' @return expected fraction
 #' @export
 calc_required_node_time <- function(phy = NULL,
@@ -46,6 +46,10 @@ calc_required_node_time <- function(phy = NULL,
 
   if (is.null(phy) || class(phy) != "phylo") {
     stop("phy needs to be a valid phylo object")
+  }
+
+  if (!(model %in% c("linked", "unlinked"))) {
+    stop("model needs to be either 'linked' or 'unlinked'")
   }
 
   num_hidden_nodes <- nodeSub::count_hidden(phy)
@@ -61,13 +65,16 @@ calc_required_node_time <- function(phy = NULL,
   return(node_time)
 }
 
-#' calculate the number of expected hidden nodes in a phylogenetic tree
-#' @description calculate the number of expected hidden nodes
-#' using equation 1 in Maceau et al. 2019
+#' Calculate the number of expected hidden nodes in a phylogenetic tree
+#' @description Calculate the number of expected hidden nodes
+#' using equation 1 in Manceau et al. 2020
 #' @param phy phylogenetic tree
 #' @param lambda birth rate
 #' @param mu death rate
 #' @return expected number of hidden nodes
+#' @references Manceau, M., Marin, J., Morlon, H., & Lambert, A. (2020).
+#' Model-based inference of punctuated molecular evolution.
+#' Molecular Biology and Evolution, 37(11), 3308-3323.
 #' @export
 calc_expected_hidden_nodes <- function(phy,
                                        lambda = NULL,

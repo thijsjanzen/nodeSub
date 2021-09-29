@@ -2,7 +2,10 @@
 % Please edit documentation in R/count_hidden.R
 \name{count_hidden}
 \alias{count_hidden}
-\title{function to calculate the number of hidden speciation events}
+\title{Function to calculate the number of hidden speciation events, e.g. speciation
+events that have lead to an extinct species. Thus, these hidden speciation
+events can only be detected in complete trees (as opposed to reconstructed
+trees).}
 \usage{
 count_hidden(tree)
 }
@@ -13,5 +16,8 @@ count_hidden(tree)
 number of hidden speciation events
 }
 \description{
-function to calculate the number of hidden speciation events
+Function to calculate the number of hidden speciation events, e.g. speciation
+events that have lead to an extinct species. Thus, these hidden speciation
+events can only be detected in complete trees (as opposed to reconstructed
+trees).
 }

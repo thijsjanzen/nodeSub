@@ -1,4 +1,4 @@
-#' simulate a sequence assuming conditional substitutions on the node
+#' simulate a sequence assuming conditional substitutions on the node.
 #' @param phy tree for which to simulate sequences
 #' @param Q substitution matrix along the branches, default = JC
 #' @param rate mutation rate , default = 1
@@ -74,8 +74,6 @@ sim_linked <- function(phy,
   branch_subs_all <- cbind(0, 0, rep(0, max(parents)))
   node_subs_all   <- cbind(0, 0, rep(0, max(parents)))
 
-  chosen_indices <- c()
-
   for (focal_parent in parents) {
     # given parent alignment
     # generate two children alignments
@@ -106,16 +104,13 @@ sim_linked <- function(phy,
         after_mut_seq[ind] <- sample(levels, sum(ind), replace = TRUE,
                                      prob = P[, j])
       }
-      res[, offspring[i] ] <- after_mut_seq
+      res[, offspring[i]] <- after_mut_seq
       branch_subs <- sum(after_mut_seq != before_mut_seq)
-
 
       from <- focal_parent
       to   <- offspring[i]
       a <- which(edge[, 1] == from & edge[, 2] == to)
 
-
-      offspring_index <- a
       branch_subs_all[a, ] <- c(focal_parent, offspring[i], branch_subs)
 
       node_subs_all[a, ] <- c(focal_parent, offspring[i], all_node_subs[i])
@@ -136,13 +131,10 @@ sim_linked <- function(phy,
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
-  total_inferred_substitutions <- sum(calc_dist(alignment_phydat, rootseq))
-
   output <- list("alignment" = alignment_phydat,
                  "root_seq" = rootseq,
                  "total_branch_substitutions" = updated_subs$total_branch_subs,
                  "total_node_substitutions" = updated_subs$total_node_subs,
-                 "total_inferred_substitutions" = total_inferred_substitutions,
                  "total_accumulated_substitutions" =
                    updated_subs$total_accumulated_substitutions)
   return(output)

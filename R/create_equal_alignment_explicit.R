@@ -1,9 +1,15 @@
-#' function create an alignment with highly similar information content
+#' function create an alignment with identical information content, using the
+#' explicit method to simulate substitutions
 #' @param input_tree phylogeny for which to generate alignment
 #' @param sub_rate substitution rate used in the original phylogeny
 #' @param alignment_result result of sim_normal, sim_linked or sim_unlinked
 #' @param verbose provide intermediate output
-#' @return new alignment, with added property "adjusted rate"
+#' @return list with four properties: 1) alignment: the alignment itself,
+#' 2) adjusted rate: the substitution rate used to obtain identical information
+#' content 3) total_accumulated_substitutions: the total number of
+#' substitutions accumulated. 4) total_node_substitutions: total number of
+#' substitutions accumulated on the nodes 5) total_branch_substitutions: total
+#' number of substitutions accumulated on the branches.
 #' @export
 create_equal_alignment_explicit <- function(input_tree,
                                             sub_rate,

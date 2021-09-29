@@ -1,5 +1,6 @@
-#' simulate a sequence assuming node substitutions
-#' are shared among the offspring
+#' Simulate a sequence assuming node substitutions are not shared amongst
+#' offspring, given two substitution matrices: one for substitutions occuring
+#' on the nodes, and one for substitutions occuring along the branches.
 #' @param phy tree for which to simulate sequences
 #' @param Q1 substitution matrix along the branches, default = JC
 #' @param Q2 substitution matrix on the nodes, default = JC
@@ -114,13 +115,10 @@ sim_unlinked <- function(phy,
   res <- res[, phy_no_extinct$tip.label, drop = FALSE]
   alignment_phydat <- phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE))
 
-  total_inferred_substitutions <- sum(calc_dist(alignment_phydat, rootseq))
-
   output <- list("alignment" = alignment_phydat,
                  "root_seq" = rootseq,
                  "total_branch_substitutions" = updated_subs$total_branch_subs,
                  "total_node_substitutions" = updated_subs$total_node_subs,
-                 "total_inferred_substitutions" = total_inferred_substitutions,
                  "total_accumulated_substitutions" =
                     updated_subs$total_accumulated_substitutions)
 
