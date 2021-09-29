@@ -1,13 +1,14 @@
 context("test_infer_phylogeny")
 
 test_that("infer_phylogeny", {
+  skip_on_cran()
+  skip_on_ci()
   set.seed(42)
   phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
 
   seq_node_sub <- sim_normal(x = phy, l = 100,  rate = 0.1)
 
-  skip_on_cran()
-  skip_on_ci()
+
   testthat::expect_warning(
   all_trees <- infer_phylogeny(seq_node_sub$alignment,
                                treatment_name = "test",

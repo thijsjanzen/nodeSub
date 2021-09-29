@@ -20,15 +20,9 @@ fast.table <- function(data) {  # nolint
 #' @keywords internal
 #' this is an internal function from the phangorn package.
 phyDat.DNA <- function(data) {  # nolint
-  if (is.matrix(data))
-    nam <- row.names(data)
-  else nam <- names(data)
-  if (inherits(data, "DNAbin"))
-    data <- as.character(data)
-  if (inherits(data, "character")) data <- as.matrix(data)
-  if (is.matrix(data))
-    data <- as.data.frame(t(data), stringsAsFactors = FALSE)
-  else data <- as.data.frame(data, stringsAsFactors = FALSE)
+  nam <- names(data)
+
+  data <- as.data.frame(data, stringsAsFactors = FALSE)
 
   data <- data.frame(tolower(as.matrix(data)), stringsAsFactors = FALSE)
 
@@ -40,18 +34,10 @@ phyDat.DNA <- function(data) {  # nolint
                  c(0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1)),
                18, 4, dimnames = list(NULL, c("a", "c", "g", "t")))
 
-  compress <- TRUE
-  if (length(data[[1]]) == 1) compress <- FALSE
-  if (compress) {
-    ddd <- fast.table(data)
-    data <- ddd$data
-    weight <- ddd$weight
-    index <- ddd$index
-  } else{
-    p <- length(data[[1]])
-    weight <- rep(1, p)
-    index <- 1:p
-  }
+  ddd <- fast.table(data)
+  data <- ddd$data
+  weight <- ddd$weight
+  index <- ddd$index
   p <- length(data[[1]])
   att <- attributes(data)
 
@@ -60,10 +46,6 @@ phyDat.DNA <- function(data) {  # nolint
   row.names(data) <- as.character(1:p)
   data <- stats::na.omit(data)
   rn <- as.numeric(rownames(data))
-
-  if (!is.null(attr(data, "na.action"))) {
-    warning("Found unknown characters. Deleted sites with with unknown states.")
-  }
 
   aaa <- match(index, attr(data, "na.action"))
   index <- index[is.na(aaa)]
@@ -142,15 +124,6 @@ slow_matrix <- function(eig,
     }
   }
   return(P)
-}
-
-
-#' @keywords internal
-#' check if tip is extinct
-check_to_extinct_tip <- function(number, phy, phy_no_extinct) {
-  if (number > length(phy$tip.label)) return(TRUE)
-  if (number <= length(phy_no_extinct$tip.label)) return(TRUE)
-  return(FALSE)
 }
 
 #' @keywords internal
@@ -253,7 +226,7 @@ calc_dist <- function(alignment_phydat,
                       root_sequence = NULL) {
 
   if (is.null(root_sequence)) {
-    stop("can not calculate distance from root sequence without root sequence")
+    root_sequences = alignment_phydat$root_seq
   }
 
   if (class(alignment_phydat) != "phyDat") {
