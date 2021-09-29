@@ -52,3 +52,38 @@ test_that("required_node_time abuse", {
 
   )
 })
+
+test_that("calc_expected_hidden_nodes, use", {
+  set.seed(1)
+  found <- c()
+  for (repl in 1:10) {
+    focal_tree <- TreeSim::sim.bd.taxa(n = 10,
+                                       numbsim = 1,
+                                       lambda = 1,
+                                       mu = 0.3,
+                                       complete = TRUE)[[1]]
+    obs_hidden_nodes <- nodeSub::count_hidden(focal_tree)
+    exp_hidden_nodes <- nodeSub::calc_expected_hidden_nodes(geiger::drop.extinct(focal_tree),
+                                                            lambda = 1,
+                                                            mu = 0.3)
+    found <- rbind(found, c(obs_hidden_nodes, exp_hidden_nodes))
+  }
+  found <- colMeans(found)
+  testthat::expect_equal(found[1], found[2], tolerance = 0.1)
+})
+
+test_that("calc_expected_hidden_nodes, abuse", {
+  focal_tree <- TreeSim::sim.bd.taxa(n = 10,
+                                     numbsim = 1,
+                                     lambda = 1,
+                                     mu = 0.3,
+                                     complete = TRUE)[[1]]
+
+  testthat::expect_error(
+    nodeSub::calc_expected_hidden_nodes(geiger::drop.extinct(focal_tree))
+  )
+
+  testthat::expect_error(
+    nodeSub::calc_expected_hidden_nodes(focal_tree, lambda = 1, mu = 0.3)
+  )
+})

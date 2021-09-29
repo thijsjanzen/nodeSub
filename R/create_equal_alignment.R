@@ -8,7 +8,7 @@
 #' @param node_time node time
 #' @param input_alignment_type was the input alignment simulated with a node
 #' substitution model or a normal substitution model? Used to calculate the
-#' twin mutation rate.
+#' twin mutation rate. Options are "nodesub" and "normal".
 #' @return list with four properties: 1) alignment: the alignment itself,
 #' 2) adjusted rate: the substitution rate used to obtain identical information
 #' content 3) total_accumulated_substitutions: the total number of

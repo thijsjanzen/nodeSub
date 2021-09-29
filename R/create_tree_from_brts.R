@@ -16,24 +16,10 @@ create_unbalanced_tree <- function(brts) {
   cnt <- 2
   for (i in 2:length(brts)) {
     focal_brt <- brts[i]
-
-    left <- 1
-    parent <- 0
-    daughter <- 0
-
-    if (left == 1) {
-      cnt <- cnt + 1
-      parent <- leftcnt
-      daughter <- cnt * -1
-      leftcnt <- daughter
-    }
-    if (left == 0) {
-      cnt <- cnt + 1
-      parent <- rightcnt
-      daughter <- cnt
-      rightcnt <- daughter
-    }
-
+    cnt <- cnt + 1
+    parent <- leftcnt
+    daughter <- cnt * -1
+    leftcnt <- daughter
     to_add <- c(focal_brt, parent, daughter, -1)
     ltab <- rbind(ltab, to_add)
   }
