@@ -10,6 +10,9 @@ test_that("calc_sum_stats", {
   input <- list(phy, phy)
   class(input) <- "multiPhylo"
 
+  testthat::expect_true(class(input) == "multiPhylo")
+  testthat::expect_true(length(input) == 2)
+
   stats1 <- nodeSub::calc_sum_stats(input, phy)
   stats2 <- nodeSub::calc_sum_stats(input, phy, verbose = TRUE)
 
@@ -32,6 +35,9 @@ test_that("calc_sum_stats", {
   phy <- nodeSub::create_unbalanced_tree(brts)
 
   stats1 <- nodeSub::calc_sum_stats(phy, phy)
+
+  testthat::expect_true(class(input) == "multiPhylo")
+  testthat::expect_true(length(input) == 2)
 
   testthat::expect_true(stats1$stats$beta[[1]] < 0.0)
 

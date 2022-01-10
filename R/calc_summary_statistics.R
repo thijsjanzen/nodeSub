@@ -66,6 +66,7 @@ calc_sum_stats <- function(trees,
     warning("Found extinct lineages, removed these from tree\n")
     true_tree <- geiger::drop.extinct(true_tree)
   }
+
   sum_stats_true_tree <- calc_all_stats(true_tree)
   sum_stats_trees <- list()
   if (!verbose) sum_stats_trees <- lapply(trees, calc_all_stats)
@@ -78,6 +79,9 @@ calc_sum_stats <- function(trees,
                             nrow = length(trees),
                             ncol = length(sum_stats_true_tree) + 2)
 
+  RPANDA_CAN_BE_LOADED <- require(RPANDA)
+
+
   if (verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)
   for (i in seq_along(sum_stats_trees)) {
     # this for loop could be optimized later.
@@ -87,10 +91,13 @@ calc_sum_stats <- function(trees,
 
     # this is rather inefficient off course,
     # RPANDA can do all pairwise in one go.
-    local_jsd <- tryCatch(RPANDA::JSDtree(list(true_tree, trees[[i]]),
+    if (RPANDA_CAN_BE_LOADED) {
+      local_jsd <- tryCatch(RPANDA::JSDtree(list(true_tree, trees[[i]]),
                                           meth = "standard")[1, 2],
                           error = NA)
-
+    } else {
+      local_jsd <- NA
+    }
 
     local_diff <- c(local_diff, local_nltt, local_jsd)
 
