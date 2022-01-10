@@ -5,9 +5,9 @@
 
 Branch |[![Codecov logo](pics/Codecov.png)]
 ---|---
-master |[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/master/graph/badge.svg)](https://codecov.io/gh/thijsjanzen/nodeSub/)
-develop|[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/develop/graph/badge.svg)](https://codecov.io/gh/thijsjanzen/nodeSub/)
-richel |[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/richel/graph/badge.svg)](https://codecov.io/gh/thijsjanzen/nodeSub/)
+master |[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/master/graph/badge.svg)](https://app.codecov.io/gh/thijsjanzen/nodeSub)
+develop|[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/develop/graph/badge.svg)](https://app.codecov.io/gh/thijsjanzen/nodeSub)
+richel |[![codecov.io](https://codecov.io/gh/thijsjanzen/nodeSub/branch/richel/graph/badge.svg)](https://app.codecov.io/gh/thijsjanzen/nodeSub)
 
 NodeSub is an R package that can be used to generate alignments under the node substitution model.
 
