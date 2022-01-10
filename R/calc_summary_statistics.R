@@ -37,7 +37,11 @@ calc_all_stats <- function(focal_tree) {
 }
 
 #' calculate summary statistics of a phylogenetic tree,
-#' compared with a reference tree
+#' compared with a reference tree. The following statistics are calculated:
+#' the beta statistic, gamma statistic, crown age, mean branch length,
+#' number of tips, the nLTT statistic and the laplacian difference, given by
+#' RPANDA's JSDtree. Because JSDtree can sometimes cause issues, some additional
+#' checks are performed to ensure that is possible to run this function.
 #' @param trees a phyloList object containing multiple trees
 #' @param true_tree a phylo object containing the reference tree, preferably
 #'                  without extinct lineages. If extinct lineages are found,
