@@ -41,7 +41,8 @@ Imports:
     beautier,
     beastier,
     mauricer,
-    tracerer
+    tracerer,
+    rappdirs
 Suggests:
     phytools,
     testthat,

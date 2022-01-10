@@ -28,8 +28,6 @@ test_that("calc_sum_stats", {
   testthat::expect_true(sum(stats2$differences, na.rm = TRUE) != 0)
 
   testthat::expect_true(all.equal(stats1$stats, stats2$stats))
-  vx <- all.equal(stats1$differences, stats2$differences)
-  testthat::expect_true(length(vx) > 1) # if length = 1, all are true (ish)
 
 
   phy <- nodeSub::create_unbalanced_tree(brts)
