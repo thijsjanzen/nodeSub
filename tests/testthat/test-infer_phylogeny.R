@@ -18,7 +18,7 @@ test_that("infer_phylogeny", {
   mcc_tree <- all_trees$mcc_tree
 
   phangorn_dist <- phangorn::RF.dist(mcc_tree, phy)[[1]]
-  testthat::expect_equal(phangorn_dist, 0)
+  testthat::expect_equal(phangorn_dist[[1]], 0)
 
   testthat::expect_equal(length(all_trees$all_trees), 1e5 / 5000)
   testthat::expect_true(class(all_trees$mcc_tree) == "phylo")
