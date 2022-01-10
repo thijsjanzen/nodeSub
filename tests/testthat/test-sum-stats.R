@@ -19,13 +19,13 @@ test_that("calc_sum_stats", {
   testthat::expect_true(stats1$stats$beta[[1]] >= 9.9)
   testthat::expect_true(stats1$stats$beta[[2]] >= 9.9)
 
-  testthat::expect_true(sum(stats1$differences) == 0)
+  testthat::expect_true(sum(stats1$differences, na.rm = TRUE) == 0)
 
   stats2 <- nodeSub::calc_sum_stats(input, phy1)
   testthat::expect_true(stats2$stats$beta[[1]] >= 9.9)
   testthat::expect_true(stats2$stats$beta[[2]] >= 9.9)
 
-  testthat::expect_true(sum(stats2$differences) != 0)
+  testthat::expect_true(sum(stats2$differences, na.rm = TRUE) != 0)
 
   testthat::expect_true(all.equal(stats1$stats, stats2$stats))
   vx <- all.equal(stats1$differences, stats2$differences)
@@ -41,7 +41,7 @@ test_that("calc_sum_stats", {
 
   testthat::expect_true(stats1$stats$beta[[1]] < 0.0)
 
-  testthat::expect_true(sum(stats1$differences) == 0)
+  testthat::expect_true(sum(stats1$differences, na.rm = TRUE) == 0)
 
 
   phy1 <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0.5)[[1]]
