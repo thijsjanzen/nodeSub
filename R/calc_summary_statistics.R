@@ -83,6 +83,7 @@ calc_sum_stats <- function(trees,
                             nrow = length(trees),
                             ncol = length(sum_stats_true_tree) + 2)
 
+  # extra code checking for RPANDA
   RPANDA_CAN_BE_LOADED <- requireNamespace("RPANDA")
 
   if (verbose) pb <- utils::txtProgressBar(max = length(trees), style = 3)

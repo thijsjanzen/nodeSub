@@ -1,6 +1,8 @@
 context("calc_sum_stats")
 
 test_that("calc_sum_stats", {
+  testthat::skip_on_cran()
+  #  skip on cran, RPANDA seems to cause BLAS errors
 
   phy1 <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0)[[1]]
   brts <- ape::branching.times(phy1)

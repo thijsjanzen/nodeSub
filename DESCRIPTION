@@ -1,7 +1,7 @@
 Package: nodeSub
 Type: Package
 Title: Simulate DNA Alignments Using Node Substitutions
-Version: 1.2.1
+Version: 1.2.3
 Author: Thijs Janzen
 Maintainer: Thijs Janzen <thijsjanzen@gmail.com>
 Description: Simulate DNA sequences for the node substitution model.
@@ -33,16 +33,16 @@ Imports:
     assertthat,
     pbapply,
     phylobase,
-    stringr,
     geiger,
     ape,
-    testit,
     babette,
     beautier,
     beastier,
     mauricer,
     tracerer,
-    rappdirs
+    rappdirs,
+    testit,
+    stringr
 Suggests:
     phytools,
     testthat,

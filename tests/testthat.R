@@ -1,4 +1,4 @@
 library(testthat)
-library(nodeSub) # nolint keep package name non-all-lowercase, due to backwards compatibility
+library(nodeSub) # nolint
 
 test_check("nodeSub")
