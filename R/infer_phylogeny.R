@@ -26,6 +26,11 @@ infer_phylogeny <- function(alignment,
 
   if (is.null(working_dir)) working_dir <- getwd()
 
+  if (!beastier::is_beast2_installed()) {
+    stop("BEAST2 was not installed, please have a look at the package\n
+         beastierinstall on GitHub: richelbilderbeek/beastierinstall")
+  }
+
   temp_file_name <- "temp.fasta"
   phangorn::write.phyDat(alignment, file = temp_file_name, format = "fasta")
 

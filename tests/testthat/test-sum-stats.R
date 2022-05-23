@@ -5,6 +5,19 @@ test_that("calc_sum_stats", {
   #  skip on cran, RPANDA seems to cause BLAS errors
 
   phy1 <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0)[[1]]
+
+  if (requireNamespace("TreeSim")) {
+    phy1 <- TreeSim::sim.bd.taxa(n = 100,
+                                       numbsim = 1, lambda = 1, mu = 0)[[1]]
+  } else {
+    if (requireNamespace("ape")) {
+      phy1 <- ape::rphylo(n = 100, birth = 1, death = 0.0)
+    } else {
+      stop("could not use TreeSim or ape to simulate tree")
+    }
+  }
+
+
   brts <- ape::branching.times(phy1)
 
   phy <- nodeSub::create_balanced_tree(brts)
@@ -63,8 +76,19 @@ test_that("calc_sum_stats", {
 })
 
 test_that("calc_sum_stats abuse", {
-  phy1 <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0)
+  if (requireNamespace("TreeSim")) {
+    phy1 <- TreeSim::sim.bd.taxa(n = 100,
+                                 numbsim = 1, lambda = 1, mu = 0)[[1]]
+  } else {
+    if (requireNamespace("ape")) {
+      phy1 <- ape::rphylo(n = 100, birth = 1, death = 0.0)
+    } else {
+      stop("could not use TreeSim or ape to simulate tree")
+    }
+  }
 
-  testthat::expect_error(nodeSub::calc_sum_stats(phy1, phy1))
+  testthat::expect_warning(
+    nodeSub::calc_sum_stats(phy1, phy1)
+  )
 })
 

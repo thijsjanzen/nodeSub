@@ -42,7 +42,6 @@ Imports:
     testit,
     stringr
 Suggests:
-    phytools,
     testthat,
     TreeSim,
     dplyr,

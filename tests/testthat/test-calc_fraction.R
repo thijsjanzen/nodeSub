@@ -1,7 +1,15 @@
 context("calc_re_contr_node_time")
 
 test_that("calc_fraction use", {
-  phy <- TreeSim::sim.bd.taxa(n = 30, numbsim = 1, lambda = 1, mu = 0)[[1]]
+  if (requireNamespace("TreeSim")) {
+    phy <- TreeSim::sim.bd.taxa(n = 30, numbsim = 1, lambda = 1, mu = 0)[[1]]
+  } else {
+    if (requireNamespace("ape")) {
+      phy <- ape::rphylo(n = 30, birth = 1, death = 0)
+    } else {
+      stop("could not use TreeSim or ape to simulate tree")
+    }
+  }
 
   for (frac in seq(0, 0.9)) {
     req_node_time <- nodeSub::calc_required_node_time(phy, s = frac)
