@@ -2,7 +2,15 @@ context("test_marginal")
 
 test_that("marginal", {
   set.seed(42)
-  phy <- TreeSim::sim.bd.taxa(n = 10, numbsim = 1, lambda = 1, mu = 0)[[1]]
+  if (requireNamespace("TreeSim")) {
+    phy <- TreeSim::sim.bd.taxa(n = 10, numbsim = 3, lambda = 1, mu = 0)[[1]]
+  } else {
+    if (requireNamespace("ape")) {
+      phy <- ape::rphylo(n = 10, birth = 1, death = 0)
+    } else {
+      stop("could not use TreeSim or ape to simulate tree")
+    }
+  }
 
   seq_normal <- sim_normal(x = phy, l = 1000,  rate = 0.01)
 

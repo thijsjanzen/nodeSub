@@ -21,7 +21,8 @@ VignetteBuilder: knitr
 LinkingTo: 
     Rcpp
 Depends:
-    Rcpp
+    Rcpp,
+    ape
 Imports: 
     apTreeshape,
     phangorn,
@@ -32,7 +33,6 @@ Imports:
     pbapply,
     phylobase,
     geiger,
-    ape,
     babette,
     beautier,
     beastier,

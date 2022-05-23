@@ -34,7 +34,7 @@ test_that("count_hidden expectation", {
       if (requireNamespace("ape")) {
         test_tree <- list()
         for (r in 1:3) {
-             test_tree[[i]] <-
+             test_tree[[r]] <-
                     ape::rphylo(n = 30, birth = 1, death = mu,
                                  fossils = TRUE)
         }

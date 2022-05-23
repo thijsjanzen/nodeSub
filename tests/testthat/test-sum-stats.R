@@ -4,8 +4,6 @@ test_that("calc_sum_stats", {
   testthat::skip_on_cran()
   #  skip on cran, RPANDA seems to cause BLAS errors
 
-  phy1 <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0)[[1]]
-
   if (requireNamespace("TreeSim")) {
     phy1 <- TreeSim::sim.bd.taxa(n = 100,
                                        numbsim = 1, lambda = 1, mu = 0)[[1]]
@@ -64,8 +62,18 @@ test_that("calc_sum_stats", {
 
   testthat::expect_true(sum(stats1$differences, na.rm = TRUE) == 0)
 
+  if (requireNamespace("TreeSim")) {
+    phy1 <- TreeSim::sim.bd.taxa(n = 100,
+                                 numbsim = 1, lambda = 1, mu = 0.5,
+                                 complete = TRUE)[[1]]
+  } else {
+    if (requireNamespace("ape")) {
+      phy1 <- ape::rphylo(n = 100, birth = 1, death = 0.5, fossils = TRUE)
+    } else {
+      stop("could not use TreeSim or ape to simulate tree")
+    }
+  }
 
-  phy1 <- TreeSim::sim.bd.taxa(n = 100, numbsim = 1, lambda = 1, mu = 0.5)[[1]]
   phy2 <- geiger::drop.extinct(phy1)
 
 
