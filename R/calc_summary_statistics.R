@@ -92,7 +92,7 @@ calc_sum_stats <- function(trees,
     to_add <- sum_stats_trees[[i]]
     local_diff <- abs(to_add - sum_stats_true_tree)
     local_nltt <- NA
-    local_jsd < - NA
+    local_jsd  <- NA
 
     if (requireNamespace("nLTT")) {
       local_nltt <- nLTT::nltt_diff_exact(true_tree, trees[[i]])
