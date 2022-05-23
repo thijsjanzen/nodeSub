@@ -91,6 +91,8 @@ calc_sum_stats <- function(trees,
     # this for loop could be optimized later.
     to_add <- sum_stats_trees[[i]]
     local_diff <- abs(to_add - sum_stats_true_tree)
+    local_nltt <- NA
+    local_jsd < - NA
 
     if (requireNamespace("nLTT")) {
       local_nltt <- nLTT::nltt_diff_exact(true_tree, trees[[i]])
@@ -105,7 +107,6 @@ calc_sum_stats <- function(trees,
                           error = NA)
     } else {
       warning("RPANDA was not installed, Laplacian statistics not calculated")
-      local_jsd <- NA
     }
 
     local_diff <- c(local_diff, local_nltt, local_jsd)
