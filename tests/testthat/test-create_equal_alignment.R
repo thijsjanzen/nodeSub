@@ -1,7 +1,7 @@
 context("create_equal_alignment")
 
 test_that("create_equal_alignment", {
-  phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
+  phy  <- ape::read.tree(text = "(t1:10,(t3:2,t2:2):8);")
   set.seed(666)
 
   sub_rate <- 1e-2
@@ -35,7 +35,7 @@ test_that("create_equal_alignment", {
 })
 
 test_that("create_equal_alignment_explicit", {
-  phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
+  phy  <- ape::read.tree(text = "(t1:10,(t3:2,t2:2):8);")
   set.seed(666)
 
   sub_rate <- 1e-2
@@ -71,7 +71,7 @@ test_that("create_equal_alignment_explicit", {
 
 
 test_that("create_equal_alignment, nodesub", {
-  phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
+  phy  <- ape::read.tree(text = "(t1:10,(t3:2,t2:2):8);")
   set.seed(666)
 
   sub_rate <- 1e-2

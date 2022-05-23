@@ -1,7 +1,7 @@
 context("sim_linked")
 
 test_that("sim_linked", {
-  phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
+  phy  <- ape::read.tree(text = "(t1:10,(t3:2,t2:2):8);")
 
   sequences <- nodeSub::sim_linked(phy)
   testthat::expect_true(class(sequences$alignment) == "phyDat")
@@ -19,7 +19,7 @@ test_that("sim_linked", {
 
 
 test_that("zeros", {
-  phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
+  phy  <- ape::read.tree(text = "(t1:10,(t3:2,t2:2):8);")
 
   sequences <- sim_linked(phy,
                           rate = 0,

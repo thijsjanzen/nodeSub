@@ -65,7 +65,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          remotes::install_github("liamrevell/phytools")
           remotes::install_github("ropensci/beastier")
           remotes::install_github("ropensci/beautier")
           remotes::install_github("ropensci/mauricer")
