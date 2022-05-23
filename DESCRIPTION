@@ -16,15 +16,13 @@ BugReports: https://github.com/thijsjanzen/nodeSub
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp
 Depends:
     Rcpp
 Imports: 
-    RPANDA,
-    nLTT,
     apTreeshape,
     phangorn,
     tibble,
@@ -52,4 +50,6 @@ Suggests:
     rmarkdown,
     ggplot2,
     magrittr,
-    tidyr
+    tidyr,
+    nLTT,
+    RPANDA

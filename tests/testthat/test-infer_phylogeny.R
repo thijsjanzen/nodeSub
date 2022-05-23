@@ -3,6 +3,7 @@ context("test_infer_phylogeny")
 test_that("infer_phylogeny", {
   skip_on_cran()
   skip_on_ci()
+  testthat::skip_on_os("mac")
   set.seed(42)
   phy  <- phytools::read.newick(text = "(t1:10,(t3:2,t2:2):8);")
 

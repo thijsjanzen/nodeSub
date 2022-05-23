@@ -55,8 +55,8 @@ calc_sum_stats <- function(trees,
                            true_tree,
                            verbose = FALSE) {
 
-  if (class(trees) != "multiPhylo") {
-    if (class(trees) == "phylo") {
+  if (!inherits(trees, "multiPhylo")) {
+    if (inherits(trees, "phylo")) {
       trees <- list(trees)
       class(trees) <- "multiPhylo"
     } else {
@@ -91,8 +91,12 @@ calc_sum_stats <- function(trees,
     # this for loop could be optimized later.
     to_add <- sum_stats_trees[[i]]
     local_diff <- abs(to_add - sum_stats_true_tree)
-    local_nltt <- nLTT::nltt_diff_exact(true_tree, trees[[i]])
 
+    if (requireNamespace("nLTT")) {
+      local_nltt <- nLTT::nltt_diff_exact(true_tree, trees[[i]])
+    } else {
+      warning("nLTT was not installed, nLTT statistics not calculated")
+    }
     # this is rather inefficient off course,
     # RPANDA can do all pairwise in one go.
     if (RPANDA_CAN_BE_LOADED) {
@@ -100,6 +104,7 @@ calc_sum_stats <- function(trees,
                                           meth = "standard")[1, 2],
                           error = NA)
     } else {
+      warning("RPANDA was not installed, Laplacian statistics not calculated")
       local_jsd <- NA
     }
 
