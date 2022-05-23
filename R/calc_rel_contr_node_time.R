@@ -11,7 +11,7 @@ calc_fraction <- function(phy = NULL,
                           node_time = 0,
                           model = "unlinked") {
 
-  if (is.null(phy) || class(phy) != "phylo") {
+  if (is.null(phy) || !inherits(phy, "phylo")) {
     stop("phy needs to be a valid phylo object")
   }
 
@@ -44,7 +44,7 @@ calc_required_node_time <- function(phy = NULL,
                                     s = 0.5,
                                     model = "unlinked") {
 
-  if (is.null(phy) || class(phy) != "phylo") {
+  if (is.null(phy) || !inherits(phy, "phylo")) {
     stop("phy needs to be a valid phylo object")
   }
 
@@ -80,7 +80,7 @@ calc_expected_hidden_nodes <- function(phy,
                                        lambda = NULL,
                                        mu = NULL) {
 
-  if (class(phy) != "phylo") {
+  if (!inherits(phy, "phylo")) {
     stop("requires a valid phylogeny as input")
   }
   if (is.null(lambda) || is.null(mu)) {

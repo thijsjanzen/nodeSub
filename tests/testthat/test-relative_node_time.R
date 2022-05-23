@@ -32,14 +32,7 @@ test_that("required_node_time use", {
 })
 
 test_that("required_node_time abuse", {
-  set.seed(1)
-
-  if (requireNamespace("TreeSim")) {
-    focal_tree <- TreeSim::sim.bd.taxa(n = 100,
-                                       numbsim = 1, lambda = 1, mu = 0)
-  } else {
-      stop("could not use TreeSim or ape to simulate tree")
-  }
+  focal_tree <- 1
 
 
   chosen_fraction <- 0.1
