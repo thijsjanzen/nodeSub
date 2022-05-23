@@ -50,6 +50,4 @@ Suggests:
     rmarkdown,
     ggplot2,
     magrittr,
-    tidyr,
-    nLTT,
-    RPANDA
+    tidyr
