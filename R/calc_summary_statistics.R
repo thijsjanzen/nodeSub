@@ -91,21 +91,21 @@ calc_sum_stats <- function(trees,
     local_nltt <- NA
     local_jsd  <- NA
 
-    #if (requireNamespace("nLTT", quietly = TRUE)) {
-    #  local_nltt <- nLTT::nltt_diff_exact(true_tree, trees[[i]])
-    #} else {
+    if (requireNamespace("nLTT", quietly = TRUE)) {
+      local_nltt <- nLTT::nltt_diff_exact(true_tree, trees[[i]])
+    } else {
       warning("nLTT is currently not available, nLTT statistics not calculated")
-    #}
+    }
     # this is rather inefficient off course,
     # RPANDA can do all pairwise in one go.
-#    if (requireNamespace("RPANDA", quietly = TRUE)) {
-#      local_jsd <- tryCatch(RPANDA::JSDtree(list(true_tree, trees[[i]]),
-#                                          meth = "standard")[1, 2],
-#                          error = NA)
-#    } else {
-    warning("RPANDA is currently not available,
+    if (requireNamespace("RPANDA", quietly = TRUE)) {
+      local_jsd <- tryCatch(RPANDA::JSDtree(list(true_tree, trees[[i]]),
+                                          meth = "standard")[1, 2],
+                          error = NA)
+    } else {
+      warning("RPANDA is currently not available,
               Laplacian statistics not calculated")
-
+    }
 
     local_diff <- c(local_diff, local_nltt, local_jsd)
 

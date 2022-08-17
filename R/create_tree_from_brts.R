@@ -11,7 +11,6 @@ create_unbalanced_tree <- function(brts) {
   ltab <- rbind(ltab, to_add1, to_add2)
 
   leftcnt <- 2
-  rightcnt <- -1
 
   cnt <- 2
   for (i in 2:length(brts)) {

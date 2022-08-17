@@ -31,20 +31,22 @@ input_tree <- TreeSim::sim.bd.taxa(n = 100,
                                    lambda = 1,
                                    mu = 0.1,
                                    complete = TRUE)[[1]]
-                                     
+
 target_alignment <- sim_unlinked(phy = input_tree,
                                  rate1 = sub_rate,
                                  rate2 = sub_rate,
                                  l = seq_length,
-                                 node_time = 0.3)   
+                                 node_time = 0.3)
 ```
 
 We can then proceed to create a Twin alignment (e.g. an alignment with the exact same number of accumulated substitutions, given the same tree, but using a 'normal' substitution model)
 
 ```{r twin alignment}
-comp_alignment <- create_equal_alignment(input_tree = geiger::drop.extinct(input_tree),  # can only work on trees without extinct branches
-                                         sub_rate = sub_rate,
-                                         alignment_result = target_alignment)
+comp_alignment <- create_equal_alignment(
+                        input_tree = geiger::drop.extinct(input_tree),
+                        # can only work on trees without extinct branches
+                        sub_rate = sub_rate,
+                        alignment_result = target_alignment)
 ```
 Now we have two alignments, one generated using the Node Substitution model, and one using standard strict clock model. For both we can perform phylogenetic inference to get the resulting tree. The aim is to compare the posterior distribution of trees with the true tree that we started with 'input_tree', and estimate the error invoked by the node substitution model.
 
@@ -59,7 +61,7 @@ if (beastier::is_beast2_installed()) {
                                     burnin = 0.1,
                                     working_dir = getwd(),
                                     sub_rate = sub_rate)
-  
+
   reference_posterior <- infer_phylogeny(comp_alignment$alignment,
                                          "reference_posterior",
                                          burnin = 0.1,
@@ -70,7 +72,8 @@ if (beastier::is_beast2_installed()) {
 }
 ```
 
-Having two posterior distributions of trees, we can compare them based on summary statistics.
+Having two posterior distributions of trees, we can compare them based on 
+summary statistics.
 
 ```{r stats}
 if (beastier::is_beast2_installed()) {

@@ -4,8 +4,9 @@ test_that("count_hidden use", {
 
   for (mu in seq(0, 0.5, 0.1)) {
     if (requireNamespace("TreeSim")) {
-      test_tree <- TreeSim::sim.bd.taxa(n = 30, numbsim = 1, lambda = 1, mu = mu,
-                                  complete = TRUE)[[1]]
+      test_tree <- TreeSim::sim.bd.taxa(n = 30, numbsim = 1, lambda = 1,
+                                        mu = mu,
+                                        complete = TRUE)[[1]]
     } else {
       if (requireNamespace("ape")) {
         test_tree <- ape::rphylo(n = 30, birth = 1, death = mu,
@@ -28,7 +29,8 @@ test_that("count_hidden expectation", {
   set.seed(42)
   for (mu in seq(0, 0.5, 0.1)) {
     if (requireNamespace("TreeSim")) {
-      test_tree <- TreeSim::sim.bd.taxa(n = 30, numbsim = 3, lambda = 1, mu = mu,
+      test_tree <- TreeSim::sim.bd.taxa(n = 30, numbsim = 3,
+                                        lambda = 1, mu = mu,
                                         complete = TRUE)
     } else {
       if (requireNamespace("ape")) {

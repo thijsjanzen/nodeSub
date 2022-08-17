@@ -99,4 +99,3 @@ test_that("calc_sum_stats abuse", {
     nodeSub::calc_sum_stats(phy1, phy1)
   )
 })
-

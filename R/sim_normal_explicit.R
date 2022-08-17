@@ -35,7 +35,7 @@ mutate_seq_explicit <- function(local_sequence, pn) {
   num_mut <- 0
   for (j in 1:4) {
     ind <- which(seq_before_mut == bases[j])
-    a <- sample(x = 1:length(pn),
+    a <- sample(x = seq_along(pn),
                 size = length(ind),
                 replace = TRUE,
                 prob = pn)

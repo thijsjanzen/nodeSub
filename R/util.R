@@ -51,18 +51,18 @@ phyDat.DNA <- function(data) {  # nolint
   index <- index[is.na(aaa)]
   index <- match(index, unique(index))
   rn <- as.numeric(rownames(data))
-  attr(data, "na.action") <- NULL
+  attr(data, "na.action") <- NULL # nolint
 
   weight <- weight[rn]
   p <- dim(data)[1]
   names(data) <- nam
-  attr(data, "row.names") <- NULL
+  attr(data, "row.names") <- NULL # nolint
   attr(data, "weight") <- weight
   attr(data, "nr") <- p
   attr(data, "nc") <- 4
   attr(data, "index") <- index
   attr(data, "levels") <- c("a", "c", "g", "t")
-  attr(data, "allLevels") <- ac
+  attr(data, "allLevels") <- ac # nolint
   attr(data, "type") <- "DNA"
   attr(data, "contrast") <- AC
   class(data) <- "phyDat"
@@ -109,7 +109,7 @@ slow_matrix <- function(eig,
 
   if (branch_length == 0 || rate <= 0) {
     P <- matrix(0, nrow = dim_size, ncol = dim_size)  # nolint
-    diag(P) <- 1
+    diag(P) <- 1  # nolint
     return(P)
   }
 
@@ -121,7 +121,7 @@ slow_matrix <- function(eig,
       for (h in 1:dim_size) {
         res <- res + ev[i, h] * tmp[h] * evei[h, j]
       }
-      P[i, j] <- res
+      P[i, j] <- res # nolint
     }
   }
   return(P)
@@ -227,10 +227,10 @@ calc_dist <- function(alignment_phydat,
                       root_sequence = NULL) {
 
   if (is.null(root_sequence)) {
-    root_sequences = alignment_phydat$root_seq
+    root_sequence <- alignment_phydat$root_seq
   }
 
-  if (class(alignment_phydat) != "phyDat") {
+  if (!inherits(alignment_phydat, "phyDat")) {
     stop("input alignment has to be of type phyDat")
   }
 

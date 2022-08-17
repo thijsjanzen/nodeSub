@@ -75,9 +75,10 @@ test_that("calc_expected_hidden_nodes, use", {
     }
 
     obs_hidden_nodes <- nodeSub::count_hidden(focal_tree)
-    exp_hidden_nodes <- nodeSub::calc_expected_hidden_nodes(geiger::drop.extinct(focal_tree),
-                                                            lambda = 1,
-                                                            mu = 0.3)
+    exp_hidden_nodes <-
+       nodeSub::calc_expected_hidden_nodes(geiger::drop.extinct(focal_tree),
+                                           lambda = 1,
+                                           mu = 0.3)
     found <- rbind(found, c(obs_hidden_nodes, exp_hidden_nodes))
   }
   found <- colMeans(found)
