@@ -90,7 +90,7 @@ test_that("calc_sum_stats abuse", {
     }
   }
 
-  testthat::expect_warning(
+  testthat::expect_output(
     nodeSub::calc_sum_stats(phy1, phy1)
   )
 })
