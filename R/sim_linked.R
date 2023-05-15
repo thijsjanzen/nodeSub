@@ -60,11 +60,14 @@ sim_linked <- function(phy,
   parents <- sort(unique(as.integer(edge[, 1])))
 
   # the first parent should be the root, otherwise the algorithm doesn't work
-  assertthat::assert_that(parents[1] == root)
+  if (parents[1] != root) {
+    stop("malformed edge matrix")
+  }
 
   # if mu < 0, the model is undefined
-  assertthat::assert_that(node_mut_rate_double >= 0)
-
+  if (node_mut_rate_double < 0) {
+    stop("double mutation rate can not be negative")
+  }
   node_transition_matrix <- make_transition_matrix(node_mut_rate_double)
 
   eigen_obj <- eigen(node_transition_matrix, FALSE)

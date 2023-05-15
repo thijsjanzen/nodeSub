@@ -24,7 +24,7 @@ create_equal_alignment_explicit <- function(input_tree,
 
   seqlen <- length(alignment_result$root_seq)
 
-  proposed_alignment <- sim_normal_explicit(x = input_tree,
+  proposed_alignment <- nodeSub::sim_normal_explicit(x = input_tree,
                                             l = seqlen,
                                             rootseq = alignment_result$root_seq,
                                             rate = adjusted_rate)
@@ -32,7 +32,7 @@ create_equal_alignment_explicit <- function(input_tree,
   proposed_subs <- proposed_alignment$total_accumulated_substitutions
 
   while (proposed_subs != num_emp_subs) {
-    proposed_alignment <- sim_normal_explicit(x = input_tree,
+    proposed_alignment <- nodeSub::sim_normal_explicit(x = input_tree,
                                               l = seqlen,
                                               rootseq =
                                                    alignment_result$root_seq,

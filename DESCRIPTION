@@ -1,7 +1,7 @@
 Package: nodeSub
 Type: Package
 Title: Simulate DNA Alignments Using Node Substitutions
-Version: 1.2.5
+Version: 1.2.6
 Author: Thijs Janzen
 Maintainer: Thijs Janzen <thijsjanzen@gmail.com>
 Description: Simulate DNA sequences for the node substitution model.
@@ -16,7 +16,7 @@ BugReports: https://github.com/thijsjanzen/nodeSub
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp
@@ -29,7 +29,6 @@ Imports:
     tibble,
     DDD,
     Rmpfr,
-    assertthat,
     pbapply,
     phylobase,
     geiger,

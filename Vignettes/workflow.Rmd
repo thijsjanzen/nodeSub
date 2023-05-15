@@ -1,5 +1,5 @@
 ---
-title: "Workflow"
+title: "workflow"
 author: "Thijs Janzen"
 date: "8/12/2021"
 output: rmarkdown::html_vignette
@@ -68,7 +68,7 @@ if (beastier::is_beast2_installed()) {
                                          clock_prior = beautier::create_strict_clock_model(clock_rate_param = beautier::create_clock_rate_param(value = comp_alignment$adjusted_rate)),
                                          chain_length = 1e5,
                                          working_dir = getwd,
-                                         sub_rate = sub_rate) 
+                                         sub_rate = sub_rate)
 }
 ```
 
@@ -95,8 +95,8 @@ We can now visualize the differences.
 if (beastier::is_beast2_installed()) {
   results %>%
   tidyr::gather(key = "statistic", value = "val", -method) %>%
-  dplyr::filter(statistic != "num_tips") %>%  
-  ggplot(aes(x = method , y = val)) +
+  dplyr::filter(statistic != "num_tips") %>%
+  ggplot(aes(x = method, y = val)) +
     geom_boxplot() +
     facet_wrap(~statistic, scales = "free")
 }

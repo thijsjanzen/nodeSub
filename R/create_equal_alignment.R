@@ -49,7 +49,7 @@ create_equal_alignment <- function(input_tree,
 
   if (is.null(sim_function)) {
     sim_function <- function(input_tree, seqlen, rootseq, rate) {
-      sim_normal(x = input_tree,
+      nodeSub::sim_normal(x = input_tree,
                  l = seqlen,
                  rootseq = rootseq,
                  rate = rate)
