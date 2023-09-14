@@ -1,7 +1,12 @@
 #' @keywords internal
 calc_beta <- function(focal_tree) {
-  beta <- apTreeshape::maxlik.betasplit(focal_tree)$max_lik
-  return(beta)
+  #beta <- apTreeshape::maxlik.betasplit(focal_tree)$max_lik
+  lifecycle::deprecate_warn("1.2.7", "calc_beta()",
+                            details = "Unfortunately, the original package calculating beta
+           is no longer on CRAN (apTreeshape), please install the
+           package treestats from https://github.com/thijsjanzen/treestats
+           as a temporary fix")
+  return(0.0);
 }
 
 #' @keywords internal

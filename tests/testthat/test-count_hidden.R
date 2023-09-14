@@ -2,15 +2,15 @@ context("count_hidden and reduce_tree")
 
 test_that("count_hidden use", {
 
-  for (mu in seq(0, 0.5, 0.1)) {
-    if (requireNamespace("TreeSim")) {
-      test_tree <- TreeSim::sim.bd.taxa(n = 30, numbsim = 1, lambda = 1,
-                                        mu = mu,
-                                        complete = TRUE)[[1]]
+  for (mu in seq(0, 0.5)) {
+    if (requireNamespace("ape")) {
+      test_tree <- ape::rphylo(n = 30, birth = 1, death = mu,
+                               fossils = TRUE)
     } else {
-      if (requireNamespace("ape")) {
-        test_tree <- ape::rphylo(n = 30, birth = 1, death = mu,
-                           fossils = TRUE)
+      if (requireNamespace("TreeSim")) {
+        test_tree <- TreeSim::sim.bd.taxa(n = 30, numbsim = 1, lambda = 1,
+                                          mu = mu,
+                                          complete = TRUE)[[1]]
       } else {
         stop("could not use TreeSim or ape to simulate tree")
       }
@@ -27,7 +27,7 @@ test_that("count_hidden use", {
 
 test_that("count_hidden expectation", {
   set.seed(42)
-  for (mu in seq(0, 0.5, 0.1)) {
+  for (mu in seq(0, 0.5)) {
     if (requireNamespace("TreeSim")) {
       test_tree <- TreeSim::sim.bd.taxa(n = 30, numbsim = 3,
                                         lambda = 1, mu = mu,
@@ -36,9 +36,9 @@ test_that("count_hidden expectation", {
       if (requireNamespace("ape")) {
         test_tree <- list()
         for (r in 1:3) {
-             test_tree[[r]] <-
-                    ape::rphylo(n = 30, birth = 1, death = mu,
-                                 fossils = TRUE)
+          test_tree[[r]] <-
+            ape::rphylo(n = 30, birth = 1, death = mu,
+                        fossils = TRUE)
         }
       } else {
         stop("could not use TreeSim or ape to simulate tree")

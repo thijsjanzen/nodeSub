@@ -15,7 +15,8 @@
     information can be found in Janzen (2021) <doi:10.1093/sysbio/syab085>.
 
     Version History: \cr
-
+    Version 1.2.7   -  Removed beta calculation due to apTreeshape removal from
+                       CRAN \cr
     Version 1.2.3   -  Removed summary statistic tests for CRAN \cr
     Version 1.2.2   -  Changed codedov links in README \cr
     Version 1.2.1   -  Expanded depenency on RPANDA \cr

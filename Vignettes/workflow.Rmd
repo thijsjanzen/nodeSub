@@ -16,6 +16,8 @@ library(tidyr)
 library(nodeSub)
 
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width = 6)
+knitr::opts_chunk$set(fig.height = 6)
 ```
 
 # NodeSub workflow
@@ -73,7 +75,8 @@ if (beastier::is_beast2_installed()) {
 ```
 
 Having two posterior distributions of trees, we can compare them based on 
-summary statistics.
+summary statistics (note 09-14-2023: the beta statistic is no longer supported,
+as the calculating package was removed from CRAN).
 
 ```{r stats}
 if (beastier::is_beast2_installed()) {
