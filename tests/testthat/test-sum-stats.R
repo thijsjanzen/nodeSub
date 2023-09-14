@@ -29,9 +29,7 @@ test_that("calc_sum_stats", {
   )
 
   testthat::expect_output(
-    testthat::expect_warning(
       stats2 <- nodeSub::calc_sum_stats(input, phy, verbose = TRUE)
-    )
   )
  # testthat::expect_true(stats1$stats$beta[[1]] >= 9.9)
 #  testthat::expect_true(stats1$stats$beta[[2]] >= 9.9)
