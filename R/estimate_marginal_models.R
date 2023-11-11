@@ -7,22 +7,25 @@ get_marg_lik <- function(fasta_filename,
   beast2_input_filename <- beastier::create_temp_input_filename()
   beast2_output_state_filename <- beastier::create_temp_state_filename()
 
-  marg_lik <- babette::bbt_run(
-    fasta_filename = fasta_filename,
-    site_model = site_model,
-    clock_model = clock_model,
-    tree_prior = tree_prior,
-    beast2_input_filename = beast2_input_filename,
-    beast2_output_state_filename = beast2_output_state_filename,
-    mcmc =
-      beautier::create_ns_mcmc(chain_length = 1e9,
-               store_every = 5000,
-               tracelog = beautier::create_tracelog(filename = "marg.trace"),
-               treelog = beautier::create_treelog(filename = "marg.trees")),
-    beast2_path = beastier::get_default_beast2_bin_path(),
-    rng_seed = rng_seed,
-    overwrite = TRUE)$ns
 
+  if (requireNamespace("babette")) {
+
+    marg_lik <- babette::bbt_run(
+      fasta_filename = fasta_filename,
+      site_model = site_model,
+      clock_model = clock_model,
+      tree_prior = tree_prior,
+      beast2_input_filename = beast2_input_filename,
+      beast2_output_state_filename = beast2_output_state_filename,
+      mcmc =
+        beautier::create_ns_mcmc(chain_length = 1e9,
+                                 store_every = 5000,
+                                 tracelog = beautier::create_tracelog(filename = "marg.trace"),
+                                 treelog = beautier::create_treelog(filename = "marg.trees")),
+      beast2_path = beastier::get_default_beast2_bin_path(),
+      rng_seed = rng_seed,
+      overwrite = TRUE)$ns
+  }
   file.remove(beast2_output_state_filename)
   file.remove(beast2_input_filename)
 
@@ -36,7 +39,9 @@ get_marg_lik <- function(fasta_filename,
 #' model, using the NS package in BEAST, made available via the babette R
 #' package. The NS package performs nested sampling, and uses an MCMC approach
 #' to estimate the marginal likelihood. Sampling is performed until convergence
-#' of the MCMC chain.
+#' of the MCMC chain. Unfortunately, currently the babette package is unavailable
+#' on CRAN, requiring installation through GitHub to enjoy the full
+#' functionality of this function.
 #' @param fasta_filename file name of fasta file holding alignment for which the
 #' marginal likelihood is to be estimated
 #' @param use_yule_prior by default, a birth-death prior is used as tree prior,
@@ -57,14 +62,14 @@ estimate_marginal_models <- function(fasta_filename,
   site_models <- list(beautier::create_jc69_site_model())
   clock_models <- list()
   clock_models[[1]] <- beautier::create_rln_clock_model(
-                          mean_clock_rate = sub_rate,
-                          mean_rate_prior_distr =
-                                beautier::create_distr_log_normal())
+    mean_clock_rate = sub_rate,
+    mean_rate_prior_distr =
+      beautier::create_distr_log_normal())
   clock_models[[2]] <- beautier::create_strict_clock_model(
-                          clock_rate_param =
-                            beautier::create_clock_rate_param(value = sub_rate),
-                          clock_rate_distr =
-                            beautier::create_distr_log_normal())
+    clock_rate_param =
+      beautier::create_clock_rate_param(value = sub_rate),
+    clock_rate_distr =
+      beautier::create_distr_log_normal())
   tree_priors <- list(beautier::create_bd_tree_prior())
   if (use_yule_prior) {
     tree_priors <- list(beautier::create_yule_tree_prior())
@@ -90,8 +95,8 @@ estimate_marginal_models <- function(fasta_filename,
   testit::assert(mauricer::is_beast2_pkg_installed("NS"))
 
   n_rows <- length(site_models) *
-            length(clock_models) *
-            length(tree_priors)
+    length(clock_models) *
+    length(tree_priors)
 
   site_model_names  <- rep(NA, n_rows)
   clock_model_names <- rep(NA, n_rows)

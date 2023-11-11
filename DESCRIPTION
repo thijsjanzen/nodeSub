@@ -31,7 +31,6 @@ Imports:
     pbapply,
     phylobase,
     geiger,
-    babette,
     beautier,
     beastier,
     mauricer,
@@ -50,4 +49,5 @@ Suggests:
     magrittr,
     tidyr,
     nLTT,
-    RPANDA
+    RPANDA,
+    babette
