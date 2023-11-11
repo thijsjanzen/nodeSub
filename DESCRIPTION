@@ -33,7 +33,6 @@ Imports:
     geiger,
     beautier,
     beastier,
-    mauricer,
     tracerer,
     rappdirs,
     testit,
@@ -50,4 +49,5 @@ Suggests:
     tidyr,
     nLTT,
     RPANDA,
-    babette
+    babette,
+    mauricer

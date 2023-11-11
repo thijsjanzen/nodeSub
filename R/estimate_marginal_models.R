@@ -92,7 +92,7 @@ estimate_marginal_models <- function(fasta_filename,
 
   testit::assert(file.exists(fasta_filename))
   testit::assert(beastier::is_beast2_installed())
-  testit::assert(mauricer::is_beast2_pkg_installed("NS"))
+  # testit::assert(mauricer::is_beast2_pkg_installed("NS"))
 
   n_rows <- length(site_models) *
     length(clock_models) *
