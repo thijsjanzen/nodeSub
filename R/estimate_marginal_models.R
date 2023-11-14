@@ -7,29 +7,7 @@ get_marg_lik <- function(fasta_filename,
   beast2_input_filename <- beastier::create_temp_input_filename()
   beast2_output_state_filename <- beastier::create_temp_state_filename()
 
-
-  if (requireNamespace("babette")) {
-
-    marg_lik <- babette::bbt_run(
-      fasta_filename = fasta_filename,
-      site_model = site_model,
-      clock_model = clock_model,
-      tree_prior = tree_prior,
-      beast2_input_filename = beast2_input_filename,
-      beast2_output_state_filename = beast2_output_state_filename,
-      mcmc =
-        beautier::create_ns_mcmc(chain_length = 1e9,
-                                 store_every = 5000,
-                                 tracelog = beautier::create_tracelog(filename = "marg.trace"),
-                                 treelog = beautier::create_treelog(filename = "marg.trees")),
-      beast2_path = beastier::get_default_beast2_bin_path(),
-      rng_seed = rng_seed,
-      overwrite = TRUE)$ns
-  }
-  file.remove(beast2_output_state_filename)
-  file.remove(beast2_input_filename)
-
-  return(marg_lik)
+  stop("Unfortunately, currently babette is no longer on CRAN\nPlease refer to GitHub for a nodeSub version including babette functionality")
 }
 
 #' estimate the marginal likelihood of the relaxed and strict clock model for

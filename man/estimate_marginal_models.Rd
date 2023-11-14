@@ -37,5 +37,7 @@ both the strict and the relaxed clock model, given the JC69 substitution
 model, using the NS package in BEAST, made available via the babette R
 package. The NS package performs nested sampling, and uses an MCMC approach
 to estimate the marginal likelihood. Sampling is performed until convergence
-of the MCMC chain.
+of the MCMC chain. Unfortunately, currently the babette package is unavailable
+on CRAN, requiring installation through GitHub to enjoy the full
+functionality of this function.
 }

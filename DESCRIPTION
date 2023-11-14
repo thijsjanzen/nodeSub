@@ -48,6 +48,4 @@ Suggests:
     magrittr,
     tidyr,
     nLTT,
-    RPANDA,
-    babette,
-    mauricer
+    RPANDA
