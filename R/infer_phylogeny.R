@@ -31,6 +31,8 @@ infer_phylogeny <- function(alignment,
          beastierinstall on GitHub: richelbilderbeek/beastierinstall")
   }
 
+  stop("Unfortunately, currently babette is no longer on CRAN\nPlease refer to GitHub for a nodeSub version including babette functionality")
+
   temp_file_name <- "temp.fasta"
   phangorn::write.phyDat(alignment, file = temp_file_name, format = "fasta")
 
@@ -56,13 +58,13 @@ infer_phylogeny <- function(alignment,
 
   beast2_options_local <- beastier::create_beast2_options()
 
-  posterior <- babette::bbt_run_from_model(
-    fasta_filename = temp_file_name,
-    inference_model = inf_model,
-    beast2_options = beast2_options_local
-  )
+ # posterior <- babette::bbt_run_from_model(
+#    fasta_filename = temp_file_name,
+#    inference_model = inf_model,
+#    beast2_options = beast2_options_local
+#  )
 
-  file.remove(temp_file_name)
+#  file.remove(temp_file_name)
 
   beast_log <- tracerer::remove_burn_ins(
     posterior$estimates,
