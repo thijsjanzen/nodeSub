@@ -65,6 +65,7 @@ infer_phylogeny <- function(alignment,
 #  )
 
 #  file.remove(temp_file_name)
+  posterior <-
 
   beast_log <- tracerer::remove_burn_ins(
     posterior$estimates,

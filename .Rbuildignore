@@ -3,3 +3,7 @@
 ^NEWS\.md$
 
 ^\.github$
+^codecov.yaml
+^/pics
+^pics$
+^codecov\.yaml$
