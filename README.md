@@ -33,6 +33,12 @@ remotes::install_github("richelbilderbeek/mauricerinstall")
 mauricerinstall::install_beast2_pkg("NS")
 mauricer::is_beast2_ns_pkg_installed()
 ```
+# Installation of NodeSub
+To make use of the BEAST2 functions, we now need some functions that are not availabe on CRAN, because CRAN does not support having github-dependent code in an R package. You can install this functionality through:
+```
+remotes::install_github("thijsjanzen/nodeSub", ref = "babette")
+```
+
 
 # Usage
 Given a tree, we can generate a NodeSubstitution alignment as follows:
