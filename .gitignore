@@ -25,3 +25,4 @@ src/getP.o
 *.tree
 *.xml
 .appveyor.yml
+*.Rproj
